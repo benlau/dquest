@@ -1,0 +1,99 @@
+#include <QtCore>
+#include "dqwhere.h"
+
+static int typeId = qMetaTypeId<DQWhere>();
+
+DQWhere::DQWhere()
+{
+    m_isNull = true;
+}
+
+DQWhere::DQWhere(QVariant left,QString op, QVariant right)
+    : m_left(left) ,m_op(op),m_right(right){
+    m_isNull = false;
+}
+
+DQWhere::DQWhere(const DQWhere &other){
+    m_left = other.m_left;
+    m_right = other.m_right;
+    m_op = other.m_op;
+    m_isNull = other.m_isNull;
+}
+
+DQWhere::DQWhere(QString leftAndOp , QVariant right)  : m_right(right){
+    QRegExp rx("^\\s*[a-zA-Z0-9]+");
+    int pos = rx.indexIn(leftAndOp);
+
+    if (pos < 0){
+        qWarning() << QString("DQWhere() : can not parse %1").arg(leftAndOp);
+        return;
+    }
+    int len = rx.matchedLength();
+
+    QString str = leftAndOp.mid(pos,len);
+    m_left = str.trimmed();
+
+    str = leftAndOp.mid(pos + len);
+
+    m_op = str.trimmed();
+
+    m_isNull = false;
+}
+
+bool DQWhere::isNull(){
+    return m_isNull;
+}
+
+QString DQWhere::toString(){
+    if (m_left.isNull() || m_right.isNull())
+        return "";
+
+    QString op1,op2;
+
+    op1 = variantToString(m_left,false);
+
+    op2 = variantToString(m_right,true);
+
+    return QString("%1 %2 %3").arg(op1).arg(m_op).arg(op2);
+}
+
+DQWhere DQWhere::operator&(const DQWhere other) {
+    DQWhere w;
+
+    w.m_left.setValue<DQWhere>(*this);
+    w.m_right.setValue<DQWhere>( other);
+    w.m_op = "and";
+    w.m_isNull = false;
+
+    return w;
+}
+
+DQWhere DQWhere::operator|(const DQWhere other) {
+    DQWhere w;
+
+    w.m_left.setValue<DQWhere>(*this);
+    w.m_right.setValue<DQWhere>( other);
+    w.m_op = "or";
+    w.m_isNull = false;
+
+    return w;
+}
+
+
+QString DQWhere::variantToString(QVariant v,bool quoteString){
+    QString res;
+    /// @todo Implement QVariant::convert()
+
+    if (v.type() == QVariant::UserType &&
+        v.userType() == typeId) {
+        res = QString("( %1 )").arg(v.value<DQWhere>().toString() );
+    } else if (v.type() == QVariant::String
+               && quoteString) {
+        res = QString("\"%1\"").arg(v.toString());
+    } else {
+        res = v.toString();
+    }
+
+    return res;
+}
+
