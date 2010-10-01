@@ -32,9 +32,11 @@ template<>
 class DQModelMetaInfoHelper<Model1> {
 public:
     typedef Model1 Table;
-    enum {Defined = 1 };
-    static inline QString tableName() {
-        return "model1";
+
+    enum {DQModelDefined = 1 };
+
+    static inline QString className() {
+        return "Model1";
     }
 
     static inline QList<DQModelMetaInfoField> fields() {

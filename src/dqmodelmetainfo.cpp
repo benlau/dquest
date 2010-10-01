@@ -103,3 +103,11 @@ QString DQModelMetaInfo::name(){
 void DQModelMetaInfo::setName(QString val){
     m_name = val;
 }
+
+void DQModelMetaInfo::setClassName(QString val){
+    m_className = val;
+}
+
+QString DQModelMetaInfo::className(){
+    return m_className;
+}

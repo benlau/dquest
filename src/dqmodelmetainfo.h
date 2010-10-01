@@ -84,11 +84,16 @@ public:
     /// The table name
     QString name();
 
+    /// The class name
+    QString className();
+
 protected:
     DQModelMetaInfo();
 
     /// Set the table name
     void setName(QString val);
+
+    void setClassName(QString val);
 
     /// Register a field
     void registerField(DQModelMetaInfoField field);
@@ -107,6 +112,7 @@ private:
 
     /// The table name
     QString m_name;
+    QString m_className;
 
     template <typename T>
     friend DQModelMetaInfo* dqMetaInfo();
@@ -131,7 +137,7 @@ class DQModelMetaInfoHelper
 {
 public:
     enum {Defined = 0};
-    static inline QString tableName() {
+    static inline QString className() {
         return QString();
     }
 
@@ -168,7 +174,7 @@ inline DQModelMetaInfo* dqMetaInfo() {
     QString name = T::TableName();
 
     if (T::DQModelDefined == 0){
-        qWarning() << "dqMetaInfo: DQ_MODEL and DQ_DECLARE_MODEL must be used to declare a DQModel derived class";
+        qWarning() << "dqMetaInfo: You should declare database model class by DQ_MODEL / DQ_DECLARE_MODEL pair";
         return 0;
     }
 
@@ -178,6 +184,7 @@ inline DQModelMetaInfo* dqMetaInfo() {
     } else {
         metaInfo = new DQModelMetaInfo();
         metaInfo->setName(name);
+        metaInfo->setClassName(DQModelMetaInfoHelper<T>::className());
         QList<DQModelMetaInfoField> fields = DQModelMetaInfoHelper<T>::fields();
         metaInfo->registerFields(fields);
         dqRegisterMetaInfo(name,metaInfo);
@@ -214,6 +221,9 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
         public: \
             typedef MODEL Table; \
             enum {Defined = 1 }; \
+            static inline QString className() { \
+                return #MODEL; \
+            } \
             static inline QList<DQModelMetaInfoField> fields() {\
                 QList<DQModelMetaInfoField> result;\
                 MODEL m;

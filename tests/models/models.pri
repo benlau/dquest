@@ -1,14 +1,14 @@
 # Moduls shared between different test project
 
 INCLUDEPATH += $$PWD
-
+DEPENDPATH += $$PWD
 
 HEADERS += \
-    ../models/model1.h \
-    ../models/model2.h \
-    ../models/model3.h \
-    ../models/model4.h \
-    ../models/config.h \
-    ../models/user.h \
-    ../models/model5.h \
-    ../models/misc.h
+    $$PWD/model1.h \
+    $$PWD/model2.h \
+    $$PWD/model3.h \
+    $$PWD/model4.h \
+    $$PWD/config.h \
+    $$PWD/user.h \
+    $$PWD/model5.h \
+    $$PWD/misc.h
