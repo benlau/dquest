@@ -18,9 +18,9 @@ public:
         UNIQUE = 0,
         DEFAULT,
         NOT_NULL,
-        PRIMARY_KEY,
 
         /* Extra */
+        PRIMARY_KEY,
         FOREIGN_KEY,
         LAST
     };
@@ -42,7 +42,6 @@ public:
 
     /// | operation overloading
     /**
-      @deprecated
       @remarks If both of the flag is set in two clause object. It will use the value specified in second clause
      */
     DQClause operator|(const DQClause& other);

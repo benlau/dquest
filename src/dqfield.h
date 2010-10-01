@@ -23,6 +23,14 @@ public:
         return get() == rhs.get();
     }
 
+    inline bool operator==(const QVariant &rhs) const {
+        return get() == rhs;
+    }
+
+    inline bool operator!=(const QVariant &rhs) const {
+        return get() != rhs;
+    }
+
 };
 
 /// Primary key

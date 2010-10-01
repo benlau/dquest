@@ -11,6 +11,9 @@ DQModel::DQModel(DQConnection connection) : m_connection(connection)
 {
 }
 
+DQModel::~DQModel(){
+}
+
 QString DQModel::tableName(){
     return TABLE_NAME;
 }

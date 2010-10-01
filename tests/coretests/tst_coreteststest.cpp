@@ -12,6 +12,7 @@
 #include "dqqueryrules.h"
 #include "dqquery.h"
 #include "dqexpression.h"
+#include "dqmodellist.h"
 
 /// A set of tests which don't involve database access
 
@@ -51,6 +52,8 @@ private Q_SLOTS:
     void model5();
 
     void queryrules();
+
+    void dqModelList();
 
 };
 
@@ -272,6 +275,35 @@ void CoretestsTest::queryrules(){
 
 }
 
+void CoretestsTest::dqModelList(){
+    DQModelList list;
+    Model1 model1;
+    Model2 model2;
+    Model4 model4;
+
+    model1.key = "test1";
+    model2.key = "test2";
+    model4.key = "test4";
+    list.append<Model1>(model1);
+    list.append<Model2>(model2);
+
+    QVERIFY(list.size() == 2);
+
+    QVERIFY(list.at<Model1>(0)-> key == "test1");
+    QVERIFY(list.at<Model2>(1)-> key == "test2");
+
+    QVERIFY(!list.at<Model2>(0));
+
+    DQModelList list2;
+    QVERIFY(list2.size() == 0);
+    list2 = list;
+    QVERIFY(list.size() == 2);
+    list.append<Model4>(model4);
+
+    QVERIFY(list.size() == 3);
+    QVERIFY(list2.size() == 3);
+
+}
 
 QTEST_MAIN(CoretestsTest);
 

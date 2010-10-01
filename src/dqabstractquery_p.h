@@ -8,6 +8,8 @@
 #include "dqwhere.h"
 #include "dqexpression.h"
 
+/// DQAbstractQuery private data
+
 class DQAbstractQueryPriv : public QSharedData {
 public:
     inline DQAbstractQueryPriv() {

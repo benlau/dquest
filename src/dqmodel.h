@@ -16,6 +16,7 @@ class DQModel {
 
 public:
     explicit DQModel(DQConnection connection = DQConnection::defaultConnection());
+    virtual ~DQModel();
 
     /// The default field for every model
     DQPrimaryKey id;
