@@ -50,7 +50,7 @@ public:
     /**
       @param model The input model. A copy of instance of the model will be stored to the list.
      */
-    void append(T& model) {
+    void append(const T& model) {
         T* t = new T(model);
         DQAbstractModelList::append(t);
     }
@@ -62,6 +62,11 @@ public:
 
     void append(T* model) {
         DQAbstractModelList::append(model);
+    }
+
+    operator DQAbstractModelList() {
+        DQAbstractModelList res (*this);
+        return res;
     }
 
 };

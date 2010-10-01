@@ -5,11 +5,10 @@
 #include <QVariant>
 #include <QStringList>
 #include <dqabstractfield.h>
-#include <dqmodelmetainfo.h>
 #include <dqfield.h>
 #include <dqconnection.h>
 #include <dqwhere.h>
-#include <dqabstractmodel.h>
+#include <dqabstractmodellist.h>
 /// Database model class
 
 class DQModel : public DQAbstractModel {
@@ -37,7 +36,7 @@ public:
       The successive call will update the record instead of insert unless forceInsert is TRUE.
 
      */
-    bool save(bool forceInsert = false);
+    virtual bool save(bool forceInsert = false);
 
     /// Load the record that first match with filter
     bool load(DQWhere where);
@@ -62,7 +61,15 @@ public:
     /// Returns the QSqlQuery object being used
     QSqlQuery lastQuery();
 
+    /// A list of initial data which should be inserted to database during table creation. Derived class should override the function to provide their custom record
+    /**
+      @see DQConnection::createTables
+      @todo Move to protected
+     */
+    virtual DQAbstractModelList initialData();
+
 protected:
+
 
 private:
     DQConnection m_connection;

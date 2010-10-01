@@ -3,6 +3,8 @@
 #include <QMetaProperty>
 #include "dqmodel.h"
 #include "dqmetainfoquery_p.h"
+#include "dqmodellist.h"
+#include "dqsql.h"
 
 //#define TABLE_NAME "Model without DQ_MODEL"
 #define TABLE_NAME ""
@@ -85,4 +87,8 @@ bool DQModel::clean(){
 
 QSqlQuery DQModel::lastQuery(){
     return m_lastQuery;
+}
+
+DQAbstractModelList DQModel::initialData() {
+    return DQAbstractModelList();
 }

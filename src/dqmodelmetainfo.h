@@ -8,8 +8,7 @@
 #include <dqclause.h>
 #include <QObject>
 #include <dqabstractmodel.h>
-
-class DQModelMetaInfo;
+#include <dqabstractmodellist.h>
 
 template <typename T>
 DQModelMetaInfo* dqMetaInfo();
@@ -46,11 +45,19 @@ public:
 
 };
 
-typedef DQAbstractModel* (*dqAbstractModelCreateFunc)();
+typedef DQAbstractModel* (*_dqAbstractModelCreateFunc)();
 /// A wrapper template for DQAbstractModel creation
 template <class T>
-DQAbstractModel* dqAbstractModelCreate() {
+DQAbstractModel* _dqAbstractModelCreate() {
     return new T();
+}
+
+typedef DQAbstractModelList (*_dqMetaInfoInitalDataFunc)();
+
+template <class T>
+DQAbstractModelList _dqMetaInfoInitalData() {
+    T t;
+    return t.initialData();
 }
 
 /// The meta info of a database model
@@ -63,7 +70,6 @@ DQAbstractModel* dqAbstractModelCreate() {
   declare the database field of a DQModel, it will
   generate the class automatically.
 
-  @remarks No any method is designed for user. User should not involve DQModelMetaInfo by themself.
  */
 
 class DQModelMetaInfo : private QObject {
@@ -89,10 +95,12 @@ public:
     QVariant value(DQAbstractModel *model,QString field) const;
 
     /// The table name
-    QString name();
+    QString name() const;
 
     /// The class name
-    QString className();
+    QString className() const;
+
+    DQAbstractModelList initialData();
 
     /// Create an instance of the associated model type
     DQAbstractModel* create();
@@ -124,7 +132,8 @@ private:
     QString m_name;
     QString m_className;
 
-    dqAbstractModelCreateFunc createFunc;
+    _dqAbstractModelCreateFunc createFunc;
+    _dqMetaInfoInitalDataFunc initialDataFunc;
 
     template <typename T>
     friend DQModelMetaInfo* dqMetaInfo();
@@ -197,7 +206,8 @@ inline DQModelMetaInfo* dqMetaInfo() {
         metaInfo = new DQModelMetaInfo();
         metaInfo->setName(name);
         metaInfo->setClassName(DQModelMetaInfoHelper<T>::className());
-        metaInfo->createFunc = dqAbstractModelCreate<T>;
+        metaInfo->createFunc = _dqAbstractModelCreate<T>;
+        metaInfo->initialDataFunc =_dqMetaInfoInitalData<T>;
 
         QList<DQModelMetaInfoField> fields = DQModelMetaInfoHelper<T>::fields();
         metaInfo->registerFields(fields);

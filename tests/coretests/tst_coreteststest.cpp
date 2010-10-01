@@ -27,7 +27,7 @@ private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
 
-    void metaInfoCreate();
+    void metaInfo();
 
     void sqliteColumnConstraint();
     void sqlCreateTable();
@@ -71,15 +71,25 @@ void CoretestsTest::cleanupTestCase()
 {
 }
 
-void CoretestsTest::metaInfoCreate(){
-    DQModelMetaInfo* metaInfo = dqMetaInfo<Model4>();
+void CoretestsTest::metaInfo(){
+    // Test create()
+    DQModelMetaInfo* metaInfo4 = dqMetaInfo<Model4>();
 
-    DQAbstractModel *model = metaInfo->create();
+    DQAbstractModel *model = metaInfo4->create();
     QVERIFY(model);
 
-    QVERIFY(model->metaInfo() == metaInfo);
+    QVERIFY(model->metaInfo() == metaInfo4);
 
     delete model;
+
+    // Test initalData()
+    DQModelMetaInfo* metaInfo2 = dqMetaInfo<Model2>();
+
+    DQModelList<Model2> initialData = metaInfo2->initialData();
+
+    QVERIFY(initialData.size() == 5);
+    QVERIFY(initialData.at(0)->key == "initial0");
+    QVERIFY(initialData.at(4)->key == "initial4");
 
 }
 

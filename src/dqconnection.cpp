@@ -106,9 +106,18 @@ bool DQConnection::createTables(){
     bool res = true;
     clearError();
     foreach (DQModelMetaInfo* info ,d->m_models) {
-        if (!d->m_sql.createTableIfNotExists(info)){
-            res = false;
-            break;
+        if (!d->m_sql.exists(info)) {
+
+            if (!d->m_sql.createTableIfNotExists(info)){
+                res = false;
+                break;
+            }
+
+            DQAbstractModelList initialData = info->initialData();
+            int n = initialData.size();
+            for (int i = 0 ; i< n;i++) {
+                initialData.at(i)->save();
+            }
         }
     }
 

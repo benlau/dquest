@@ -96,7 +96,7 @@ QVariant DQModelMetaInfo::value(DQAbstractModel *model,QString field) const{
     return f->get();
 }
 
-QString DQModelMetaInfo::name(){
+QString DQModelMetaInfo::name() const{
     return m_name;
 }
 
@@ -108,10 +108,14 @@ void DQModelMetaInfo::setClassName(QString val){
     m_className = val;
 }
 
-QString DQModelMetaInfo::className(){
+QString DQModelMetaInfo::className() const {
     return m_className;
 }
 
 DQAbstractModel* DQModelMetaInfo::create(){
     return createFunc();
+}
+
+DQAbstractModelList DQModelMetaInfo::initialData(){
+    return initialDataFunc();
 }

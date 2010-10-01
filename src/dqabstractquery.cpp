@@ -1,6 +1,7 @@
 #include <QSharedData>
 #include <QSqlRecord>
 
+#include "dqsql.h"
 #include "dqconnection.h"
 #include "dqabstractquery.h"
 #include "dqabstractquery_p.h"

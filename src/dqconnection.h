@@ -8,10 +8,11 @@
 #include <QExplicitlySharedDataPointer>
 
 #include <dqmodelmetainfo.h>
-#include <dqsql.h>
 
+class DQModelMetaInfo;
 class DQSql;
 class DQConnectionPriv;
+template <typename T> inline DQModelMetaInfo* dqMetaInfo();
 
 /// Connection to QSqlDatabase
 /**

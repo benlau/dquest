@@ -6,6 +6,7 @@
 #include <dqconnection.h>
 #include <dqsqlitestatement.h>
 #include <dqquery.h>
+#include <dqsql.h>
 
 #include "model1.h"
 #include "model2.h"
@@ -354,11 +355,11 @@ void SqlitetestsTest::queryAll(){
 
     DQModelList<Model2> record = query.all();
 
-    QVERIFY(record.size() == 2);
-    QVERIFY(record.at(0)->key() == "config1");
-    QVERIFY(record.at(0)->value() == "value1");
-    QVERIFY(record.at(1)->key() == "config2");
-    QVERIFY(record.at(1)->value() == "value2");
+    QVERIFY(record.size() == 7); // 5 initial record + 2 newly inserted record
+    QVERIFY(record.at(0)->key() == "initial0");
+    QVERIFY(record.at(0)->value() == "value0");
+    QVERIFY(record.at(1)->key() == "initial1");
+    QVERIFY(record.at(1)->value() == "value1");
 
 }
 
