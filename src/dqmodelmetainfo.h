@@ -46,6 +46,13 @@ public:
 
 };
 
+typedef DQAbstractModel* (*dqAbstractModelCreateFunc)();
+/// A wrapper template for DQAbstractModel creation
+template <class T>
+DQAbstractModel* dqAbstractModelCreate() {
+    return new T();
+}
+
 /// The meta info of a database model
 /**
   Each of the derived class of DQModel must be associated
@@ -87,6 +94,9 @@ public:
     /// The class name
     QString className();
 
+    /// Create an instance of the associated model
+    DQAbstractModel* create();
+
 protected:
     DQModelMetaInfo();
 
@@ -113,6 +123,8 @@ private:
     /// The table name
     QString m_name;
     QString m_className;
+
+    dqAbstractModelCreateFunc createFunc;
 
     template <typename T>
     friend DQModelMetaInfo* dqMetaInfo();
@@ -185,6 +197,8 @@ inline DQModelMetaInfo* dqMetaInfo() {
         metaInfo = new DQModelMetaInfo();
         metaInfo->setName(name);
         metaInfo->setClassName(DQModelMetaInfoHelper<T>::className());
+        metaInfo->createFunc = dqAbstractModelCreate<T>;
+
         QList<DQModelMetaInfoField> fields = DQModelMetaInfoHelper<T>::fields();
         metaInfo->registerFields(fields);
         dqRegisterMetaInfo(name,metaInfo);

@@ -27,6 +27,8 @@ private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
 
+    void metaInfoCreate();
+
     void sqliteColumnConstraint();
     void sqlCreateTable();
 
@@ -67,6 +69,18 @@ void CoretestsTest::initTestCase()
 
 void CoretestsTest::cleanupTestCase()
 {
+}
+
+void CoretestsTest::metaInfoCreate(){
+    DQModelMetaInfo* metaInfo = dqMetaInfo<Model4>();
+
+    DQAbstractModel *model = metaInfo->create();
+    QVERIFY(model);
+
+    QVERIFY(model->metaInfo() == metaInfo);
+
+    delete model;
+
 }
 
 void CoretestsTest::sqliteColumnConstraint(){

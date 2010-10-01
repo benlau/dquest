@@ -111,3 +111,7 @@ void DQModelMetaInfo::setClassName(QString val){
 QString DQModelMetaInfo::className(){
     return m_className;
 }
+
+DQAbstractModel* DQModelMetaInfo::create(){
+    return createFunc();
+}
