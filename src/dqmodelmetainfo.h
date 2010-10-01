@@ -7,8 +7,8 @@
 #include <QtCore>
 #include <dqclause.h>
 #include <QObject>
+#include <dqabstractmodel.h>
 
-class DQModel;
 class DQModelMetaInfo;
 
 template <typename T>
@@ -76,10 +76,10 @@ public:
     const DQModelMetaInfoField* at(int idx) const;
 
     /// Set value of a field on a model
-    bool setValue(DQModel *model,QString field, const QVariant& val);
+    bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
 
     /// Get value of a field from a model
-    QVariant value(DQModel *model,QString field) const;
+    QVariant value(DQAbstractModel *model,QString field) const;
 
     /// The table name
     QString name();

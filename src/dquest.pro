@@ -28,7 +28,8 @@ NORMAL_HEADERS += \
 PRIV_HEADERS += \
     dqabstractquery_p.h
 
-HEADERS += $$NORMAL_HEADERS
+HEADERS += $$NORMAL_HEADERS \
+    dqabstractmodel.h
 
 SOURCES += \
     dqclause.cpp \
@@ -42,7 +43,8 @@ SOURCES += \
     dqsql.cpp \
     dqfield.cpp \
     dqabstractquery.cpp \
-    dqqueryrules.cpp
+    dqqueryrules.cpp \
+    dqabstractmodel.cpp
 
 isEmpty(PREFIX) {
     PREFIX = /usr

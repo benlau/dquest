@@ -7,12 +7,12 @@ public:
     }
 
     ~DQModelListPriv() {
-        foreach (DQModel*model, list){
+        foreach (DQAbstractModel*model, list){
             delete model;
         }
     }
 
-    QList <DQModel*> list;
+    QList <DQAbstractModel*> list;
 };
 
 DQModelList::DQModelList() : data(new DQModelListPriv)
@@ -38,10 +38,10 @@ int DQModelList::size(){
     return data->list.size();
 }
 
-DQModel* DQModelList::_at(int i){
+DQAbstractModel* DQModelList::_at(int i){
     return data->list.value(i);
 }
 
-void DQModelList::appendPtr(DQModel* model){
+void DQModelList::appendPtr(DQAbstractModel* model){
     data->list << model;
 }

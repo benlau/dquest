@@ -22,9 +22,6 @@ QString DQModel::TableName(){
     return TABLE_NAME;
 }
 
-DQModelMetaInfo *DQModel::metaInfo(){
-    return 0;
-}
 
 bool DQModel::save(bool forceInsert) {
     if (!clean() ) {

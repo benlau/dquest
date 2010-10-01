@@ -9,10 +9,10 @@
 #include <dqfield.h>
 #include <dqconnection.h>
 #include <dqwhere.h>
-
+#include <dqabstractmodel.h>
 /// Database model class
 
-class DQModel {
+class DQModel : public DQAbstractModel {
 
 public:
     explicit DQModel(DQConnection connection = DQConnection::defaultConnection());
@@ -26,9 +26,6 @@ public:
 
     /// The table name
     static QString TableName();
-
-    /// Get the meta info object of the model.
-    virtual DQModelMetaInfo *metaInfo();
 
     enum { DQModelDefined = 0 };
 

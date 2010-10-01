@@ -3,8 +3,8 @@
 
 #include <QSharedDataPointer>
 #include <QExplicitlySharedDataPointer>
-#include <dqmodel.h>
-
+#include <dqabstractmodel.h>
+#include <dqmodelmetainfo.h>
 class DQModelListPriv;
 
 /// DQModelList provides storage for list of DQModel instance
@@ -26,7 +26,7 @@ public:
     /// Returns the item at index position i in the list. i must be a valid index position in the list (i.e., 0 <= i < size()).
     template <class T>
     T* at(int i) {
-        DQModel* m = _at(i);
+        DQAbstractModel* m = _at(i);
         if (m->metaInfo() != dqMetaInfo<T>() ) {
             qWarning() << QString("DQModelList::at() - Can not convert %1 to %2")
                           .arg(m->metaInfo()->className()).arg(dqMetaInfo<T>()->className());
@@ -49,10 +49,10 @@ public:
     /**
       @param model The input model. Ownership will be taken.
      */
-    void appendPtr(DQModel* model);
+    void appendPtr(DQAbstractModel* model);
 
 private:
-    DQModel* _at(int i);
+    DQAbstractModel* _at(int i);
 
     QExplicitlySharedDataPointer<DQModelListPriv> data;
 };
