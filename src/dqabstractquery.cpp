@@ -89,6 +89,19 @@ bool DQAbstractQuery::remove(){
     return data->query.exec();
 }
 
+DQAbstractModelList DQAbstractQuery::all(){
+    DQAbstractModelList res;
+    if (exec()) {
+        while (next() ) {
+            DQAbstractModel* model = data->metaInfo->create();
+            DQAbstractQuery::recordTo(model);
+            res.append(model);
+        }
+    }
+
+    return res;
+}
+
 QSqlQuery DQAbstractQuery::lastQuery(){
     return data->query;
 }
@@ -131,7 +144,7 @@ QVariant DQAbstractQuery::call(QString func , QStringList fields){
     return res;
 }
 
-bool DQAbstractQuery::recordTo(DQModel *model) {
+bool DQAbstractQuery::recordTo(DQAbstractModel *model) {
     Q_ASSERT (data->metaInfo);
     Q_ASSERT (data->metaInfo == model->metaInfo() );
     bool res = true;
@@ -149,7 +162,7 @@ bool DQAbstractQuery::recordTo(DQModel *model) {
     return res;
 }
 
-bool DQAbstractQuery::get(DQModel* model){
+bool DQAbstractQuery::get(DQAbstractModel* model){
     Q_ASSERT (data->metaInfo);
     Q_ASSERT (data->metaInfo == model->metaInfo() );
 

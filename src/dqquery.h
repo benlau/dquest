@@ -31,19 +31,6 @@ public:
         return *this;
     }
 
-    /// Execute the query and return all the record retrieved
-    DQModelList<T> all() {
-        DQModelList<T> res;
-        if (exec()) {
-            while (next() ) {
-                T* t = new T;
-                DQAbstractQuery::recordTo(t);
-                res.append(t);
-            }
-        }
-        return res;
-    }
-
     bool recordTo(T &model) {
         return DQAbstractQuery::recordTo(&model);
     }

@@ -6,6 +6,7 @@
 #include <dqconnection.h>
 #include <dqwhere.h>
 #include <dqmodelmetainfo.h>
+#include <dqabstractmodellist.h>
 
 class DQAbstractQueryPriv;
 class DQConnection;
@@ -57,6 +58,9 @@ public:
      */
     bool remove();
 
+    /// Execute the query and return all the record retrieved
+    DQAbstractModelList all();
+
     /// Returns the QSqlQuery object being used
     QSqlQuery lastQuery();
 
@@ -68,14 +72,14 @@ protected:
      */
 
     /// Save the current record to a DQModel
-    bool recordTo(DQModel *model);
+    bool recordTo(DQAbstractModel *model);
 
     /// Get a single record that first match with the filter (limit(1) will be set)
     /**
       @param model The record will be saved to the object
       @return TRUE if success , the result will be saved to the model argument. Otherwise it is false.
      */
-    bool get(DQModel* model);
+    bool get(DQAbstractModel* model);
 
 
 private:

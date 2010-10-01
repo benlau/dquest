@@ -94,7 +94,7 @@ public:
     /// The class name
     QString className();
 
-    /// Create an instance of the associated model
+    /// Create an instance of the associated model type
     DQAbstractModel* create();
 
 protected:

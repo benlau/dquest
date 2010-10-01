@@ -23,6 +23,10 @@ public:
     DQModelList(const DQModelList &rhs) : DQAbstractModelList(rhs) {
     }
 
+    DQModelList(const DQAbstractModelList& rhs ) : DQAbstractModelList(rhs) {
+
+    }
+
     DQModelList &operator=(const DQModelList &rhs){
         DQAbstractModelList::operator=( rhs);
         return *this;
