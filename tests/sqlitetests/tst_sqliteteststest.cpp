@@ -352,13 +352,13 @@ void SqlitetestsTest::select()
 void SqlitetestsTest::queryAll(){
     DQQuery<Model2> query;
 
-    QList<Model2> record = query.all();
+    DQModelList record = query.all();
 
     QVERIFY(record.size() == 2);
-    QVERIFY(record.at(0).key() == "config1");
-    QVERIFY(record.at(0).value() == "value1");
-    QVERIFY(record.at(1).key() == "config2");
-    QVERIFY(record.at(1).value() == "value2");
+    QVERIFY(record.at<Model2>(0)->key() == "config1");
+    QVERIFY(record.at<Model2>(0)->value() == "value1");
+    QVERIFY(record.at<Model2>(1)->key() == "config2");
+    QVERIFY(record.at<Model2>(1)->value() == "value2");
 
 }
 

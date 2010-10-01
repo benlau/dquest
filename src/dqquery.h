@@ -2,6 +2,7 @@
 #define DQQUERY_H
 
 #include <dqabstractquery.h>
+#include <dqmodellist.h>
 
 ///  DQQuery is a template class for performing database queries and record deletion on specific model
 /**
@@ -31,12 +32,13 @@ public:
     }
 
     /// Execute the query and return all the record retrieved
-    QList<T> all() {
-        QList<T> res;
+    DQModelList all() {
+        DQModelList res;
         if (exec()) {
             while (next() ) {
-                res << T();
-                recordTo(res.last());
+                T* t = new T;
+                DQAbstractQuery::recordTo(t);
+                res.appendPtr(t);
             }
         }
         return res;

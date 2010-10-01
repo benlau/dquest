@@ -42,6 +42,6 @@ DQModel* DQModelList::_at(int i){
     return data->list.value(i);
 }
 
-void DQModelList::_append(DQModel* model){
+void DQModelList::appendPtr(DQModel* model){
     data->list << model;
 }

@@ -35,19 +35,24 @@ public:
         return (T*) m;
     }
 
-    /// Append a item to the list.
+    /// Append a model to the list.
     /**
       @param input The input model. A copy of instance of the model will be stored to the list.
      */
     template <class T>
-    void append(T& input) {
-        T* t = new T(input);
-        _append(t);
+    void append(T& model) {
+        T* t = new T(model);
+        appendPtr(t);
     }
+
+    /// Append a model to the list
+    /**
+      @param model The input model. Ownership will be taken.
+     */
+    void appendPtr(DQModel* model);
 
 private:
     DQModel* _at(int i);
-    void _append(DQModel* model);
 
     QExplicitlySharedDataPointer<DQModelListPriv> data;
 };

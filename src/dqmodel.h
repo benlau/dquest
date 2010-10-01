@@ -18,7 +18,7 @@ public:
     explicit DQModel(DQConnection connection = DQConnection::defaultConnection());
     virtual ~DQModel();
 
-    /// The default field for every model
+    /// The primary key. It is default field for every model
     DQPrimaryKey id;
 
     /// The table name
