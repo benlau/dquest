@@ -9,6 +9,8 @@
 #include <dqconnection.h>
 #include <dqwhere.h>
 #include <dqabstractmodellist.h>
+#include <dqquery.h>
+
 /// Database model class
 
 class DQModel : public DQAbstractModel {
@@ -94,5 +96,67 @@ public:
     }
 };
 
+#define DQ_FIELD(field , CLAUSE...) \
+new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.clause(), ## CLAUSE)
+
+#define DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+        template<> \
+        class DQModelMetaInfoHelper<MODEL> { \
+        public: \
+            typedef MODEL Table; \
+            enum {Defined = 1 }; \
+            static inline QString className() { \
+                return #MODEL; \
+            } \
+            static inline QList<DQModelMetaInfoField> fields() {\
+                QList<DQModelMetaInfoField> result;\
+                MODEL m;
+
+#define DQ_DECLARE_MODEL_END(MODEL,NAME) \
+                return result; \
+            } \
+        }; \
+        inline QString MODEL::tableName() { \
+            return NAME; \
+        } \
+        inline QString MODEL::TableName(){ \
+            return NAME; \
+        } \
+        inline DQModelMetaInfo *MODEL::metaInfo() { \
+            static DQModelMetaInfo *meta = 0; \
+            if (!meta){ \
+                meta = dqMetaInfo<MODEL>(); \
+            } \
+            return meta; \
+        } \
+        inline DQAbstractQuery MODEL::objects(DQConnection connection) { \
+            DQQuery<MODEL> query(connection); \
+            return query; \
+        }
+
+/// Declare a model
+#define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS...) \
+        DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+            result << DQModelMetaInfoHelper<DQModel>::fields(); \
+            DQModelMetaInfoField* list[] = { FIELDS,0 }; \
+            result << _dqMetaInfoCreateFields(list) ; \
+        DQ_DECLARE_MODEL_END(MODEL,NAME)
+
+/// Declare a model which is not a direct sub-class of DQModel
+#define DQ_DECLARE_MODEL2(MODEL,NAME,PARENT,FIELDS...) \
+        DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
+            result << DQModelMetaInfoHelper<PARENT>::fields(); \
+            DQModelMetaInfoField* list[] = { FIELDS,0 }; \
+            result << _dqMetaInfoCreateFields(list) ; \
+        DQ_DECLARE_MODEL_END(MODEL,NAME)
+
+
+#define DQ_MODEL \
+public: \
+    enum { DQModelDefined = 1 }; \
+    virtual inline QString tableName() ; \
+    static inline QString TableName(); \
+    virtual inline DQModelMetaInfo *metaInfo(); \
+    static inline DQAbstractQuery objects(DQConnection connection = DQConnection::defaultConnection());
 
 #endif // DQMODEL_H

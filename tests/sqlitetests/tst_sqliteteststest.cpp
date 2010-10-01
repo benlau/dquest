@@ -361,6 +361,11 @@ void SqlitetestsTest::queryAll(){
     QVERIFY(record.at(1)->key() == "initial1");
     QVERIFY(record.at(1)->value() == "value1");
 
+    // Alernative way
+
+    record = Model2::objects().all();
+    QVERIFY(record.size() == 7);
+
 }
 
 void SqlitetestsTest::foreignKeyLoad() {

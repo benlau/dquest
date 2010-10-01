@@ -46,6 +46,12 @@ public:
         return (T*) m;
     }
 
+    DQModelList& operator<<(const T& model){
+        append(model);
+        return *this;
+    }
+
+
     /// Append a model to the list.
     /**
       @param model The input model. A copy of instance of the model will be stored to the list.
