@@ -32,13 +32,13 @@ public:
     }
 
     /// Execute the query and return all the record retrieved
-    DQModelList all() {
-        DQModelList res;
+    DQModelList<T> all() {
+        DQModelList<T> res;
         if (exec()) {
             while (next() ) {
                 T* t = new T;
                 DQAbstractQuery::recordTo(t);
-                res.appendPtr(t);
+                res.append(t);
             }
         }
         return res;

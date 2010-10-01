@@ -276,29 +276,27 @@ void CoretestsTest::queryrules(){
 }
 
 void CoretestsTest::dqModelList(){
-    DQModelList list;
-    Model1 model1;
-    Model2 model2;
-    Model4 model4;
+    DQModelList<Model2> list;
+    Model2 item1;
+    Model2 item2;
+    Model2 item3;
 
-    model1.key = "test1";
-    model2.key = "test2";
-    model4.key = "test4";
-    list.append<Model1>(model1);
-    list.append<Model2>(model2);
+    item1.key = "test1";
+    item2.key = "test2";
+    item3.key = "test4";
+    list.append(item1);
+    list.append(item2);
 
     QVERIFY(list.size() == 2);
 
-    QVERIFY(list.at<Model1>(0)-> key == "test1");
-    QVERIFY(list.at<Model2>(1)-> key == "test2");
+    QVERIFY(list.at(0)-> key == "test1");
+    QVERIFY(list.at(1)-> key == "test2");
 
-    QVERIFY(!list.at<Model2>(0));
-
-    DQModelList list2;
+    DQModelList<Model2> list2;
     QVERIFY(list2.size() == 0);
     list2 = list;
     QVERIFY(list.size() == 2);
-    list.append<Model4>(model4);
+    list.append(item3);
 
     QVERIFY(list.size() == 3);
     QVERIFY(list2.size() == 3);

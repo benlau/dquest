@@ -23,7 +23,8 @@ HEADERS += \
     $$PWD/dqmetainfoquery_p.h \
     $$PWD/dqexpression.h \
     $$PWD/dqmodellist.h \
-    $$PWD/dqabstractmodel.h
+    $$PWD/dqabstractmodel.h \
+    $$PWD/dqabstractmodellist.h
 
 SOURCES += \
     $$PWD/dqclause.cpp \
@@ -39,5 +40,5 @@ SOURCES += \
     $$PWD/dqabstractquery.cpp \
     $$PWD/dqqueryrules.cpp \
     $$PWD/dqexpression.cpp \
-    $$PWD/dqmodellist.cpp \
-    $$PWD/dqabstractmodel.cpp
+    $$PWD/dqabstractmodel.cpp \
+    $$PWD/dqabstractmodellist.cpp
