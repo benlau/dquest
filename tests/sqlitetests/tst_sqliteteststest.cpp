@@ -79,14 +79,20 @@ void SqlitetestsTest::initTestCase()
     verifyCreateTable();
     foreignKey();
 
+    DQConnection defaultConnection = DQConnection::defaultConnection();
+
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName( "tests.db" );
 
     QVERIFY( db.open() );
 
+    QVERIFY( !defaultConnection.isOpen());
     QVERIFY (connect.open(db) );
 
+    QVERIFY(defaultConnection.isOpen()); // connect become default connection
+
     DQSql sql = connect.sql();
+
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
 

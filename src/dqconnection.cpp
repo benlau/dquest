@@ -20,17 +20,8 @@ class DQConnectionPriv : public QSharedData
     QString m_errorString;
 };
 
-/// Holder of default connection
-
-class DQConnectionHolder : public QObject {
-public:
-    DQConnectionHolder(QObject *parent) : QObject(parent) {
-    }
-
-    DQConnection dqConnection;
-};
-
-static DQConnectionHolder *holder = 0;
+/// The default connection shared for all objects
+DQConnection m_defaultConnection;
 
 DQConnection::DQConnection()
 {
@@ -50,23 +41,23 @@ DQConnection::~DQConnection(){
 }
 
 bool DQConnection::open(QSqlDatabase db){
+    Q_ASSERT(db.isOpen());
 
     if (db.driverName() != "QSQLITE") {
         qWarning() << "Only QSQLITE dirver is supported.";
         return false;
     }
 
+    if (!m_defaultConnection.isOpen()
+        && this != &m_defaultConnection
+        ) {
+
+        d.operator = (m_defaultConnection.d); // It become the default connection
+
+    }
+
     d->m_sql.setStatement(new DQSqliteStatement());
     d->m_sql.setDatabase(db);
-
-    if (!holder){
-        QCoreApplication *app = QCoreApplication::instance();
-        holder = new DQConnectionHolder(app);
-    }
-
-    if (!holder->dqConnection.isOpen()){
-        holder->dqConnection = *this;
-    }
 
     return true;
 }
@@ -95,10 +86,7 @@ bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
 }
 
 DQConnection DQConnection::defaultConnection(){
-    if (holder) {
-        return holder->dqConnection;
-    }
-    return DQConnection();
+    return m_defaultConnection;
 }
 
 bool DQConnection::createTables(){

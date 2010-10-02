@@ -46,7 +46,26 @@ public:
     /// Add a model to the connection
     bool addModel(DQModelMetaInfo* metaInfo);
 
-    /// The default connection
+    /// Get the default connection
+    /**
+        Default connection is the first opened connection. Any DQConnection instance
+        can become the default connection as long as it is the first one to call open().
+
+        It is fine to call defaultConnection() before to open any connection. The result
+        returned is still valid and usable after a connection is opened.
+
+        For example,
+
+        DQConnection d = defaultConnection();
+        DQConnection c;
+
+        qDebug() << d.isOped(); // False , as it is not opened.
+
+        c.open(database); // c become the default connection
+
+        qDebug() << d.isOpen(); // The result will become true , both of "c" and "d" is also the default connection.
+
+     */
     static DQConnection defaultConnection();
 
     /// Run "create table" for all added model.
