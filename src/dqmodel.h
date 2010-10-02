@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QVariant>
 #include <QStringList>
-#include <dqabstractfield.h>
 #include <dqfield.h>
 #include <dqconnection.h>
 #include <dqwhere.h>

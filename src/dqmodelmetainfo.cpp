@@ -5,8 +5,8 @@
 
 #define MEMBER_PTR(model, offset)   \
     ((void*) ((quint8*) (model) + (qint64) (offset)))
-#define DQ_ABSTRACT_FIELD(model, offset) \
-            ( (DQAbstractField*) MEMBER_PTR(model,offset) )
+#define DQ_MODEL_GET_FIELD(model, offset) \
+            ( (DQBaseField*) MEMBER_PTR(model,offset) )
 
 static QMap<QString , DQModelMetaInfo* > metaTypeList;
 
@@ -80,7 +80,7 @@ bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVari
         return false;
     int offset = m_fields[field].offset;
 
-    DQAbstractField* f = DQ_ABSTRACT_FIELD(model,offset);
+    DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
     f->set(val);
     return true;
 }
@@ -91,7 +91,7 @@ QVariant DQModelMetaInfo::value(DQAbstractModel *model,QString field) const{
         return v;
     int offset = m_fields[field].offset;
 
-    DQAbstractField* f = DQ_ABSTRACT_FIELD(model,offset);
+    DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
 
     return f->get();
 }

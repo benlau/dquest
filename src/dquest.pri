@@ -9,7 +9,7 @@ HEADERS += \
     $$PWD/dqmodelmetainfo.h \
     $$PWD/dqmodel.h \
     $$PWD/dqconnection.h \
-    $$PWD/dqabstractfield.h \
+    $$PWD/dqbasefield.h \
     $$PWD/dqsqlstatement.h \
     $$PWD/dqsqlitestatement.h \
     $$PWD/dqwhere.h \
@@ -31,7 +31,7 @@ SOURCES += \
     $$PWD/dqmodelmetainfo.cpp \
     $$PWD/dqmodel.cpp \
     $$PWD/dqconnection.cpp \
-    $$PWD/dqabstractfield.cpp \
+    $$PWD/dqbasefield.cpp \
     $$PWD/dqsqlstatement.cpp \
     $$PWD/dqsqlitestatement.cpp \
     $$PWD/dqwhere.cpp \

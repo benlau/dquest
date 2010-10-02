@@ -7,13 +7,13 @@
 
 class DQModel;
 
-/// Database Field (Abstract class)
+/// The base class of DQField
 
-class DQAbstractField
+class DQBaseField
 {
 public:
-    DQAbstractField();
-    ~DQAbstractField();
+    DQBaseField();
+    ~DQBaseField();
 
     /// Assign value to the field
     virtual bool set(QVariant value);

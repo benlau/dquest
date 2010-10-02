@@ -1,10 +1,10 @@
 #ifndef DQFIELD_H
 #define DQFIELD_H
 
-#include <dqabstractfield.h>
+#include <dqbasefield.h>
 
 template <typename T>
-class DQField : public DQAbstractField
+class DQField : public DQBaseField
 {
 public:
     DQField(){
