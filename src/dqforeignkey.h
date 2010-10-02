@@ -11,16 +11,20 @@ public:
     DQForeignKey() : model(0){
     }
 
-    DQForeignKey& operator=(T& rhs) {
-        set(rhs.id());
-        model = new T(rhs);
-
-        return *this;
-    }
-
     ~DQForeignKey() {
         if (model)
             delete model;
+    }
+
+    DQForeignKey& operator=(T& rhs) {
+        set(rhs.id());
+        if (model){
+            delete model;
+            model = 0;
+        }
+        model = new T(rhs);
+
+        return *this;
     }
 
     DQForeignKey& operator= (QVariant val) {

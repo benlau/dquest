@@ -47,6 +47,8 @@ DQSharedQuery DQSharedQuery::limit(int val){
 bool DQSharedQuery::exec() {
     data->query = data->connection.query();
 
+    Q_ASSERT(data->connection.isOpen());
+
     QString sql;
     sql = data->connection.sql().statement()->select(*this);
 

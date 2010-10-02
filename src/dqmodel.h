@@ -29,6 +29,9 @@ public:
 
     enum { DQModelDefined = 0 };
 
+    /// Change the connection
+    void setConnection(DQConnection connection);
+
     /// Save the record to database
     /**
       @param forceInsert TRUE if the data should be inserted to the database as a new record regardless of the original id. The id field will be updated after operation.

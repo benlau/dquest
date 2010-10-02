@@ -35,6 +35,9 @@ public:
 
     operator QVariant();
 
+    /// Convert this field and free up any resources used.
+    void clear();
+
 private:
     QVariant m_value;
 };

@@ -325,6 +325,14 @@ void CoretestsTest::dqList(){
     QVERIFY(list.size() == 3);
     QVERIFY(list2.size() == 3);
 
+    list.removeAt(0);
+    QVERIFY(list.size() == 2);
+    QVERIFY(list2.size() == 2);
+
+    list.clear();
+    QVERIFY(list.size() == 0);
+    QVERIFY(list2.size() == 0);
+
 }
 
 QTEST_MAIN(CoretestsTest);

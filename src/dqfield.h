@@ -39,6 +39,11 @@ class DQPrimaryKey : public DQField<int> {
 public:
     DQPrimaryKey();
     static DQClause clause();
+
+    inline QVariant operator=(const QVariant &val){
+        set(val);
+        return val;
+    }
 };
 
 #endif // DQFIELD_H

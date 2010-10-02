@@ -45,3 +45,7 @@ QVariant::Type DQBaseField::defaultType(){
  DQBaseField::operator QVariant(){
     return m_value;
 }
+
+ void DQBaseField::clear(){
+    m_value.clear();
+ }

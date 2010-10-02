@@ -36,7 +36,7 @@ public:
     }
 
     /// Returns the item at index position i in the list. i must be a valid index position in the list (i.e., 0 <= i < size()).
-    T* at(int i) {
+    T* at(int i) const {
         DQAbstractModel* m = DQSharedList::at(i);
         if (m->metaInfo() != dqMetaInfo<T>() ) {
             qWarning() << QString("DQList::at() - Can not convert %1 to %2")

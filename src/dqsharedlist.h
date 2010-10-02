@@ -29,17 +29,21 @@ public:
     ~DQSharedList();
 
     /// Get the size of the list
-    int size();
+    int size() const;
 
     /// Returns the item at index position i in the list. i must be a valid index position in the list (i.e., 0 <= i < size()).
 
-    DQAbstractModel* at(int index);
+    DQAbstractModel* at(int index) const;
 
     /// Append a model to the list.
     /**
       @param model The input model. Ownership will be taken.
      */
     void append(DQAbstractModel* model);
+
+    void clear();
+
+    void removeAt(int index);
 
 private:
     QExplicitlySharedDataPointer<DQSharedListPriv> data;

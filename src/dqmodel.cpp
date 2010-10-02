@@ -25,6 +25,9 @@ QString DQModel::TableName(){
     return TABLE_NAME;
 }
 
+void DQModel::setConnection(DQConnection connection){
+    m_connection = connection;
+}
 
 bool DQModel::save(bool forceInsert) {
     if (!clean() ) {
