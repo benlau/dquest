@@ -17,24 +17,7 @@ QString DQSqlStatement::createTableIfNotExists(DQModelMetaInfo *info){
 }
 
 QString DQSqlStatement::insertInto(DQModelMetaInfo *info,bool with_id){
-    return _insertInto(info,with_id,false);
-}
-
-QString DQSqlStatement::replaceInto(DQModelMetaInfo *info,bool with_id){
-    return _insertInto(info,with_id,true);
-}
-
-QString DQSqlStatement::_insertInto(DQModelMetaInfo *info ,bool with_id, bool replace){
-    QString sql,format;
     QStringList fields = info->fieldNameList();
-    QStringList values;
-
-    if (replace) {
-        format = QString("REPLACE INTO %1 (%2) values (%3);");
-    } else {
-        format = QString("INSERT INTO %1 (%2) values (%3);");
-
-    }
 
     if (!with_id) {
         int idx = fields.indexOf("id");
@@ -42,11 +25,32 @@ QString DQSqlStatement::_insertInto(DQModelMetaInfo *info ,bool with_id, bool re
             fields.removeAt(idx);
     }
 
+    return _insertInto(info,"INSERT",fields);
+}
+
+QString DQSqlStatement::replaceInto(DQModelMetaInfo *info,bool with_id){
+    QStringList fields = info->fieldNameList();
+
+    if (!with_id) {
+        int idx = fields.indexOf("id");
+        if (idx >=0)
+            fields.removeAt(idx);
+    }
+
+    return _insertInto(info,"REPLACE",fields);
+}
+
+QString DQSqlStatement::_insertInto(DQModelMetaInfo *info ,QString type, QStringList fields){
+    QString sql,format;
+    QStringList values;
+
+    format = QString("%4 INTO %1 (%2) values (%3);");
+
     foreach (QString f, fields) {
         values << ":" + f;
     }
 
-    sql = format.arg(info->name(), fields.join(","),values.join(","));
+    sql = format.arg(info->name(), fields.join(","),values.join(",") , type);
 
     return sql;
 }

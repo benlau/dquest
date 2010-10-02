@@ -64,7 +64,7 @@ protected:
     virtual QString _createTableIfNotExists(DQModelMetaInfo *info) = 0;
 
     /// The real function for "insert into / replace into" statement
-    virtual QString _insertInto(DQModelMetaInfo *info ,bool with_id,bool replace);
+    virtual QString _insertInto(DQModelMetaInfo *info ,QString type, QStringList fields);
 
     virtual QString selectCore(DQQueryRules rules);
 

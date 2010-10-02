@@ -76,10 +76,12 @@ class DQModelMetaInfo : private QObject {
 
 public:
 
-    /// Return the list of field
+    /// Return the list of field name
     QStringList fieldNameList();
 
+    /// List of foreign key name
     QStringList foreignKeyNameList();
+
     QList<DQModelMetaInfoField> foreignKeyList();
 
     /// No. of field
@@ -100,6 +102,7 @@ public:
     /// The class name
     QString className() const;
 
+    /// Get the initial data for the model
     DQAbstractModelList initialData();
 
     /// Create an instance of the associated model type

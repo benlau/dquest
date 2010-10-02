@@ -104,33 +104,26 @@ bool DQSql::exists(DQModelMetaInfo* info){
     return res;
 }
 
-bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,bool with_id) {
-    return insertInto(info,model,with_id,false);
+bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId) {
+    return insertInto(info,model,fields,updateId,false);
 }
 
-bool DQSql::replaceInto(DQModelMetaInfo* info,DQModel *model,bool with_id){
-    return insertInto(info,model,with_id,true);
+bool DQSql::replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId){
+    return insertInto(info,model,fields,updateId,true);
 }
 
-bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,bool with_id,bool replace){
+bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId,bool replace){
     QString sql;
     d->m_lastQuery = query();
-    QStringList fields = info->fieldNameList();
 
     if (replace){
-        sql = d->m_statement->replaceInto(info,with_id);
+        sql = d->m_statement->replaceInto(info,updateId);
     } else {
-        sql = d->m_statement->insertInto(info,with_id);
+        sql = d->m_statement->insertInto(info,updateId);
     }
 
 //    qDebug() << sql;
     d->m_lastQuery.prepare(sql);
-
-    if (!with_id) {
-        int idx = fields.indexOf("id");
-        if (idx >=0)
-            fields.removeAt(idx);
-    }
 
     foreach (QString field , fields) {
 //        qDebug() << "bind " << field;
@@ -141,7 +134,7 @@ bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,bool with_id,bool re
 
     if (d->m_lastQuery.exec()) {
         res = true;
-        if (!with_id) {
+        if (updateId) {
             int id = d->m_lastQuery.lastInsertId().toInt();
             if (model->id.get().toInt() != id)
                 model->id.set(id);

@@ -19,7 +19,7 @@ class DQSqlPriv;
    It is a thread safe object (not verified) and support implicitly sharing.
    Normally, you should get a copy of instance through DQConnection from
    any thread. You may call it freely and don't need to worry will
-   errorString() be overriden in another thread. A deep copy of ibject
+   errorString() be overriden in another thread. A deep copy of object
    will be created when error.
 
    @threadsafe
@@ -54,9 +54,16 @@ public:
     /// Is the model exists on database?
     bool exists(DQModelMetaInfo* info);
 
-    bool insertInto(DQModelMetaInfo* info,DQModel *model,bool with_id);
+    /// Insert the reocrd to the database.
+    /**
+      @param updateId TRUE if the ID of the model should be updated after operation
+     */
+    bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId);
 
-    bool replaceInto(DQModelMetaInfo* info,DQModel *model,bool with_id);
+    /**
+      @param updateId TRUE if the ID of the model should be updated after operation
+     */
+    bool replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId);
 
     /// Create a query object to the connected database
     QSqlQuery query();
@@ -84,8 +91,7 @@ protected:
 
 private:
 
-    /// @todo Add filter of fields.
-    bool insertInto(DQModelMetaInfo* info,DQModel *model,bool with_id,bool replace);
+    bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool with_id,bool replace);
 
     QSharedDataPointer<DQSqlPriv> d;
 

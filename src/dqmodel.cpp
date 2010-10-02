@@ -31,14 +31,27 @@ bool DQModel::save(bool forceInsert) {
     }
     DQModelMetaInfo *info = metaInfo();
     Q_ASSERT(info);
+
+    QStringList fields = info->fieldNameList();
+    QStringList nonNullFields;
+
+    foreach (QString field , fields) {
+        QVariant v = info->value(this,field);
+        if (forceInsert && field == "id" ) // skip id field when forceInsert
+            continue;
+
+        if (!v.isNull() )
+            nonNullFields << field;
+    }
+
     bool res ;
 
     DQSql sql = m_connection.sql();
 
     if (forceInsert || id->isNull() ) {
-        res = sql.replaceInto(info,this,false);
+        res = sql.replaceInto(info,this,nonNullFields,true);
     } else {
-        res = sql.replaceInto(info,this,true);
+        res = sql.replaceInto(info,this,nonNullFields,false);
     }
 
     m_lastQuery = sql.lastQuery();
