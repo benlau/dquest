@@ -77,6 +77,9 @@ bool DQModel::load(DQWhere where){
         }
     }
 
+    if (!res)
+        id->clear();
+
     m_lastQuery = query.lastQuery();
 
     return res;
