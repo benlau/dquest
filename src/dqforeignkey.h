@@ -3,7 +3,7 @@
 
 #include <dqmodel.h>
 
-/// Foreign key
+/// Foreign key field
 
 template <typename T>
 class DQForeignKey : public DQField<int> {

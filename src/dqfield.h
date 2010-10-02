@@ -33,7 +33,7 @@ public:
 
 };
 
-/// Primary key
+/// Primary key field
 
 class DQPrimaryKey : public DQField<int> {
 public:

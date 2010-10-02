@@ -63,6 +63,8 @@ private Q_SLOTS:
     /// Test date time access
     void datetime();
 
+    void bytearray();
+
 private:
     DQConnection connect;
     QSqlDatabase db;
@@ -138,7 +140,7 @@ void SqlitetestsTest::verifyCreateTable(){
 
     QStringList lines = sql.split("\n");
 
-    int n = 5; // no. of field
+    int n = 6; // no. of field
     QVERIFY(lines.size()  == n +3);
 
 }
@@ -424,6 +426,23 @@ void SqlitetestsTest::datetime() {
     QVERIFY(user2.lastLoginTime == datetime);
 
     QVERIFY(!user2.creationTime->isNull());
+}
+
+void SqlitetestsTest::bytearray(){
+
+    AllType type1,type2;
+    type1.d = "1.0";
+    QByteArray data(100,'0');
+    type1.data = data;
+
+    QVERIFY(type1.save());
+
+    QVERIFY(type2.load(DQWhere("id=",type1.id) ) );
+
+    QVERIFY(type2.data == data);
+    QVERIFY(type2.d == "1.0");
+
+
 }
 
 QTEST_MAIN(SqlitetestsTest);

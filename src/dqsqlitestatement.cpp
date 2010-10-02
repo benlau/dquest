@@ -78,6 +78,9 @@ QString DQSqliteStatement::columnTypeName(QVariant::Type type) {
     case QVariant::Date:
         res = "DATE";
         break;
+    case QVariant::ByteArray:
+        res = "BLOB";
+        break;
     default:
         break;
     }
