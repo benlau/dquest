@@ -3,7 +3,8 @@
 #include <QMetaProperty>
 #include "dqmodel.h"
 #include "dqmetainfoquery_p.h"
-#include "dqmodellist.h"
+#include "dqlist.h"
+
 #include "dqsql.h"
 
 //#define TABLE_NAME "Model without DQ_MODEL"

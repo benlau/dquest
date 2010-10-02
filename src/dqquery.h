@@ -2,7 +2,7 @@
 #define DQQUERY_H
 
 #include <dqsharedquery.h>
-#include <dqmodellist.h>
+#include <dqlist.h>
 
 ///  DQQuery is a template class for performing database queries and record deletion on specific model
 /**

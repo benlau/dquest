@@ -1,5 +1,5 @@
-#ifndef DQMODELLIST_H
-#define DQMODELLIST_H
+#ifndef DQLIST_H
+#define DQLIST_H
 
 #include <QSharedDataPointer>
 #include <QExplicitlySharedDataPointer>
@@ -7,32 +7,32 @@
 #include <dqmodelmetainfo.h>
 #include <dqsharedmodellist.h>
 
-/// DQModelList provides storage for list of DQModel instance
+/// Storage of a list of model item instance
 /**
 
   @remarks It is an explicity shared class
  */
 
 template <class T>
-class DQModelList : public DQSharedModelList
+class DQList : public DQSharedModelList
 {
 public:
-    DQModelList() : DQSharedModelList() {
+    DQList() : DQSharedModelList() {
     }
 
-    DQModelList(const DQModelList &rhs) : DQSharedModelList(rhs) {
+    DQList(const DQList &rhs) : DQSharedModelList(rhs) {
     }
 
-    DQModelList(const DQSharedModelList& rhs ) : DQSharedModelList(rhs) {
+    DQList(const DQSharedModelList& rhs ) : DQSharedModelList(rhs) {
 
     }
 
-    DQModelList &operator=(const DQModelList &rhs){
+    DQList &operator=(const DQList &rhs){
         DQSharedModelList::operator=( rhs);
         return *this;
     }
 
-    ~DQModelList(){
+    ~DQList(){
     }
 
     /// Returns the item at index position i in the list. i must be a valid index position in the list (i.e., 0 <= i < size()).
@@ -46,7 +46,7 @@ public:
         return (T*) m;
     }
 
-    DQModelList& operator<<(const T& model){
+    DQList& operator<<(const T& model){
         append(model);
         return *this;
     }
@@ -77,4 +77,4 @@ public:
 
 };
 
-#endif // DQMODELLIST_H
+#endif // DQLIST_H

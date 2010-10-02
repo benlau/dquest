@@ -6,7 +6,7 @@
 #define MODEL2_H
 
 #include "dqmodel.h"
-#include <dqmodellist.h>
+#include <dqlist.h>
 
 /// Model2 - Contruct a model same as model1 but using DQ_DECLARE_MODEL
 
@@ -19,7 +19,7 @@ public:
     DQField<QString> value;
 
     inline DQSharedModelList initialData(){
-        DQModelList<Model2> res;
+        DQList<Model2> res;
 
         Model2 item;
         for (int i = 0 ; i < 5;i++) {

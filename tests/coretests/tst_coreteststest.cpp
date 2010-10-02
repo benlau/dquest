@@ -12,7 +12,7 @@
 #include "dqqueryrules.h"
 #include "dqquery.h"
 #include "dqexpression.h"
-#include "dqmodellist.h"
+#include "dqlist.h"
 
 /// A set of tests which don't involve database access
 
@@ -85,7 +85,7 @@ void CoretestsTest::metaInfo(){
     // Test initalData()
     DQModelMetaInfo* metaInfo2 = dqMetaInfo<Model2>();
 
-    DQModelList<Model2> initialData = metaInfo2->initialData();
+    DQList<Model2> initialData = metaInfo2->initialData();
 
     QVERIFY(initialData.size() == 5);
     QVERIFY(initialData.at(0)->key == "initial0");
@@ -300,7 +300,7 @@ void CoretestsTest::queryrules(){
 }
 
 void CoretestsTest::dqModelList(){
-    DQModelList<Model2> list;
+    DQList<Model2> list;
     Model2 item1;
     Model2 item2;
     Model2 item3;
@@ -316,7 +316,7 @@ void CoretestsTest::dqModelList(){
     QVERIFY(list.at(0)-> key == "test1");
     QVERIFY(list.at(1)-> key == "test2");
 
-    DQModelList<Model2> list2;
+    DQList<Model2> list2;
     QVERIFY(list2.size() == 0);
     list2 = list;
     QVERIFY(list.size() == 2);

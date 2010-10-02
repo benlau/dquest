@@ -22,7 +22,7 @@ HEADERS += \
     $$PWD/dqqueryrules.h \
     $$PWD/dqmetainfoquery_p.h \
     $$PWD/dqexpression.h \
-    $$PWD/dqmodellist.h \
+    $$PWD/dqlist.h \
     $$PWD/dqabstractmodel.h \
     $$PWD/dqsharedmodellist.h
 

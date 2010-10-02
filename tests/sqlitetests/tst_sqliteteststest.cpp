@@ -359,7 +359,7 @@ void SqlitetestsTest::select()
 void SqlitetestsTest::queryAll(){
     DQQuery<Model2> query;
 
-    DQModelList<Model2> record = query.all();
+    DQList<Model2> record = query.all();
 
     QVERIFY(record.size() == 7); // 5 initial record + 2 newly inserted record
     QVERIFY(record.at(0)->key() == "initial0");
