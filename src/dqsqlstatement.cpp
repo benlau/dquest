@@ -130,7 +130,7 @@ QString DQSqlStatement::formatValue(QVariant value,bool trimStrings) {
         res = value.toString();
         if (trimStrings)
             res = res.trimmed();
-        res.replace(QLatin1Char('\''), QLatin1String("''")); // esecpate
+        res.replace(QLatin1Char('\''), QLatin1String("''"));
         res = QString("'%1'").arg(res);
         break;
 

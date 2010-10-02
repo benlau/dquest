@@ -60,5 +60,7 @@ private:
 /// The "Default" clause
 #define DQDefault(value) DQClause(DQClause::DEFAULT,value)
 
+/// Encode the string
+QString dqEscape(QString val,bool trimStrings = false);
 
 #endif // DQCLAUSE_H

@@ -54,3 +54,17 @@ DQClause DQClause::operator|(const DQClause& other) {
 
     return clause;
 }
+
+QString dqEscape(QString val,bool trimStrings) {
+    QString res;
+
+    if (trimStrings)
+        res = val.trimmed();
+    else
+        res = val;
+
+    res.replace(QLatin1Char('\''), QLatin1String("''"));
+    res = QString("'%1'").arg(res);
+
+    return res;
+}

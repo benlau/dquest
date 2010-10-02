@@ -31,7 +31,7 @@ public:
     DQField<int> integer;
     DQField<double> d;
     DQField<qreal> real;
-    DQField<qreal> f;
+    DQField<QDateTime> lastModifiedTime;
 };
 
 DQ_DECLARE_MODEL(AllType,
@@ -40,7 +40,7 @@ DQ_DECLARE_MODEL(AllType,
                  DQ_FIELD(integer),
                  DQ_FIELD(d),
                  DQ_FIELD(real),
-                 DQ_FIELD(f)
+                 DQ_FIELD(lastModifiedTime)
                  );
 
 #endif // MISC_H

@@ -27,8 +27,7 @@ class DQWhere;
 
 class DQSharedQuery
 {
-public:
-    DQSharedQuery(DQConnection connection = DQConnection::defaultConnection());
+public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection());
     DQSharedQuery(const DQSharedQuery &);
     DQSharedQuery &operator=(const DQSharedQuery &);
 

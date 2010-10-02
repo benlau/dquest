@@ -57,7 +57,11 @@ private Q_SLOTS:
     /// Test can it load model through foreign key
     void foreignKeyLoad();
 
+    /// Test Model4 access
     void model4();
+
+    /// Test date time access
+    void datetime();
 
 private:
     DQConnection connect;
@@ -398,6 +402,28 @@ void SqlitetestsTest::model4() {
 
     QVERIFY(item2.help == "...");
 
+}
+
+void SqlitetestsTest::datetime() {
+    User user1;
+
+    user1.userId = "tester";
+    user1.name = "tester";
+    user1.passwd = "12345678";
+
+    QDateTime datetime = QDateTime::currentDateTime().toUTC();
+
+    user1.lastLoginTime = datetime;
+
+    QVERIFY(user1.clean());
+    QVERIFY(user1.save());
+
+    User user2;
+    QVERIFY(user2.load(DQWhere("userId=","tester")));
+
+    QVERIFY(user2.lastLoginTime == datetime);
+
+    QVERIFY(!user2.creationTime->isNull());
 }
 
 QTEST_MAIN(SqlitetestsTest);

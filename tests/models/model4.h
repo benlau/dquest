@@ -19,7 +19,7 @@ DQ_DECLARE_MODEL2( Model4,
                   "model4",
                   Model1,
                   DQ_FIELD(description),
-                  DQ_FIELD(help , DQDefault("..."))
+                  DQ_FIELD(help , DQDefault( dqEscape("...") ))
                   );
 
 #endif // MODEL4_H

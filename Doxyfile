@@ -31,7 +31,7 @@ PROJECT_NAME           = DQuest
 # This could be handy for archiving the generated documentation or
 # if some version control system is used.
 
-PROJECT_NUMBER         =
+PROJECT_NUMBER         = 0.1
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
@@ -99,7 +99,7 @@ ALWAYS_DETAILED_SEC    = NO
 # members were ordinary class members. Constructors, destructors and assignment
 # operators of the base classes will not be shown.
 
-INLINE_INHERITED_MEMB  = NO
+INLINE_INHERITED_MEMB  = YES
 
 # If the FULL_PATH_NAMES tag is set to YES then Doxygen will prepend the full
 # path before files name in the file list and in the header files. If set
@@ -313,7 +313,7 @@ EXTRACT_STATIC         = NO
 # defined locally in source files will be included in the documentation.
 # If set to NO only classes defined in header files are included.
 
-EXTRACT_LOCAL_CLASSES  = YES
+EXTRACT_LOCAL_CLASSES  = NO
 
 # This flag is only useful for Objective-C code. When set to YES local
 # methods, which are defined in the implementation section but not in
@@ -343,7 +343,7 @@ HIDE_UNDOC_MEMBERS     = NO
 # If set to NO (the default) these classes will be included in the various
 # overviews. This option has no effect if EXTRACT_ALL is enabled.
 
-HIDE_UNDOC_CLASSES     = NO
+HIDE_UNDOC_CLASSES     = YES
 
 # If the HIDE_FRIEND_COMPOUNDS tag is set to YES, Doxygen will hide all
 # friend (class|struct|union) declarations.
@@ -625,7 +625,9 @@ EXCLUDE_PATTERNS       =
 # wildcard * is used, a substring. Examples: ANamespace, AClass,
 # AClass::ANamespace, ANamespace::*Test
 
-EXCLUDE_SYMBOLS        =
+EXCLUDE_SYMBOLS        = _DQMetaInfoQuery DQModelMetaInfoField \
+            DQModelMetaInfoHelper DQQueryRules *Priv \
+            DQSqlStatement DQSqliteStatement
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or
 # directories that contain example code fragments that are included (see
@@ -758,7 +760,7 @@ COLS_IN_ALPHA_INDEX    = 5
 # The IGNORE_PREFIX tag can be used to specify one or more prefixes that
 # should be ignored while generating the index headers.
 
-IGNORE_PREFIX          =
+IGNORE_PREFIX          = DQ
 
 #---------------------------------------------------------------------------
 # configuration options related to the HTML output

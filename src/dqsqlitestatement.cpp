@@ -72,8 +72,12 @@ QString DQSqliteStatement::columnTypeName(QVariant::Type type) {
     case QVariant::String:
         res = "TEXT";
         break;
-        /// @todo Implement QDateTime , Double , Float
-        /// @todo implement template for user to implement custom type
+    case QVariant::DateTime:
+        res = "DATETIME";
+        break;
+    case QVariant::Date:
+        res = "DATE";
+        break;
     default:
         break;
     }
@@ -92,9 +96,10 @@ QString DQSqliteStatement::columnConstraint(DQClause clause){
 
     if (clause.testFlag(DQClause::DEFAULT)) {
         QVariant value = clause.flag(DQClause::DEFAULT);
-        QString fvalue = formatValue(value,true);
+//        QString fvalue = formatValue(value,true); // User should format the value by themself.
+        QString fvalue = value.toString();
 
-        res << QString("DEFAULT (%1) ")
+        res << QString("DEFAULT %1 ")
                 .arg(fvalue);
     }
 
