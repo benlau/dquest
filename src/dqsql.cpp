@@ -117,9 +117,9 @@ bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,b
     d->m_lastQuery = query();
 
     if (replace){
-        sql = d->m_statement->replaceInto(info,updateId);
+        sql = d->m_statement->replaceInto(info,fields);
     } else {
-        sql = d->m_statement->insertInto(info,updateId);
+        sql = d->m_statement->insertInto(info,fields);
     }
 
 //    qDebug() << sql;

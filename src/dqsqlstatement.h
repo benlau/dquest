@@ -45,19 +45,22 @@ public:
     /**
       @param with_id TRUE if the "id" field should be included.
      */
-    virtual QString insertInto(DQModelMetaInfo *info,bool with_id);
+    virtual QString insertInto(DQModelMetaInfo *info,QStringList fields);
 
     /// Replace into statement
     /**
       @param with_id TRUE if the "id" field should be included.
      */
-    virtual QString replaceInto(DQModelMetaInfo *info,bool with_id);
+    virtual QString replaceInto(DQModelMetaInfo *info,QStringList fields);
 
     /// Select statement
     virtual QString select(DQAbstractQuery query);
 
     /// Delete from statement
     virtual QString deleteFrom(DQAbstractQuery query);
+
+    /// Returns a string representation of the QVariant for SQL statement
+    virtual QString formatValue(QVariant value,bool trimStrings = false);
 
 protected:
     /// The real function for create table if not exists

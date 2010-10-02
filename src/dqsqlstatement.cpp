@@ -16,27 +16,11 @@ QString DQSqlStatement::createTableIfNotExists(DQModelMetaInfo *info){
     return _createTableIfNotExists(info);
 }
 
-QString DQSqlStatement::insertInto(DQModelMetaInfo *info,bool with_id){
-    QStringList fields = info->fieldNameList();
-
-    if (!with_id) {
-        int idx = fields.indexOf("id");
-        if (idx >=0)
-            fields.removeAt(idx);
-    }
-
+QString DQSqlStatement::insertInto(DQModelMetaInfo *info,QStringList fields){
     return _insertInto(info,"INSERT",fields);
 }
 
-QString DQSqlStatement::replaceInto(DQModelMetaInfo *info,bool with_id){
-    QStringList fields = info->fieldNameList();
-
-    if (!with_id) {
-        int idx = fields.indexOf("id");
-        if (idx >=0)
-            fields.removeAt(idx);
-    }
-
+QString DQSqlStatement::replaceInto(DQModelMetaInfo *info,QStringList fields){
     return _insertInto(info,"REPLACE",fields);
 }
 
@@ -134,4 +118,29 @@ QString DQSqlStatement::limitAndOffset(int limit, int offset) {
         res << QString("OFFSET %1").arg(offset);
     }
     return res.join(" ");
+}
+
+QString DQSqlStatement::formatValue(QVariant value,bool trimStrings) {
+    QString res;
+
+    switch (value.type() ){
+
+    case QVariant::String:
+    case QVariant::Char:
+        res = value.toString();
+        if (trimStrings)
+            res = res.trimmed();
+        res.replace(QLatin1Char('\''), QLatin1String("''")); // esecpate
+        res = QString("'%1'").arg(res);
+        break;
+
+    default:
+        // @todo Implement more data type
+
+        res = value.toString();
+        break;
+
+    }
+
+    return res;
 }

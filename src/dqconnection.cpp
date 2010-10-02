@@ -109,6 +109,9 @@ bool DQConnection::createTables(){
         if (!d->m_sql.exists(info)) {
 
             if (!d->m_sql.createTableIfNotExists(info)){
+                qWarning() << QString("DQConnection::createTables() - Failed to create table for %1 . Error : %2").arg(info->className())
+                        .arg( d->m_sql.lastQuery().lastError().text());
+                qWarning() << d->m_sql.lastQuery().lastQuery();
                 res = false;
                 break;
             }

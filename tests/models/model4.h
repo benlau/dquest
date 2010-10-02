@@ -12,12 +12,14 @@ class Model4 : public Model1
 public:
 
     DQField<QString> description;
+    DQField<QString> help;
 };
 
 DQ_DECLARE_MODEL2( Model4,
                   "model4",
                   Model1,
-                  DQ_FIELD(description)
+                  DQ_FIELD(description),
+                  DQ_FIELD(help , DQDefault("..."))
                   );
 
 #endif // MODEL4_H

@@ -40,8 +40,10 @@ bool DQModel::save(bool forceInsert) {
         if (forceInsert && field == "id" ) // skip id field when forceInsert
             continue;
 
-        if (!v.isNull() )
+        if (!v.isNull() ) {
+//            qDebug() << field;
             nonNullFields << field;
+        }
     }
 
     bool res ;

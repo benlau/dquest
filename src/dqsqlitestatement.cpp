@@ -1,6 +1,8 @@
 #include <QStringList>
 #include <QtCore>
 #include "dqsqlitestatement.h"
+#include <QSqlDriver>
+#include <QSqlField>
 
 DQSqliteStatement::DQSqliteStatement()
 {
@@ -89,8 +91,11 @@ QString DQSqliteStatement::columnConstraint(DQClause clause){
     }
 
     if (clause.testFlag(DQClause::DEFAULT)) {
+        QVariant value = clause.flag(DQClause::DEFAULT);
+        QString fvalue = formatValue(value,true);
+
         res << QString("DEFAULT (%1) ")
-                .arg(clause.flag(DQClause::DEFAULT).toString());
+                .arg(fvalue);
     }
 
     if (clause.testFlag(DQClause::PRIMARY_KEY)) {

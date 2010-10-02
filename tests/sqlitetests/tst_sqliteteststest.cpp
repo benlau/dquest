@@ -57,6 +57,8 @@ private Q_SLOTS:
     /// Test can it load model through foreign key
     void foreignKeyLoad();
 
+    void model4();
+
 private:
     DQConnection connect;
     QSqlDatabase db;
@@ -175,11 +177,11 @@ void SqlitetestsTest::foreignKey() {
 void SqlitetestsTest::insertInto(){
     DQSqliteStatement statement;
     DQModelMetaInfo *info = dqMetaInfo<Model2>();
-    QString sql = statement.insertInto(info,false);
+    QString sql = statement.insertInto(info,info->fieldNameList());
 
-    QVERIFY( sql == "INSERT INTO model2 (key,value) values (:key,:value);" );
+    QVERIFY( sql == "INSERT INTO model2 (id,key,value) values (:id,:key,:value);" );
 
-    sql = statement.replaceInto(info,true);
+    sql = statement.replaceInto(info,info->fieldNameList());
     QVERIFY( sql == "REPLACE INTO model2 (id,key,value) values (:id,:key,:value);" );
 
     DQConnection connection = DQConnection::defaultConnection();
@@ -380,6 +382,21 @@ void SqlitetestsTest::foreignKeyLoad() {
     QVERIFY(!config.uid.isLoaded());
     QVERIFY(config.uid->name() == "Ben Lau");
     QVERIFY(config.uid.isLoaded());
+
+}
+
+void SqlitetestsTest::model4() {
+    Model4 item1,item2;
+
+    item1.key = "test";
+    item1.value = "test";
+    QVERIFY (item1.save());
+
+    qDebug() << item1.lastQuery().lastQuery();
+
+    QVERIFY (item2.load(DQWhere("key = ","test")));
+
+    QVERIFY(item2.help == "...");
 
 }
 

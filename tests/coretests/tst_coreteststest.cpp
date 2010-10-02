@@ -270,7 +270,7 @@ void CoretestsTest::model3(){
 void CoretestsTest::model4() {
     DQModelMetaInfo* info = dqMetaInfo<Model4>();
 
-    QVERIFY(info->fieldNameList().size() == 4);
+    QVERIFY(info->fieldNameList().size() == 5);
 
 }
 
