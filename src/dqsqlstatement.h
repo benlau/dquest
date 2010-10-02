@@ -4,10 +4,10 @@
 #include <QString>
 
 #include <dqmodelmetainfo.h>
-#include <dqabstractquery.h>
+#include <dqsharedquery.h>
 #include <dqqueryrules.h>
 
-class DQAbstractQuery;
+class DQSharedQuery;
 class DQQueryRules;
 
 /// Sql Statement generator
@@ -54,10 +54,10 @@ public:
     virtual QString replaceInto(DQModelMetaInfo *info,QStringList fields);
 
     /// Select statement
-    virtual QString select(DQAbstractQuery query);
+    virtual QString select(DQSharedQuery query);
 
     /// Delete from statement
-    virtual QString deleteFrom(DQAbstractQuery query);
+    virtual QString deleteFrom(DQSharedQuery query);
 
     /// Returns a string representation of the QVariant for SQL statement
     virtual QString formatValue(QVariant value,bool trimStrings = false);

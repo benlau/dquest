@@ -2,12 +2,12 @@
 #define DQQUERYRULES_H
 
 #include <QSharedDataPointer>
-#include <dqabstractquery.h>
+#include <dqsharedquery.h>
 #include <dqexpression.h>
 
-/// DQQueryRules represent the rules/clauses set for DQAbstractQuery.
+/// DQQueryRules represent the rules/clauses set for DQSharedQuery.
 
-/** DQAbstractQuery/DQQuery do not provide any interface to get the rules / clause set for query.
+/** DQSharedQuery/DQQuery do not provide any interface to get the rules / clause set for query.
   Instead it should use DQQueryRules to retrieve the information. Normally user do not need to
   retreive the rules set for a query, it is useful for implement custom select sql or unit tests
  */
@@ -18,7 +18,7 @@ public:
     DQQueryRules();
     DQQueryRules(const DQQueryRules &);
     DQQueryRules &operator=(const DQQueryRules &);
-    DQQueryRules &operator=(const DQAbstractQuery &);
+    DQQueryRules &operator=(const DQSharedQuery &);
     ~DQQueryRules();
 
     /// Get the limit of query
@@ -35,7 +35,7 @@ public:
     QStringList fields();
 
 private:
-    QSharedDataPointer<DQAbstractQueryPriv> data;
+    QSharedDataPointer<DQSharedQueryPriv> data;
 };
 
 #endif // DQQUERYRULES_H

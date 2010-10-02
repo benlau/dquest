@@ -1,5 +1,5 @@
-#ifndef DQABSTRACTQUERY_H
-#define DQABSTRACTQUERY_H
+#ifndef DQSHAREDQUERY_H
+#define DQSHAREDQUERY_H
 
 #include <QSharedDataPointer>
 #include <QExplicitlySharedDataPointer>
@@ -8,30 +8,37 @@
 #include <dqmodelmetainfo.h>
 #include <dqabstractmodellist.h>
 
-class DQAbstractQueryPriv;
+class DQSharedQueryPriv;
 class DQConnection;
 class DQWhere;
 
-/// DQAbstractQuery is a abstract class for performing database queries and record deletion
+/// DQSharedQuery is the base class of DQQuery that support implicitly data sharing
 /**
+  DQSharedQuery is the base class of DQQuery that hold all the information for a query.
+  It is a implicitly shared class which is designed for query data exchange between
+  different objects.
+
+  Although most of the function return DQSharedQuery instead of DQQuery , user should
+  always use DQQuery.  They are exchangable, that means DQSharedQuery can be converted
+  to DQQuery, and vice visa.
 
   @remarks It is a implicitly shared class
  */
 
-class DQAbstractQuery
+class DQSharedQuery
 {
 public:
-    DQAbstractQuery(DQConnection connection = DQConnection::defaultConnection());
-    DQAbstractQuery(const DQAbstractQuery &);
-    DQAbstractQuery &operator=(const DQAbstractQuery &);
+    DQSharedQuery(DQConnection connection = DQConnection::defaultConnection());
+    DQSharedQuery(const DQSharedQuery &);
+    DQSharedQuery &operator=(const DQSharedQuery &);
 
-    ~DQAbstractQuery();
+    ~DQSharedQuery();
 
     /// Contract a new query object with assign filter
-    DQAbstractQuery filter(DQWhere where);
+    DQSharedQuery filter(DQWhere where);
 
     /// Construct a new query object with limitation no. of result
-    DQAbstractQuery limit(int val);
+    DQSharedQuery limit(int val);
 
     /// Execute the query
     bool exec();
@@ -67,7 +74,7 @@ public:
 protected:
     void setMetaInfo(DQModelMetaInfo *info);
 
-    /* The design of DQAbstractQuery do not allow user to pass DQModel to any argument.
+    /* The design of DQSharedQuery do not allow user to pass DQModel to any argument.
        Prevent invalid pointer type passed
      */
 
@@ -83,9 +90,9 @@ protected:
 
 
 private:
-    QSharedDataPointer<DQAbstractQueryPriv> data;
+    QSharedDataPointer<DQSharedQueryPriv> data;
 
     friend class DQQueryRules;
 };
 
-#endif // DQABSTRACTQUERY_H
+#endif // DQSHAREDQUERY_H

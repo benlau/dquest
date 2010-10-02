@@ -1,5 +1,5 @@
-#ifndef DQABSTRACTFIELD_H
-#define DQABSTRACTFIELD_H
+#ifndef DQBASEFIELD_H
+#define DQBASEFIELD_H
 
 #include <QSharedDataPointer>
 #include <QVariant>
@@ -40,4 +40,4 @@ private:
 };
 
 
-#endif // DQABSTRACTFIELD_H
+#endif // DQBASEFIELD_H

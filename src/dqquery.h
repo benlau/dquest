@@ -1,7 +1,7 @@
 #ifndef DQQUERY_H
 #define DQQUERY_H
 
-#include <dqabstractquery.h>
+#include <dqsharedquery.h>
 #include <dqmodellist.h>
 
 ///  DQQuery is a template class for performing database queries and record deletion on specific model
@@ -9,35 +9,35 @@
   @remarks It is a implicitly shared class
  */
 template <typename T>
-class DQQuery : public DQAbstractQuery{
+class DQQuery : public DQSharedQuery{
 public:
-    DQQuery(DQConnection connection = DQConnection::defaultConnection())  : DQAbstractQuery(connection) {
+    DQQuery(DQConnection connection = DQConnection::defaultConnection())  : DQSharedQuery(connection) {
         setMetaInfo(dqMetaInfo<T>());
     }
 
-    DQQuery(const DQAbstractQuery &rhs) : DQAbstractQuery(rhs) {
+    DQQuery(const DQSharedQuery &rhs) : DQSharedQuery(rhs) {
         setMetaInfo(dqMetaInfo<T>());
     }
 
     DQQuery& operator=(const DQQuery &rhs ) {
-        DQAbstractQuery::operator =(rhs);
+        DQSharedQuery::operator =(rhs);
         setMetaInfo(dqMetaInfo<T>());
         return *this;
     }
 
-    DQQuery& operator=(const DQAbstractQuery &rhs ) {
-        DQAbstractQuery::operator =(rhs);
+    DQQuery& operator=(const DQSharedQuery &rhs ) {
+        DQSharedQuery::operator =(rhs);
         setMetaInfo(dqMetaInfo<T>());
         return *this;
     }
 
     bool recordTo(T &model) {
-        return DQAbstractQuery::recordTo(&model);
+        return DQSharedQuery::recordTo(&model);
     }
 
     T record() {
         T t;
-        DQAbstractQuery::recordTo(&t);
+        DQSharedQuery::recordTo(&t);
         return t;
     }
 

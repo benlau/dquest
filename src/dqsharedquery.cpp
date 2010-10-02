@@ -3,48 +3,48 @@
 
 #include "dqsql.h"
 #include "dqconnection.h"
-#include "dqabstractquery.h"
-#include "dqabstractquery_p.h"
+#include "dqsharedquery.h"
+#include "dqsharedquery_p.h"
 #include "dqsqlstatement.h"
 #include "dqexpression.h"
 
-DQAbstractQuery::DQAbstractQuery(DQConnection connection) : data(new DQAbstractQueryPriv)
+DQSharedQuery::DQSharedQuery(DQConnection connection) : data(new DQSharedQueryPriv)
 {
     data->connection = connection;
 }
 
-DQAbstractQuery::DQAbstractQuery(const DQAbstractQuery &rhs) : data(rhs.data)
+DQSharedQuery::DQSharedQuery(const DQSharedQuery &rhs) : data(rhs.data)
 {
 }
 
-DQAbstractQuery &DQAbstractQuery::operator=(const DQAbstractQuery &rhs)
+DQSharedQuery &DQSharedQuery::operator=(const DQSharedQuery &rhs)
 {
     if (this != &rhs)
         data.operator=(rhs.data);
     return *this;
 }
 
-DQAbstractQuery::~DQAbstractQuery()
+DQSharedQuery::~DQSharedQuery()
 {
 }
 
-void DQAbstractQuery::setMetaInfo(DQModelMetaInfo *info){
+void DQSharedQuery::setMetaInfo(DQModelMetaInfo *info){
     data->metaInfo = info;
 }
 
-DQAbstractQuery DQAbstractQuery::filter(DQWhere where) {
-    DQAbstractQuery query(*this);
+DQSharedQuery DQSharedQuery::filter(DQWhere where) {
+    DQSharedQuery query(*this);
     query.data->expression = DQExpression(where);
     return query;
 }
 
-DQAbstractQuery DQAbstractQuery::limit(int val){
-    DQAbstractQuery query(*this);
+DQSharedQuery DQSharedQuery::limit(int val){
+    DQSharedQuery query(*this);
     query.data->limit = val;
     return query;
 }
 
-bool DQAbstractQuery::exec() {
+bool DQSharedQuery::exec() {
     data->query = data->connection.query();
 
     QString sql;
@@ -70,7 +70,7 @@ bool DQAbstractQuery::exec() {
     return res;
 }
 
-bool DQAbstractQuery::remove(){
+bool DQSharedQuery::remove(){
     data->query = data->connection.query();
 
     QString sql;
@@ -90,12 +90,12 @@ bool DQAbstractQuery::remove(){
     return data->query.exec();
 }
 
-DQAbstractModelList DQAbstractQuery::all(){
+DQAbstractModelList DQSharedQuery::all(){
     DQAbstractModelList res;
     if (exec()) {
         while (next() ) {
             DQAbstractModel* model = data->metaInfo->create();
-            DQAbstractQuery::recordTo(model);
+            DQSharedQuery::recordTo(model);
             res.append(model);
         }
     }
@@ -103,15 +103,15 @@ DQAbstractModelList DQAbstractQuery::all(){
     return res;
 }
 
-QSqlQuery DQAbstractQuery::lastQuery(){
+QSqlQuery DQSharedQuery::lastQuery(){
     return data->query;
 }
 
-bool DQAbstractQuery::next() {
+bool DQSharedQuery::next() {
     return data->query.next();
 }
 
-QVariant DQAbstractQuery::value() {
+QVariant DQSharedQuery::value() {
     QSqlRecord record = data->query.record();
 
     QVariant res = record.value(0);
@@ -119,7 +119,7 @@ QVariant DQAbstractQuery::value() {
     return res;
 }
 
-int DQAbstractQuery::count(){
+int DQSharedQuery::count(){
     int res = 0;
     data->func = "count";
 
@@ -131,7 +131,7 @@ int DQAbstractQuery::count(){
     return res;
 }
 
-QVariant DQAbstractQuery::call(QString func , QStringList fields){
+QVariant DQSharedQuery::call(QString func , QStringList fields){
     data->func = func;
     data->fields = fields;
 
@@ -145,7 +145,7 @@ QVariant DQAbstractQuery::call(QString func , QStringList fields){
     return res;
 }
 
-bool DQAbstractQuery::recordTo(DQAbstractModel *model) {
+bool DQSharedQuery::recordTo(DQAbstractModel *model) {
     Q_ASSERT (data->metaInfo);
     Q_ASSERT (data->metaInfo == model->metaInfo() );
     bool res = true;
@@ -163,7 +163,7 @@ bool DQAbstractQuery::recordTo(DQAbstractModel *model) {
     return res;
 }
 
-bool DQAbstractQuery::get(DQAbstractModel* model){
+bool DQSharedQuery::get(DQAbstractModel* model){
     Q_ASSERT (data->metaInfo);
     Q_ASSERT (data->metaInfo == model->metaInfo() );
 

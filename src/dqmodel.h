@@ -128,7 +128,7 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
             } \
             return meta; \
         } \
-        inline DQAbstractQuery MODEL::objects(DQConnection connection) { \
+        inline DQSharedQuery MODEL::objects(DQConnection connection) { \
             DQQuery<MODEL> query(connection); \
             return query; \
         }
@@ -156,6 +156,6 @@ public: \
     virtual inline QString tableName() ; \
     static inline QString TableName(); \
     virtual inline DQModelMetaInfo *metaInfo(); \
-    static inline DQAbstractQuery objects(DQConnection connection = DQConnection::defaultConnection());
+    static inline DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection());
 
 #endif // DQMODEL_H

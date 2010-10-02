@@ -1,8 +1,8 @@
 #include "dqqueryrules.h"
 #include <QSharedData>
-#include "dqabstractquery_p.h"
+#include "dqsharedquery_p.h"
 
-DQQueryRules::DQQueryRules() : data(new DQAbstractQueryPriv)
+DQQueryRules::DQQueryRules() : data(new DQSharedQueryPriv)
 {
 }
 
@@ -17,7 +17,7 @@ DQQueryRules &DQQueryRules::operator=(const DQQueryRules &rhs)
     return *this;
 }
 
-DQQueryRules &DQQueryRules::operator=(const DQAbstractQuery &rhs){
+DQQueryRules &DQQueryRules::operator=(const DQSharedQuery &rhs){
     data.operator =(rhs.data);
     return *this;
 }

@@ -16,9 +16,9 @@ HEADERS += \
     $$PWD/dqsql.h \
     $$PWD/dqfield.h \
     $$PWD/dqforeignkey.h \
-    $$PWD/dqabstractquery.h \
+    $$PWD/dqsharedquery.h \
     $$PWD/dqquery.h \
-    $$PWD/dqabstractquery_p.h \
+    $$PWD/dqsharedquery_p.h \
     $$PWD/dqqueryrules.h \
     $$PWD/dqmetainfoquery_p.h \
     $$PWD/dqexpression.h \
@@ -37,7 +37,7 @@ SOURCES += \
     $$PWD/dqwhere.cpp \
     $$PWD/dqsql.cpp \
     $$PWD/dqfield.cpp \
-    $$PWD/dqabstractquery.cpp \
+    $$PWD/dqsharedquery.cpp \
     $$PWD/dqqueryrules.cpp \
     $$PWD/dqexpression.cpp \
     $$PWD/dqabstractmodel.cpp \

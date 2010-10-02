@@ -8,11 +8,11 @@
 #include "dqwhere.h"
 #include "dqexpression.h"
 
-/// DQAbstractQuery private data
+/// DQSharedQuery private data
 
-class DQAbstractQueryPriv : public QSharedData {
+class DQSharedQueryPriv : public QSharedData {
 public:
-    inline DQAbstractQueryPriv() {
+    inline DQSharedQueryPriv() {
         metaInfo = 0;
         limit = -1; // No limit
     }

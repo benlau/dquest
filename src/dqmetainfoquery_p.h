@@ -1,23 +1,23 @@
 #ifndef DQMETAINFOQUERY_P_H
 #define DQMETAINFOQUERY_P_H
 
-#include "dqabstractquery.h"
+#include "dqsharedquery.h"
 
 /// Query class for internal use
 
-class _DQMetaInfoQuery : public DQAbstractQuery {
+class _DQMetaInfoQuery : public DQSharedQuery {
 public:
-    inline _DQMetaInfoQuery(DQModelMetaInfo *metaInfo,DQConnection connection) : DQAbstractQuery(connection) , m_metaInfo(metaInfo){
+    inline _DQMetaInfoQuery(DQModelMetaInfo *metaInfo,DQConnection connection) : DQSharedQuery(connection) , m_metaInfo(metaInfo){
         setMetaInfo(metaInfo);
     }
 
-    _DQMetaInfoQuery& operator=(const DQAbstractQuery &rhs ) {
-        DQAbstractQuery::operator =(rhs);
+    _DQMetaInfoQuery& operator=(const DQSharedQuery &rhs ) {
+        DQSharedQuery::operator =(rhs);
         return *this;
     }
 
     bool recordTo(DQModel *model) {
-        return DQAbstractQuery::recordTo(model);
+        return DQSharedQuery::recordTo(model);
     }
 
     DQModelMetaInfo *m_metaInfo;

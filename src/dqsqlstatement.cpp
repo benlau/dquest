@@ -40,7 +40,7 @@ QString DQSqlStatement::_insertInto(DQModelMetaInfo *info ,QString type, QString
 }
 
 
-QString DQSqlStatement::select(DQAbstractQuery query) {
+QString DQSqlStatement::select(DQSharedQuery query) {
     DQQueryRules rules;
     rules =  query;
     QStringList sql;
@@ -55,7 +55,7 @@ QString DQSqlStatement::select(DQAbstractQuery query) {
     return sql.join(" ");
 }
 
-QString DQSqlStatement::deleteFrom(DQAbstractQuery query) {
+QString DQSqlStatement::deleteFrom(DQSharedQuery query) {
     DQQueryRules rules;
     rules =  query;
     QStringList sql;
