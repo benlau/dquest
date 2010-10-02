@@ -116,7 +116,7 @@ bool DQConnection::createTables(){
                 break;
             }
 
-            DQAbstractModelList initialData = info->initialData();
+            DQSharedModelList initialData = info->initialData();
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {
                 initialData.at(i)->save();

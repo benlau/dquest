@@ -24,7 +24,7 @@ HEADERS += \
     $$PWD/dqexpression.h \
     $$PWD/dqmodellist.h \
     $$PWD/dqabstractmodel.h \
-    $$PWD/dqabstractmodellist.h
+    $$PWD/dqsharedmodellist.h
 
 SOURCES += \
     $$PWD/dqclause.cpp \
@@ -41,4 +41,4 @@ SOURCES += \
     $$PWD/dqqueryrules.cpp \
     $$PWD/dqexpression.cpp \
     $$PWD/dqabstractmodel.cpp \
-    $$PWD/dqabstractmodellist.cpp
+    $$PWD/dqsharedmodellist.cpp

@@ -18,7 +18,7 @@ public:
     DQField<QString> key;
     DQField<QString> value;
 
-    inline DQAbstractModelList initialData(){
+    inline DQSharedModelList initialData(){
         DQModelList<Model2> res;
 
         Model2 item;

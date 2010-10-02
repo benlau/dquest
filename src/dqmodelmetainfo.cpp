@@ -116,6 +116,6 @@ DQAbstractModel* DQModelMetaInfo::create(){
     return createFunc();
 }
 
-DQAbstractModelList DQModelMetaInfo::initialData(){
+DQSharedModelList DQModelMetaInfo::initialData(){
     return initialDataFunc();
 }

@@ -7,7 +7,7 @@
 #include <dqfield.h>
 #include <dqconnection.h>
 #include <dqwhere.h>
-#include <dqabstractmodellist.h>
+#include <dqsharedmodellist.h>
 #include <dqquery.h>
 
 /// Database model class
@@ -67,7 +67,7 @@ public:
       @see DQConnection::createTables
       @todo Move to protected
      */
-    virtual DQAbstractModelList initialData();
+    virtual DQSharedModelList initialData();
 
 protected:
 

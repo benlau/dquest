@@ -104,6 +104,6 @@ QSqlQuery DQModel::lastQuery(){
     return m_lastQuery;
 }
 
-DQAbstractModelList DQModel::initialData() {
-    return DQAbstractModelList();
+DQSharedModelList DQModel::initialData() {
+    return DQSharedModelList();
 }

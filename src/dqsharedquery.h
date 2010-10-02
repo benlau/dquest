@@ -6,7 +6,7 @@
 #include <dqconnection.h>
 #include <dqwhere.h>
 #include <dqmodelmetainfo.h>
-#include <dqabstractmodellist.h>
+#include <dqsharedmodellist.h>
 
 class DQSharedQueryPriv;
 class DQConnection;
@@ -66,7 +66,7 @@ public:
     bool remove();
 
     /// Execute the query and return all the record retrieved
-    DQAbstractModelList all();
+    DQSharedModelList all();
 
     /// Returns the QSqlQuery object being used
     QSqlQuery lastQuery();
