@@ -90,8 +90,8 @@ bool DQSharedQuery::remove(){
     return data->query.exec();
 }
 
-DQSharedModelList DQSharedQuery::all(){
-    DQSharedModelList res;
+DQSharedList DQSharedQuery::all(){
+    DQSharedList res;
     if (exec()) {
         while (next() ) {
             DQAbstractModel* model = data->metaInfo->create();

@@ -5,7 +5,7 @@
 #include <QExplicitlySharedDataPointer>
 #include <dqabstractmodel.h>
 #include <dqmodelmetainfo.h>
-#include <dqsharedmodellist.h>
+#include <dqsharedlist.h>
 
 /// Storage of a list of model item instance
 /**
@@ -14,21 +14,21 @@
  */
 
 template <class T>
-class DQList : public DQSharedModelList
+class DQList : public DQSharedList
 {
 public:
-    DQList() : DQSharedModelList() {
+    DQList() : DQSharedList() {
     }
 
-    DQList(const DQList &rhs) : DQSharedModelList(rhs) {
+    DQList(const DQList &rhs) : DQSharedList(rhs) {
     }
 
-    DQList(const DQSharedModelList& rhs ) : DQSharedModelList(rhs) {
+    DQList(const DQSharedList& rhs ) : DQSharedList(rhs) {
 
     }
 
     DQList &operator=(const DQList &rhs){
-        DQSharedModelList::operator=( rhs);
+        DQSharedList::operator=( rhs);
         return *this;
     }
 
@@ -37,9 +37,9 @@ public:
 
     /// Returns the item at index position i in the list. i must be a valid index position in the list (i.e., 0 <= i < size()).
     T* at(int i) {
-        DQAbstractModel* m = DQSharedModelList::at(i);
+        DQAbstractModel* m = DQSharedList::at(i);
         if (m->metaInfo() != dqMetaInfo<T>() ) {
-            qWarning() << QString("DQModelList::at() - Can not convert %1 to %2")
+            qWarning() << QString("DQList::at() - Can not convert %1 to %2")
                           .arg(m->metaInfo()->className()).arg(dqMetaInfo<T>()->className());
             m = 0;
         }
@@ -58,7 +58,7 @@ public:
      */
     void append(const T& model) {
         T* t = new T(model);
-        DQSharedModelList::append(t);
+        DQSharedList::append(t);
     }
 
     /// Append a model to the list.
@@ -67,11 +67,11 @@ public:
      */
 
     void append(T* model) {
-        DQSharedModelList::append(model);
+        DQSharedList::append(model);
     }
 
-    operator DQSharedModelList() {
-        DQSharedModelList res (*this);
+    operator DQSharedList() {
+        DQSharedList res (*this);
         return res;
     }
 

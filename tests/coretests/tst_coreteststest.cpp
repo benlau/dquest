@@ -55,7 +55,7 @@ private Q_SLOTS:
 
     void queryrules();
 
-    void dqModelList();
+    void dqList();
 
 };
 
@@ -299,7 +299,7 @@ void CoretestsTest::queryrules(){
 
 }
 
-void CoretestsTest::dqModelList(){
+void CoretestsTest::dqList(){
     DQList<Model2> list;
     Model2 item1;
     Model2 item2;

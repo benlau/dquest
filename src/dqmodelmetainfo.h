@@ -8,7 +8,7 @@
 #include <dqclause.h>
 #include <QObject>
 #include <dqabstractmodel.h>
-#include <dqsharedmodellist.h>
+#include <dqsharedlist.h>
 
 template <typename T>
 DQModelMetaInfo* dqMetaInfo();
@@ -52,10 +52,10 @@ DQAbstractModel* _dqAbstractModelCreate() {
     return new T();
 }
 
-typedef DQSharedModelList (*_dqMetaInfoInitalDataFunc)();
+typedef DQSharedList (*_dqMetaInfoInitalDataFunc)();
 
 template <class T>
-DQSharedModelList _dqMetaInfoInitalData() {
+DQSharedList _dqMetaInfoInitalData() {
     T t;
     return t.initialData();
 }
@@ -103,7 +103,7 @@ public:
     QString className() const;
 
     /// Get the initial data for the model
-    DQSharedModelList initialData();
+    DQSharedList initialData();
 
     /// Create an instance of the associated model type
     DQAbstractModel* create();

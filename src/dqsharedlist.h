@@ -6,28 +6,27 @@
 #include <QExplicitlySharedDataPointer>
 
 
-class DQSharedModelListPriv;
+class DQSharedListPriv;
 
-/// DQSharedModelList is the base class of DQModelList
+/// DQSharedList is the base class of DList
 /**
-  DQSharedModelList is the base class of DQModelList. It implements the storage
+  DQSharedListhe base class of DQListimplements the storage
   and DQAbstractModel management. It is a explicity shared class which could be
   used to exchange data between different objects.
 
-  Although most of the function return DQSharedModelList instead of DQModelList,
-  user should always use DQSharedModelList. They are exchangable , that means
-  DQSharedModelList can be converted to DQModelList , and vice visa.
+  Although most of the function return DQSharedListead of DQListser should always use DQSharedListy are exchangable , that means
+  DQSharedListbe converted to DQListd vice visa.
 
   @remarks It is an explicity shared class
   */
 
-class DQSharedModelList
+class DQSharedList
 {
 public:
-    DQSharedModelList();
-    DQSharedModelList(const DQSharedModelList &);
-    DQSharedModelList &operator=(const DQSharedModelList &);
-    ~DQSharedModelList();
+    DQSharedList();
+    DQSharedList(const DQSharedList &);
+    DQSharedList &operator=(const DQSharedList &);
+    ~DQSharedList();
 
     /// Get the size of the list
     int size();
@@ -43,7 +42,7 @@ public:
     void append(DQAbstractModel* model);
 
 private:
-    QExplicitlySharedDataPointer<DQSharedModelListPriv> data;
+    QExplicitlySharedDataPointer<DQSharedListPriv> data;
 };
 
 #endif // DQABSTRACTMODELLIST_H
