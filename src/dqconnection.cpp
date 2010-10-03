@@ -16,8 +16,8 @@ class DQConnectionPriv : public QSharedData
     /// Registered modeles
     QList<DQModelMetaInfo*> m_models;
 
-    /// Error String of last operation
-    QString m_errorString;
+    /// The last query being used.
+    QSqlQuery lastQuery;
 };
 
 /// The default connection shared for all objects
@@ -71,8 +71,6 @@ void DQConnection::close(){
 }
 
 bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
-    clearError();
-
     bool res = false;
     if (!metaInfo) {
         return res;
@@ -92,8 +90,8 @@ DQConnection DQConnection::defaultConnection(){
 bool DQConnection::createTables(){
 
     bool res = true;
-    clearError();
     foreach (DQModelMetaInfo* info ,d->m_models) {
+
         if (!d->m_sql.exists(info)) {
 
             if (!d->m_sql.createTableIfNotExists(info)){
@@ -101,6 +99,7 @@ bool DQConnection::createTables(){
                         .arg( d->m_sql.lastQuery().lastError().text());
                 qWarning() << d->m_sql.lastQuery().lastQuery();
                 res = false;
+                d->lastQuery = d->m_sql.lastQuery();
                 break;
             }
 
@@ -117,27 +116,20 @@ bool DQConnection::createTables(){
 
 bool DQConnection::dropTables() {
     bool res = true;
-    clearError();
+
     foreach (DQModelMetaInfo* info ,d->m_models) {
         if (!d->m_sql.exists(info))
             continue;
 
         if (!d->m_sql.dropTable(info) ) {
             res = false;
+            d->lastQuery = d->m_sql.lastQuery();
             break;
         }
 
     }
 
     return res;
-}
-
-QString DQConnection::errorString(){
-    return d->m_errorString;
-}
-
-void DQConnection::clearError(){
-    d->m_errorString.clear();
 }
 
 DQSql& DQConnection::sql(){

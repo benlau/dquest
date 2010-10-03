@@ -1,7 +1,8 @@
 #ifndef DQFOREIGNKEY_H
 #define DQFOREIGNKEY_H
 
-#include <dqmodel.h>
+#include <dqfield.h>
+#include <dqquery.h>
 
 /// Foreign key field
 

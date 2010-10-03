@@ -17,6 +17,7 @@ template <typename T> inline DQModelMetaInfo* dqMetaInfo();
 /// Connection to QSqlDatabase
 /**
   @todo Thread-safe implemention.
+  @remarks It is an explicitly shared class
  */
 
 class DQConnection
@@ -29,8 +30,11 @@ public:
 
     /// Open the connection to database
     bool open(QSqlDatabase db);
+
+    /// Close the connection to database
     void close();
 
+    /// Return TRUE if the database is opened,otherwise it is false
     bool isOpen();
 
     /// Add a model to the connection
@@ -46,7 +50,7 @@ public:
     /// Add a model to the connection
     bool addModel(DQModelMetaInfo* metaInfo);
 
-    /// Get the default connection
+    /// Get the default connection object
     /**
         Default connection is the first opened connection. Any DQConnection instance
         can become the default connection as long as it is the first one to call open().
@@ -55,27 +59,28 @@ public:
         returned is still valid and usable after a connection is opened.
 
         For example,
-
+\code
         DQConnection d = defaultConnection();
         DQConnection c;
 
-        qDebug() << d.isOped(); // False , as it is not opened.
+        qDebug() << d.isOpen(); // False , as it is not opened.
 
         c.open(database); // c become the default connection
 
-        qDebug() << d.isOpen(); // The result will become true , both of "c" and "d" is also the default connection.
-
+        qDebug() << d.isOpen(); // The result will become true , both of "c" and "d" are also the default connection.
+\endcode
      */
     static DQConnection defaultConnection();
 
     /// Run "create table" for all added model.
+    /**
+      It will run "create table" for all added model if they are not existed. It will also call
+      model's initialData() to retrieve the initial data and insert to database.
+     */
     bool createTables();
 
     /// Drop all the tables
     bool dropTables();
-
-    /// The error message of the last operation
-    QString errorString();
 
     /// Get the SQL interface that you may run predefined sql operations on the database
     DQSql& sql();
@@ -83,13 +88,14 @@ public:
     /// Create a QSqlQuery object to the connected database
     QSqlQuery query();
 
+    /// The last query with error used by DQConnection
+    QSqlQuery lastQuery();
 
 signals:
 
 public slots:
 
 private:
-    void clearError();
 
     QExplicitlySharedDataPointer<DQConnectionPriv> d;
 };

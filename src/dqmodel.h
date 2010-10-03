@@ -9,7 +9,7 @@
 #include <dqwhere.h>
 #include <dqsharedlist.h>
 #include <dqquery.h>
-
+#include <dqforeignkey.h>
 /// Database model class
 
 class DQModel : public DQAbstractModel {
@@ -68,7 +68,6 @@ public:
     /// A list of initial data which should be inserted to database during table creation. Derived class should override the function to provide their custom record
     /**
       @see DQConnection::createTables
-      @todo Move to protected
      */
     virtual DQSharedList initialData();
 
