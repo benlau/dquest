@@ -15,6 +15,57 @@
 #include <QVector>
 
 /// The clause of a column definition
+/** DQClause is a data structure to describe the clause of column definition for "create table".
+  It is used in model declaration (The second argument in DQ_FIELD macro)
+
+  Example:
+  \code
+class User : public DQModel
+{
+    DQ_MODEL
+public:
+    DQField<QString> userId;
+    DQField<QString> name;
+
+    DQField<QString> passwd;
+
+    DQField<QDateTime> creationTime;
+    DQField<QDateTime> lastLoginTime;
+
+};
+
+DQ_DECLARE_MODEL( User,
+                  "user",
+                  DQ_FIELD(userId, DQClause(DQClause::UNIQUE) | DQClause(DQClause::NOT_NULL) ), // Unique and Not null
+                  DQ_FIELD(name),
+                  DQ_FIELD(passwd , DQClause(DQClause::NOT_NULL)),
+                  DQ_FIELD(creationTime,DQClause(DQClause::DEFAULT,"CURRENT_TIMESTAMP") ),
+                  DQ_FIELD(lastLoginTime)
+                  );
+
+  \endcode
+
+The declaration is equivalent to make this SQL table for SQLITE
+
+  \code
+
+    CREATE TABLE user  (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        userId TEXT NOT NULL UNIQUE,
+        name TEXT ,
+        passwd TEXT NOT NULL,
+        creationTime DATETIME DEFAULT CURRENT_TIMESTAMP ,
+        lastLoginTime DATETIME
+    );
+  \endcode
+
+   Remarks: Usually you won't use DQClause directly. There have wrapper macro for common clause avilable.
+
+    @see DQNotNull
+    @see DQDefault
+    @see DQUnique
+
+  */
 
 class DQClause
 {

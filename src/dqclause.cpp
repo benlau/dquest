@@ -1,5 +1,5 @@
 /**
- * @author Ben Lau <xbenlau@gmail.com>
+ * @author Ben Lau
  */
 
 #include <QtCore>
