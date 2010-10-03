@@ -58,6 +58,13 @@ public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection(
      */
     QVariant call(QString func , QStringList fields = QStringList());
 
+    /// Execute the query and call specific function on the result
+    /**
+      @param func The function name (e.g sum , avg , ...)
+      @param fields A list of fields that could be passed to the function
+     */
+    QVariant call(QString func , QString field);
+
     /// Delete all the records fullfill the filter rules
     /**
       @return TRUE if the operation is successfully run , otherwise it is false.
@@ -69,6 +76,9 @@ public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection(
 
     /// Returns the QSqlQuery object being used
     QSqlQuery lastQuery();
+
+    // Reset the query to initial status , but keep the connection and associated object unchanged.
+    void reset();
 
 protected:
     void setMetaInfo(DQModelMetaInfo *info);

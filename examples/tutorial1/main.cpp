@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
 
     connection.open(db); // Establish the connection to database. It will become the "default connection" shared by all DQModel
 
-    connection.addModel<User>(); // Register the a model to the connection
+    connection.addModel<User>(); // Register a model to the connection
 
     connection.createTables(); // Create table for all added model
 
@@ -72,6 +72,8 @@ int main(int argc, char *argv[])
     // for newly created model instance. It will be assigned by save() function automatically
 
     qDebug() << user.userId << user.karma; // Result : QVariant(QString, "anonymous") QVariant(double, 0)
+
+    qDebug() <<  user.creationDate; // Result : the record creation time
 
     // Remarks: DQField can be casted to QVariant automatically
 

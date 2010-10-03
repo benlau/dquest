@@ -77,4 +77,36 @@ public:
 
 };
 
+template <class T>
+inline QDebug operator<< (QDebug d, const DQList<T>& rhs ){
+    QStringList record;
+    int n = rhs.size();
+    DQModelMetaInfo *metaInfo;
+    for (int i = 0 ; i < n;i++) {
+        DQAbstractModel *model = rhs.at(i);
+        metaInfo = model->metaInfo();
+        QStringList fields = metaInfo->fieldNameList();
+        QStringList col;
+        foreach (QString field,fields){
+            QVariant value = metaInfo->value(model,field);
+            if (value.isNull())
+                continue;
+            col << QString("%1=%2").arg(field).arg(value.toString());
+        }
+
+        QString res = QString("(%2)")
+                      .arg(col.join(","));
+        record << res;
+    }
+
+    metaInfo = dqMetaInfo<T>();
+
+    d.nospace() << QString("%1[%2]")
+                    .arg(metaInfo->className())
+                    .arg(record.join(","));
+
+    return d.space();
+}
+
+
 #endif // DQLIST_H

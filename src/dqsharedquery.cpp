@@ -109,6 +109,14 @@ QSqlQuery DQSharedQuery::lastQuery(){
     return data->query;
 }
 
+void DQSharedQuery::reset(){
+    DQConnection conn = data->connection;
+    DQModelMetaInfo* metaInfo = data->metaInfo ;
+    data.operator =(new DQSharedQueryPriv);
+    data->connection = conn;
+    data->metaInfo = metaInfo;
+}
+
 bool DQSharedQuery::next() {
     return data->query.next();
 }
@@ -145,6 +153,12 @@ QVariant DQSharedQuery::call(QString func , QStringList fields){
     }
 
     return res;
+}
+
+QVariant DQSharedQuery::call(QString func , QString field){
+    QStringList fields;
+    fields << field;
+    return call(func,fields);
 }
 
 bool DQSharedQuery::recordTo(DQAbstractModel *model) {
