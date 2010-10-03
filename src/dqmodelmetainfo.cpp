@@ -85,7 +85,7 @@ bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVari
     return true;
 }
 
-QVariant DQModelMetaInfo::value(DQAbstractModel *model,QString field) const{
+QVariant DQModelMetaInfo::value(const DQAbstractModel *model,QString field) const{
     QVariant v;
     if (!m_fields.contains(field))
         return v;

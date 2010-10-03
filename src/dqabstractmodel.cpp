@@ -8,6 +8,6 @@ DQAbstractModel::~DQAbstractModel(){
 
 }
 
-DQModelMetaInfo *DQAbstractModel::metaInfo(){
+DQModelMetaInfo *DQAbstractModel::metaInfo() const{
     return 0;
 }

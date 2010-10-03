@@ -123,7 +123,7 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
         inline QString MODEL::TableName(){ \
             return NAME; \
         } \
-        inline DQModelMetaInfo *MODEL::metaInfo() { \
+        inline DQModelMetaInfo *MODEL::metaInfo() const { \
             static DQModelMetaInfo *meta = 0; \
             if (!meta){ \
                 meta = dqMetaInfo<MODEL>(); \
@@ -157,7 +157,27 @@ public: \
     enum { DQModelDefined = 1 }; \
     virtual inline QString tableName() ; \
     static inline QString TableName(); \
-    virtual inline DQModelMetaInfo *metaInfo(); \
+    virtual inline DQModelMetaInfo *metaInfo() const; \
     static inline DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection());
+
+inline QDebug operator<< (QDebug d, const DQModel* model){
+    DQModelMetaInfo *metaInfo = model->metaInfo();
+    QStringList fields = metaInfo->fieldNameList();
+    QStringList col;
+    foreach (QString field,fields){
+        QVariant value = metaInfo->value(model,field);
+        if (value.isNull())
+            continue;
+        col << QString("%1=%2").arg(field).arg(value.toString());
+    }
+
+    QString res = QString("%1[%2]")
+                  .arg(metaInfo->className())
+                  .arg(col.join(","));
+
+    d.nospace() << res;
+
+    return d.space();
+}
 
 #endif // DQMODEL_H

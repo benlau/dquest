@@ -22,7 +22,7 @@ public:
 
     virtual inline QString tableName();
     static inline QString TableName();
-    virtual inline DQModelMetaInfo *metaInfo();
+    virtual inline DQModelMetaInfo *metaInfo() const;
 
     DQField<QString> key;
     DQField<QString> value;
@@ -48,7 +48,7 @@ public:
         return result;
     }
 };
-inline DQModelMetaInfo *Model1::metaInfo() {
+inline DQModelMetaInfo *Model1::metaInfo() const {
     static DQModelMetaInfo *meta = 0;
     if (!meta){
         meta = dqMetaInfo<Model1>();

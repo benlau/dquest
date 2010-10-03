@@ -13,7 +13,7 @@ public:
     virtual ~DQAbstractModel();
 
     /// Get the meta info object of the model.
-    virtual DQModelMetaInfo *metaInfo();
+    virtual DQModelMetaInfo *metaInfo() const;
 
     /// Save the record to database
     /**

@@ -94,7 +94,7 @@ public:
     bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
 
     /// Get value of a field from a model
-    QVariant value(DQAbstractModel *model,QString field) const;
+    QVariant value(const DQAbstractModel *model,QString field) const;
 
     /// The table name
     QString name() const;

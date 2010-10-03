@@ -404,7 +404,8 @@ void SqlitetestsTest::model4() {
     item1.value = "test";
     QVERIFY (item1.save());
 
-    qDebug() << item1.lastQuery().lastQuery();
+//    qDebug() << item1.lastQuery().lastQuery();
+    qDebug() << &item1;
 
     QVERIFY (item2.load(DQWhere("key = ","test")));
 
