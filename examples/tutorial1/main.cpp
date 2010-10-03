@@ -75,6 +75,8 @@ int main(int argc, char *argv[])
 
     qDebug() <<  user.creationDate; // Result : the record creation time
 
+    qDebug() << user; // Display all the field
+
     // Remarks: DQField can be casted to QVariant automatically
 
     connection.close(); // Please close the connection on quit.

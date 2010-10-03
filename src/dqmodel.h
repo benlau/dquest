@@ -133,6 +133,10 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
         inline DQSharedQuery MODEL::objects(DQConnection connection) { \
             DQQuery<MODEL> query(connection); \
             return query; \
+        } \
+        inline QDebug operator<< (QDebug d, const MODEL& model) { \
+            d.nospace() << &model; \
+            return d.space(); \
         }
 
 /// Declare a model
