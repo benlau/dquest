@@ -17,11 +17,11 @@ DQModel::DQModel(DQConnection connection) : m_connection(connection)
 DQModel::~DQModel(){
 }
 
-QString DQModel::tableName(){
+QString DQModel::tableName() const{
     return TABLE_NAME;
 }
 
-QString DQModel::TableName(){
+QString DQModel::TableName() {
     return TABLE_NAME;
 }
 

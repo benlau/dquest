@@ -22,7 +22,7 @@ public:
     DQPrimaryKey id;
 
     /// The table name
-    virtual QString tableName();
+    virtual QString tableName() const ;
 
     /// The table name
     static QString TableName();
@@ -117,10 +117,10 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
                 return result; \
             } \
         }; \
-        inline QString MODEL::tableName() { \
+        inline QString MODEL::tableName() const { \
             return NAME; \
         } \
-        inline QString MODEL::TableName(){ \
+        inline QString MODEL::TableName() { \
             return NAME; \
         } \
         inline DQModelMetaInfo *MODEL::metaInfo() const { \
@@ -159,7 +159,7 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
 #define DQ_MODEL \
 public: \
     enum { DQModelDefined = 1 }; \
-    virtual inline QString tableName() ; \
+    virtual inline QString tableName() const ; \
     static inline QString TableName(); \
     virtual inline DQModelMetaInfo *metaInfo() const; \
     static inline DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection());
