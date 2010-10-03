@@ -1,6 +1,11 @@
 #ifndef DQMODEL_H
 #define DQMODEL_H
 
+/** @file dqmodel.h
+    @brief Header file for DQModel
+
+ */
+
 #include <QObject>
 #include <QVariant>
 #include <QStringList>
@@ -97,6 +102,10 @@ public:
     }
 };
 
+/// Declare a database field.
+/**
+  @remarks This macro should be only used within DQ_DECLARE_MODEL / DQ_DECLARE_MODEL2
+ */
 #define DQ_FIELD(field , CLAUSE...) \
 new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.clause(), ## CLAUSE)
 
@@ -155,7 +164,9 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
             result << _dqMetaInfoCreateFields(list) ; \
         DQ_DECLARE_MODEL_END(MODEL,NAME)
 
-
+/// The DQ_MODEL macro must appear in the class definition that declares model's virtual function for database access
+/** \def DQ_MODEL
+ */
 #define DQ_MODEL \
 public: \
     enum { DQModelDefined = 1 }; \
