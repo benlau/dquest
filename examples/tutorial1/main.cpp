@@ -1,5 +1,5 @@
 #include <QtCore/QCoreApplication>
-#include <dqmodel.h>
+#include <dquest.h>
 #include <QSqlDatabase>
 
 /// User account database

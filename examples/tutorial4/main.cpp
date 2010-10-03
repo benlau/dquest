@@ -1,6 +1,6 @@
 #include <QtCore/QCoreApplication>
 
-#include <dqmodel.h>
+#include <dquest.h>
 
 /// User account database
 class User : public DQModel {

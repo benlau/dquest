@@ -1,9 +1,14 @@
 /**
- * @author Ben Lau <xbenlau@gmail.com>
+ * @author Ben Lau
  */
 
 #ifndef DQCLAUSE_H
 #define DQCLAUSE_H
+
+/** @file
+  @brief Header file for DQClause
+
+ */
 
 #include <QList>
 #include <QVariant>

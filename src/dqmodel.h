@@ -104,7 +104,14 @@ public:
 
 /// Declare a database field.
 /**
+  @param field The name of the field. You don't need to quote the string
+  @param CLAUSE The column clause of the field. You may skip this parameter if not needed.
   @remarks This macro should be only used within DQ_DECLARE_MODEL / DQ_DECLARE_MODEL2
+
+  @see DQClause
+  @see DQNotNull
+  @see DQUnique
+  @see DQDefault
  */
 #define DQ_FIELD(field , CLAUSE...) \
 new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.clause(), ## CLAUSE)

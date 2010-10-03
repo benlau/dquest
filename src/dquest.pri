@@ -24,7 +24,8 @@ HEADERS += \
     $$PWD/dqexpression.h \
     $$PWD/dqlist.h \
     $$PWD/dqabstractmodel.h \
-    $$PWD/dqsharedlist.h
+    $$PWD/dqsharedlist.h \
+    $$PWD/dquest.h
 
 SOURCES += \
     $$PWD/dqclause.cpp \
