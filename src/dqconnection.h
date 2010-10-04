@@ -89,11 +89,25 @@ public:
     QSqlQuery query();
 
     /// The last query with error used by DQConnection
+    /**
+      @threadsafe
+      @remarks It is thread-safe function
+     */
     QSqlQuery lastQuery();
+
+    /// Set the last query
+    /// The last query with error used by DQConnection
+    /**
+      @threadsafe
+      @remarks It is thread-safe function
+     */
+    void setLastQuery(QSqlQuery query);
 
 signals:
 
 public slots:
+
+protected:
 
 private:
 

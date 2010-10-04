@@ -19,7 +19,7 @@ class DQSqlPriv;
    It is a thread safe object (not verified) and support implicitly sharing.
    Normally, you should get a copy of instance through DQConnection from
    any thread. You may call it freely and don't need to worry will
-   errorString() be overriden in another thread. A deep copy of object
+   lastQuery() be overriden in another thread. A deep copy of object
    will be created when error.
 
    @threadsafe

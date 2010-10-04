@@ -60,7 +60,7 @@ bool DQModel::save(bool forceInsert) {
         res = sql.replaceInto(info,this,nonNullFields,false);
     }
 
-    m_lastQuery = sql.lastQuery();
+    m_connection.setLastQuery(sql.lastQuery());
 
     return res;
 }
@@ -80,7 +80,7 @@ bool DQModel::load(DQWhere where){
     if (!res)
         id->clear();
 
-    m_lastQuery = query.lastQuery();
+    m_connection.setLastQuery(query.lastQuery());
 
     return res;
 }
@@ -98,17 +98,13 @@ bool DQModel::remove() {
         id->clear();
     }
 
-    m_lastQuery = query.lastQuery();
+    m_connection.setLastQuery( query.lastQuery());
 
     return res;
 }
 
 bool DQModel::clean(){
     return true;
-}
-
-QSqlQuery DQModel::lastQuery(){
-    return m_lastQuery;
 }
 
 DQSharedList DQModel::initialData() {

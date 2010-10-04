@@ -15,7 +15,26 @@
 #include <dqsharedlist.h>
 #include <dqquery.h>
 #include <dqforeignkey.h>
+
 /// Database model class
+/** DQModel is the core of DQuest that provide a ORM to sql database. To declare your database model, you should:
+
+  <ul>
+  <li>  Create a class that inherits DQModel </li>
+  <li> Added a DQ_MODEL macro to the class declaration</li>
+  <li> Design your database field by using DQField template type</li>
+  <li> Register your model with DQ_DECLARE_MODEL macro function. </li>
+  </ul>
+
+  DQModel can only access a single record in a time. If you need to query multiple
+  record , you should use DQQuery. (You may call YourModel::objects() to obtain
+  a DQQuery for current model and connection. )
+
+  DQModel itself do not store used query and error message occur. You should
+  call DQConnection.lastQuery to obtain the last query object (QSqlQuery).
+  It contains the sql being executed and error found.
+
+ */
 
 class DQModel : public DQAbstractModel {
 
@@ -67,10 +86,7 @@ public:
       */
     virtual bool clean();
 
-    /// Returns the QSqlQuery object being used
-    QSqlQuery lastQuery();
-
-    /// A list of initial data which should be inserted to database during table creation. Derived class should override the function to provide their custom record
+    /// The list of initial data which should be inserted to database during table creation. Derived class should override the function to provide their custom record
     /**
       @see DQConnection::createTables
      */
@@ -78,11 +94,8 @@ public:
 
 protected:
 
-
 private:
     DQConnection m_connection;
-    QSqlQuery m_lastQuery;
-
 };
 
 template<>

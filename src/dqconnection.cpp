@@ -2,6 +2,7 @@
 #include <QSqlDatabase>
 #include <QCoreApplication>
 #include <QSqlError>
+#include <QMutex>
 
 #include "dqmodel.h"
 #include "dqconnection.h"
@@ -18,6 +19,8 @@ class DQConnectionPriv : public QSharedData
 
     /// The last query being used.
     QSqlQuery lastQuery;
+
+    QMutex mutex;
 };
 
 /// The default connection shared for all objects
@@ -99,7 +102,7 @@ bool DQConnection::createTables(){
                         .arg( d->m_sql.lastQuery().lastError().text());
                 qWarning() << d->m_sql.lastQuery().lastQuery();
                 res = false;
-                d->lastQuery = d->m_sql.lastQuery();
+                setLastQuery( d->m_sql.lastQuery() );
                 break;
             }
 
@@ -123,7 +126,7 @@ bool DQConnection::dropTables() {
 
         if (!d->m_sql.dropTable(info) ) {
             res = false;
-            d->lastQuery = d->m_sql.lastQuery();
+            setLastQuery( d->m_sql.lastQuery() );
             break;
         }
 
@@ -138,4 +141,25 @@ DQSql& DQConnection::sql(){
 
 QSqlQuery DQConnection::query(){
     return d->m_sql.query();
+}
+
+void DQConnection::setLastQuery(QSqlQuery query){
+    d->mutex.lock();
+    d->lastQuery = query;
+    d->mutex.unlock();
+}
+
+QSqlQuery DQConnection::lastQuery(){
+    /*
+      Although lastQuery() is thread-safe, but as it do not hold the
+      lastQuery per thread. The result become meaningless , as it
+      may override by another thread.
+     @todo Implement last query storage per thread.
+     */
+    QSqlQuery query;
+    d->mutex.lock();
+    query = d->lastQuery;
+    d->mutex.unlock();
+
+    return query;
 }
