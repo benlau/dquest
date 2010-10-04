@@ -25,17 +25,17 @@ public:
     static DQClause clause();
 
     virtual QVariant operator=(const QVariant &val);
+
+    /// Provides access to stored QVariant value
     QVariant* operator->();
 
     /// Get the value of the field
     QVariant operator() ()const;
 
-    /// The default/expected data type of the field.
-    virtual QVariant::Type defaultType();
-
+    /// Cast to QVariant
     operator QVariant();
 
-    /// Convert this field and free up any resources used.
+    /// Free up any resources used.
     void clear();
 
 private:

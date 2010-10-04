@@ -37,11 +37,6 @@ QVariant DQBaseField::operator() () const {
     return m_value;
 }
 
-
-QVariant::Type DQBaseField::defaultType(){
-    return QVariant::Invalid;
-}
-
  DQBaseField::operator QVariant(){
     return m_value;
 }

@@ -3,6 +3,13 @@
 
 #include <dqbasefield.h>
 
+/// Database field
+/**
+    DQField store the value of a field in database model. The format is QVariant.
+    Therefore you may assign a QVariant to DQField direclty, and you may access
+    the stored QVariant by using operator-> or get() function.
+ */
+
 template <typename T>
 class DQField : public DQBaseField
 {
@@ -10,6 +17,7 @@ public:
     DQField(){
     }
 
+    /// Return the type id of the field
     static QVariant::Type type(){
         return (QVariant::Type) qMetaTypeId<T>();
     }
