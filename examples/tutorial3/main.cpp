@@ -13,7 +13,7 @@ public:
     DQField<QDateTime> lastModifiedTime;
 
     /// Initial data for table creation
-    virtual DQSharedList initialData();
+    virtual DQSharedList initialData() const;
 
     /// Model fields validation
     virtual bool clean();
@@ -29,7 +29,7 @@ DQ_DECLARE_MODEL(User,
                  );
 
 
-DQSharedList User::initialData() {
+DQSharedList User::initialData() const{
     // DQSharedList is the base class DQList , and they can be casted their data type to other.
     DQList<User> res;
 

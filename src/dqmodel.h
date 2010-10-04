@@ -90,7 +90,7 @@ public:
     /**
       @see DQConnection::createTables
      */
-    virtual DQSharedList initialData();
+    virtual DQSharedList initialData() const;
 
 protected:
 

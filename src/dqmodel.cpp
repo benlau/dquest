@@ -107,6 +107,6 @@ bool DQModel::clean(){
     return true;
 }
 
-DQSharedList DQModel::initialData() {
+DQSharedList DQModel::initialData() const {
     return DQSharedList();
 }

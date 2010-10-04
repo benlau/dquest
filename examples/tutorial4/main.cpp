@@ -9,7 +9,7 @@ public:
     /// The user ID
     DQField<QString> userId;
 
-    virtual DQSharedList initialData();
+    virtual DQSharedList initialData() const;
 };
 
 DQ_DECLARE_MODEL(User,
@@ -17,7 +17,7 @@ DQ_DECLARE_MODEL(User,
                  DQ_FIELD(userId , DQNotNull | DQUnique)
                  );
 
-DQSharedList User::initialData() {
+DQSharedList User::initialData() const {
     DQList<User> res;
 
     User user;
