@@ -39,7 +39,16 @@
 class DQModel : public DQAbstractModel {
 
 public:
-    explicit DQModel(DQConnection connection = DQConnection::defaultConnection());
+    /// DQModel default constructor
+    /** The default constructor will set the connection object to be the
+      Default connection. So you should use this constructor for single
+      database application
+
+     */
+    explicit DQModel();
+
+    explicit DQModel(DQConnection connection);
+
     virtual ~DQModel();
 
     /// The primary key. It is default field for every model

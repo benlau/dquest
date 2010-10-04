@@ -10,6 +10,11 @@
 //#define TABLE_NAME "Model without DQ_MODEL"
 #define TABLE_NAME ""
 
+
+DQModel::DQModel() : m_connection ( DQConnection::defaultConnection()){
+
+}
+
 DQModel::DQModel(DQConnection connection) : m_connection(connection)
 {
 }

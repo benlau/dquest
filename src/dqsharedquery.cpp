@@ -65,6 +65,8 @@ bool DQSharedQuery::exec() {
 
     bool res = data->query.exec();
 
+    data->connection.setLastQuery(data->query);
+
     if (!res) {
         qWarning() << QString("Failed : %1").arg(data->query.executedQuery());
     }
@@ -89,7 +91,11 @@ bool DQSharedQuery::remove(){
         data->query.bindValue(iter.key() , iter.value());
     }
 
-    return data->query.exec();
+    bool res = data->query.exec();
+
+    data->connection.setLastQuery(data->query);
+
+    return res;
 }
 
 DQSharedList DQSharedQuery::all(){
