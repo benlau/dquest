@@ -18,12 +18,13 @@ public:
     /// Save the record to database
     /**
       @param forceInsert TRUE if the data should be inserted to the database as a new record regardless of the original id. The id field will be updated after operation.
+      @param forceAllField TRUE if all the field should be saved no matter it is null or not. If false, then null field will be skipped.
 
       If the id is not set , the record will be inserted to the database , then id field will be updated automatically.
       The successive call will update the record instead of insert unless forceInsert is TRUE.
 
      */
-    virtual bool save(bool forceInsert = false) = 0;
+    virtual bool save(bool forceInsert = false , bool forceAllField = false) = 0;
 
 };
 

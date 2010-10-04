@@ -29,7 +29,11 @@ void DQModel::setConnection(DQConnection connection){
     m_connection = connection;
 }
 
-bool DQModel::save(bool forceInsert) {
+DQConnection DQModel::connection(){
+    return m_connection;
+}
+
+bool DQModel::save(bool forceInsert,bool forceAllField) {
     if (!clean() ) {
         return false;
     }
@@ -38,6 +42,11 @@ bool DQModel::save(bool forceInsert) {
 
     QStringList fields = info->fieldNameList();
     QStringList nonNullFields;
+    if (forceAllField) {
+
+        nonNullFields = fields;
+
+    } else {
 
     foreach (QString field , fields) {
         QVariant v = info->value(this,field);
@@ -48,6 +57,8 @@ bool DQModel::save(bool forceInsert) {
 //            qDebug() << field;
             nonNullFields << field;
         }
+    }
+
     }
 
     bool res ;
