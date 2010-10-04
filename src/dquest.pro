@@ -9,54 +9,19 @@ TARGET = dquest
 CONFIG += staticlib
 VERSION = 0.1
 
-NORMAL_HEADERS += \
-    dqclause.h \
-    dqmodelmetainfo.h \
-    dqmodel.h \
-    dqconnection.h \
-    dqabstractfield.h \
-    dqsqlstatement.h \
-    dqsqlitestatement.h \
-    dqwhere.h \
-    dqentity.h \
-    dqsql.h \
-    dqfield.h \
-    dqabstractquery.h \
-    dqquery.h \
-    dqqueryrules.h
-
-PRIV_HEADERS += \
-    dqabstractquery_p.h
-
-HEADERS += $$NORMAL_HEADERS \
-    dqabstractmodel.h \
-    dqabstractmodellist.h
-
-SOURCES += \
-    dqclause.cpp \
-    dqmodelmetainfo.cpp \
-    dqmodel.cpp \
-    dqconnection.cpp \
-    dqabstractfield.cpp \
-    dqsqlstatement.cpp \
-    dqsqlitestatement.cpp \
-    dqwhere.cpp \
-    dqsql.cpp \
-    dqfield.cpp \
-    dqabstractquery.cpp \
-    dqqueryrules.cpp \
-    dqabstractmodel.cpp \
-    dqabstractmodellist.cpp
+include (dquest.pri)
 
 isEmpty(PREFIX) {
     PREFIX = /usr
 }
 
-LIBDIR=$$PREFIX/lib
-INCDIR=$$PREFIX/include
+LIBDIR=$$PREFIX/lib/dquest
+INCDIR=$$PREFIX/include/dquest
 
 INSTALLS += target headers
 target.path = $$LIBDIR
 
-headers.files = $$NORMAL_HEADERS
+headers.files = $$DQUEST_HEADERS
 headers.path = $$INCDIR
+headers.extra = cp $$PWD/dquest-install.pri ${INSTALL_ROOT}$$PREFIX/include/dquest/dquest.pri
+

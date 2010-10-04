@@ -4,7 +4,7 @@ QT += sql
 
 QMAKE_CXXFLAGS += -Wno-invalid-offsetof
 
-HEADERS += \
+DQUEST_HEADERS += \
     $$PWD/dqclause.h \
     $$PWD/dqmodelmetainfo.h \
     $$PWD/dqmodel.h \
@@ -18,14 +18,19 @@ HEADERS += \
     $$PWD/dqforeignkey.h \
     $$PWD/dqsharedquery.h \
     $$PWD/dqquery.h \
-    $$PWD/dqsharedquery_p.h \
     $$PWD/dqqueryrules.h \
-    $$PWD/dqmetainfoquery_p.h \
     $$PWD/dqexpression.h \
     $$PWD/dqlist.h \
     $$PWD/dqabstractmodel.h \
     $$PWD/dqsharedlist.h \
     $$PWD/dquest.h
+
+DQUEST_PRIV_HEADERS = \
+    $$PWD/dqsharedquery_p.h \
+    $$PWD/dqmetainfoquery_p.h
+
+HEADERS += $$DQUEST_HEADERS
+HEADERS += $$DQUEST_PRIV_HEADERS
 
 SOURCES += \
     $$PWD/dqclause.cpp \
