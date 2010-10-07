@@ -13,6 +13,7 @@
 #include "dqquery.h"
 #include "dqexpression.h"
 #include "dqlist.h"
+#include "misc.h"
 
 /// A set of tests which don't involve database access
 

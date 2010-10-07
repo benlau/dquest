@@ -206,7 +206,8 @@ public: \
     virtual inline QString tableName() const ; \
     static inline QString TableName(); \
     virtual inline DQModelMetaInfo *metaInfo() const; \
-    static inline DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection());
+    static inline DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection()); \
+    template <class T> friend class DQModelMetaInfoHelper;\
 
 inline QDebug operator<< (QDebug d, const DQModel* model){
     DQModelMetaInfo *metaInfo = model->metaInfo();

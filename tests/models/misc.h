@@ -45,4 +45,17 @@ DQ_DECLARE_MODEL(AllType,
                  DQ_FIELD(data)
                  );
 
+class PrivateFieldModel : public DQModel {
+    DQ_MODEL
+private:
+   DQField<int> field1;
+
+};
+
+DQ_DECLARE_MODEL(PrivateFieldModel,
+                 "privatefieldmodel",
+                 DQ_FIELD(field1)
+
+                 );
+
 #endif // MISC_H
