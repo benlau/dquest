@@ -70,6 +70,8 @@ DQSharedList _dqMetaInfoInitalData() {
   declare the database field of a DQModel, it will
   generate the class automatically.
 
+  When it is created , it will set its parent to QCoreApplication,
+  so that it will be destroyed automatically.
  */
 
 class DQModelMetaInfo : private QObject {

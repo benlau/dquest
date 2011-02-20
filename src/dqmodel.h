@@ -142,6 +142,9 @@ public:
 #define DQ_FIELD(field , CLAUSE...) \
 new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.clause(), ## CLAUSE)
 
+/**
+  See tests/modes/model1.h
+ */
 #define DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
         template<> \
         class DQModelMetaInfoHelper<MODEL> { \
@@ -209,6 +212,7 @@ public: \
     static inline DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection()); \
     template <class T> friend class DQModelMetaInfoHelper;\
 
+/// Print model field for debugging
 inline QDebug operator<< (QDebug d, const DQModel* model){
     DQModelMetaInfo *metaInfo = model->metaInfo();
     QStringList fields = metaInfo->fieldNameList();

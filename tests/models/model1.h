@@ -43,8 +43,12 @@ public:
         QList<DQModelMetaInfoField> result;
         Model1 m;
         result << DQModelMetaInfoHelper<DQModel>::fields() ;
-        result << DQModelMetaInfoField("key",offsetof(Table,key),m.key.type(),m.key.clause(),DQNotNull)
-               << DQModelMetaInfoField("value",offsetof(Table,value),m.value.type(),m.value.clause());
+        DQModelMetaInfoField* list[] = {
+                new DQModelMetaInfoField("key",offsetof(Table,key),m.key.type(),m.key.clause(),DQNotNull),
+                new DQModelMetaInfoField("value",offsetof(Table,value),m.value.type(),m.value.clause()),
+                0 };
+
+        result << _dqMetaInfoCreateFields(list);
         return result;
     }
 };
