@@ -6,6 +6,7 @@
 #include <dqmodelmetainfo.h>
 #include <dqsharedquery.h>
 #include <dqqueryrules.h>
+#include <dqindex.h>
 
 class DQSharedQuery;
 class DQQueryRules;
@@ -40,6 +41,9 @@ public:
 
     /// Drop table statement
     virtual QString dropTable(DQModelMetaInfo *info);
+
+    /// Create index statement
+    virtual QString createIndexIfNotExists(const DQBaseIndex& index);
 
     /// Insert into statement
     /**
@@ -76,5 +80,6 @@ protected:
     virtual QString limitAndOffset(int limit, int offset = 0);
 
 };
+
 
 #endif // DQSQLSTATEMENT_H

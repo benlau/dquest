@@ -2,7 +2,7 @@
 #define DQSQLITESTATEMENT_H
 
 #include <QVariant>
-#include "dqsqlstatement.h"
+#include <dqsqlstatement.h>
 
 /// Sqlite SQL Statement generator
 

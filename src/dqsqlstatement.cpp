@@ -16,6 +16,16 @@ QString DQSqlStatement::createTableIfNotExists(DQModelMetaInfo *info){
     return _createTableIfNotExists(info);
 }
 
+QString DQSqlStatement::createIndexIfNotExists(const DQBaseIndex& index){
+    QString createIndex = "CREATE INDEX IF NOT EXISTS %1 on %2 (%3);";
+
+    QString sql = createIndex.arg(index.metaInfo()->name())
+                             .arg(index.name())
+                             .arg(index.columnDefList().join("\n"));
+
+    return sql;
+}
+
 QString DQSqlStatement::insertInto(DQModelMetaInfo *info,QStringList fields){
     return _insertInto(info,"INSERT",fields);
 }
