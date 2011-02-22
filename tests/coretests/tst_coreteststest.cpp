@@ -33,7 +33,7 @@ private Q_SLOTS:
     void sqliteColumnConstraint();
     void sqlCreateTable();
 
-    /// test DSIndexMetaInfo
+    /// test DSIndex
     void index();
 
     /// Test DQClause
@@ -135,7 +135,7 @@ void CoretestsTest::index() {
     DQSqliteStatement sql;
 
     QString cmd = sql.createIndexIfNotExists(index);
-    QVERIFY(cmd == "CREATE INDEX IF NOT EXISTS model1 on index1 (key);");
+    QVERIFY(cmd == "CREATE INDEX IF NOT EXISTS index1 on model1 (key);");
 }
 
 void CoretestsTest::clause()

@@ -84,6 +84,13 @@ bool DQSql::dropTable(DQModelMetaInfo* info){
     return d->m_lastQuery.exec(sql);
 }
 
+bool DQSql::createIndexIfNotExists(const DQBaseIndex &index) {
+    QString sql = d->m_statement->createIndexIfNotExists(index);
+
+    d->m_lastQuery = query();
+
+    return d->m_lastQuery.exec(sql);
+}
 
 bool DQSql::exists(DQModelMetaInfo* info){
     if (d->m_db.driverName() != "QSQLITE") {

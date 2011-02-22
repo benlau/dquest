@@ -4,6 +4,7 @@
 #include <QExplicitlySharedDataPointer>
 #include <QSqlQuery>
 #include <dqmodelmetainfo.h>
+#include <dqindex.h>
 
 class DQModelMetaInfo;
 class DQSqlStatement;
@@ -50,6 +51,9 @@ public:
 
     /// Run drop table of a model
     bool dropTable(DQModelMetaInfo* info);
+
+    /// Create index
+    bool createIndexIfNotExists(const DQBaseIndex &index);
 
     /// Is the model exists on database?
     bool exists(DQModelMetaInfo* info);

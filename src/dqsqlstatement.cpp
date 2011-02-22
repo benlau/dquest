@@ -19,8 +19,8 @@ QString DQSqlStatement::createTableIfNotExists(DQModelMetaInfo *info){
 QString DQSqlStatement::createIndexIfNotExists(const DQBaseIndex& index){
     QString createIndex = "CREATE INDEX IF NOT EXISTS %1 on %2 (%3);";
 
-    QString sql = createIndex.arg(index.metaInfo()->name())
-                             .arg(index.name())
+    QString sql = createIndex.arg(index.name())
+                             .arg(index.metaInfo()->name())
                              .arg(index.columnDefList().join("\n"));
 
     return sql;
