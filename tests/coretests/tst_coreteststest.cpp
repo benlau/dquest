@@ -61,6 +61,10 @@ private Q_SLOTS:
 
     void dqList();
 
+    /// Test DQField<QStringList>
+    void stringlistField();
+    void stringlistField_data();
+
 };
 
 CoretestsTest::CoretestsTest()
@@ -348,6 +352,50 @@ void CoretestsTest::dqList(){
     QVERIFY(list2.size() == 0);
 
 }
+
+void CoretestsTest::stringlistField(){
+    DQField<QStringList> field;
+
+    QVERIFY(field.type() == (QVariant::Type) qMetaTypeId<QStringList>());
+    QFETCH(QStringList,list);
+    QFETCH(QString,str);
+
+    field = list;
+    QVERIFY(field.get() == list);
+
+//    qDebug() << field.get(true);
+    QVERIFY(field.get(true) == str);
+    QVERIFY(field.get() == list);
+
+    field.set(str);
+//    qDebug() << field.get();
+    QVERIFY(field.get() == list);
+}
+
+void CoretestsTest::stringlistField_data() {
+    QTest::addColumn<QStringList>("list");
+    QTest::addColumn<QString>("str");
+
+    QStringList list;
+    QString str;
+
+    list.clear();
+    list << "a" << "b" << "c";
+    str = "a & b & c";
+    QTest::newRow("basic") << list << str;
+
+    list.clear();
+    list << "&" << "\"" << "\"abc\"";
+    str = "&amp; & &quot; & &quot;abc&quot;";
+    QTest::newRow("special char") << list << str;
+
+    list.clear();
+    list << "&quot;" << "&amp;" << "&&quot;amp;";
+    str = "&amp;quot; & &amp;amp; & &amp;&amp;quot;amp;";
+    QTest::newRow("compex") << list << str;
+
+}
+
 
 QTEST_MAIN(CoretestsTest);
 
