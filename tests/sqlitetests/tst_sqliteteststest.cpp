@@ -63,6 +63,7 @@ private Q_SLOTS:
     /// Test date time access
     void datetime();
 
+    /// Verify DQField<QByteArray>
     void bytearray();
 
 private:
@@ -151,7 +152,7 @@ void SqlitetestsTest::verifyCreateTable(){
 
     QStringList lines = sql.split("\n");
 
-    int n = 6; // no. of field
+    int n = 7; // no. of field
     QVERIFY(lines.size()  == n +3);
 
 }
@@ -446,6 +447,7 @@ void SqlitetestsTest::bytearray(){
     type1.d = "1.0";
     QByteArray data(100,'0');
     type1.data = data;
+    type1.b = true;
 
     QVERIFY(type1.save());
 
@@ -453,9 +455,20 @@ void SqlitetestsTest::bytearray(){
 
     QVERIFY(type2.data == data);
     QVERIFY(type2.d == "1.0");
+    QVERIFY(type2.b == true);
 
+    // try again
+
+    type1.b = false;
+
+    QVERIFY(type1.save());
+
+    QVERIFY(type2.load(DQWhere("id=",type1.id) ) );
+
+    QVERIFY(type2.b == false);
 
 }
+
 
 QTEST_MAIN(SqlitetestsTest);
 

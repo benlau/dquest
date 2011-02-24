@@ -81,6 +81,8 @@ QString DQSqliteStatement::columnTypeName(QVariant::Type type) {
     case QVariant::ByteArray:
         res = "BLOB";
         break;
+    case QVariant::Bool:
+        res = "BOOLEAN";
     default:
         break;
     }
