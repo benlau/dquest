@@ -9,13 +9,11 @@ class Model5 : public DQModel{
     DQ_MODEL
 public:
     DQField<QTime> accessTime;
-    DQField<QStringList> tags;
 };
 
 DQ_DECLARE_MODEL(Model5,
                  "model5",
-                 DQ_FIELD(accessTime),
-                 DQ_FIELD(tags)
+                 DQ_FIELD(accessTime)
                  );
 
 #endif // MODEL5_H

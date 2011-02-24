@@ -63,8 +63,8 @@ private Q_SLOTS:
     /// Test date time access
     void datetime();
 
-    /// Verify DQField<QByteArray>
-    void bytearray();
+    /// Verify the save and load for specific type
+    void checkTypeSaveAndLoad();
 
 private:
     DQConnection connect;
@@ -152,7 +152,7 @@ void SqlitetestsTest::verifyCreateTable(){
 
     QStringList lines = sql.split("\n");
 
-    int n = 7; // no. of field
+    int n = 8; // no. of field
     QVERIFY(lines.size()  == n +3);
 
 }
@@ -441,13 +441,17 @@ void SqlitetestsTest::datetime() {
     QVERIFY(!user2.creationTime->isNull());
 }
 
-void SqlitetestsTest::bytearray(){
+void SqlitetestsTest::checkTypeSaveAndLoad(){
+
+    QStringList sl;
+    sl << "a" << "b" << "c";
 
     AllType type1,type2;
     type1.d = "1.0";
     QByteArray data(100,'0');
     type1.data = data;
     type1.b = true;
+    type1.sl = sl;
 
     QVERIFY(type1.save());
 
@@ -456,6 +460,8 @@ void SqlitetestsTest::bytearray(){
     QVERIFY(type2.data == data);
     QVERIFY(type2.d == "1.0");
     QVERIFY(type2.b == true);
+    qDebug() << type2.sl;
+    QVERIFY(type2.sl == sl);
 
     // try again
 

@@ -39,7 +39,21 @@ public:
         return get() != rhs;
     }
 
+    inline QVariant get(bool convert = false) const {
+        return DQBaseField::get(convert);
+    }
+
+    inline bool set(QVariant value) {
+        return DQBaseField::set(value);
+    }
+
 };
+
+template <>
+bool DQField<QStringList>::set(QVariant value);
+
+template <>
+QVariant DQField<QStringList>::get(bool convert) const;
 
 /// Primary key field
 

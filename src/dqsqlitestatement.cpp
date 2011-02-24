@@ -70,6 +70,7 @@ QString DQSqliteStatement::columnTypeName(QVariant::Type type) {
         res = "DOUBLE";
         break;
     case QVariant::String:
+    case QVariant::StringList:
         res = "TEXT";
         break;
     case QVariant::DateTime:

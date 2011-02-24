@@ -23,6 +23,8 @@ public:
 
 };
 
+/* DQSql */
+
 DQSql::DQSql(DQSqlStatement *statement)
 {
     d = new DQSqlPriv();

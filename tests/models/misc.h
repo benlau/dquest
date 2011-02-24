@@ -34,6 +34,7 @@ public:
     DQField<QDateTime> lastModifiedTime;
     DQField<QByteArray> data;
     DQField<bool> b;
+    DQField<QStringList> sl;
 };
 
 DQ_DECLARE_MODEL(AllType,
@@ -44,7 +45,8 @@ DQ_DECLARE_MODEL(AllType,
                  DQ_FIELD(real),
                  DQ_FIELD(lastModifiedTime),
                  DQ_FIELD(data),
-                 DQ_FIELD(b)
+                 DQ_FIELD(b),
+                 DQ_FIELD(sl)
                  );
 
 class PrivateFieldModel : public DQModel {
