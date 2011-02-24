@@ -19,7 +19,13 @@ public:
     virtual bool set(QVariant value);
 
     /// Get the value of the field
-    virtual QVariant get() const;
+    /**
+      @param convert True if the QVariant return should be converted to a type which is suitable for saving.
+
+      Some data type like QStringList is not suitable for saving. User may override
+      this function and convert its to other type.
+     */
+    virtual QVariant get(bool convert = false) const;
 
     /// The default clause of that field type
     static DQClause clause();

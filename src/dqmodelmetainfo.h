@@ -96,7 +96,12 @@ public:
     bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
 
     /// Get value of a field from a model
-    QVariant value(const DQAbstractModel *model,QString field) const;
+    /**
+      @param convert True if the QVariant return should be converted to a type which is suitable for saving.
+
+      @see DQBaseField::get()
+     */
+    QVariant value(const DQAbstractModel *model,QString field,bool convert = false) const;
 
     /// The table name
     QString name() const;

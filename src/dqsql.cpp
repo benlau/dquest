@@ -133,8 +133,10 @@ bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,b
     d->m_lastQuery.prepare(sql);
 
     foreach (QString field , fields) {
+        QVariant value;
+        value = info->value(model,field,true);
 //        qDebug() << "bind " << field;
-        d->m_lastQuery.bindValue(":" + field , info->value(model,field));
+        d->m_lastQuery.bindValue(":" + field , value);
     }
 
     bool res = false;

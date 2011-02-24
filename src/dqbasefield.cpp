@@ -16,7 +16,8 @@ bool DQBaseField::set(QVariant val){
     return true;
 }
 
-QVariant DQBaseField::get() const {
+QVariant DQBaseField::get(bool convert) const {
+    Q_UNUSED(convert);
     return m_value;
 }
 
