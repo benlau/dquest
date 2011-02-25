@@ -47,6 +47,11 @@ public:
         return DQBaseField::set(value);
     }
 
+    inline operator T() const {
+        QVariant v = get();
+        return v.value<T>();
+    }
+
 };
 
 template <>

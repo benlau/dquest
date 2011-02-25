@@ -71,7 +71,6 @@ static QString unescape(QString value) {
 
 template <>
 bool DQField<QStringList>::set(QVariant value){
-    bool res ;
     QString str;
 
     if (value.type() == QVariant::String) {
