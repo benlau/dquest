@@ -1,0 +1,15 @@
+Release 0.2
+
+Changes:
+
+ DQ_DECLARE_MODEL
+ * Supported private field
+
+ DQIndex - A new class for sqlite indexing
+ 
+ DQField<T>
+ - Supported bool and QStringList as the template type
+ - Added operator T() casting. It can be casted to T automatically..
+  
+ DQBaseField::get() / DQModelMetaInfo::value() - Added a new argument "convert"
+ - It is true if the QVariant return should be converted to a type which is suitable for saving.
