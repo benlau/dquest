@@ -39,6 +39,14 @@ public:
         return get() != rhs;
     }
 
+    inline bool operator==(const T& t) const {
+        return get() == t;
+    }
+
+    inline bool operator!=(const T& t) const {
+        return get() != t;
+    }
+
     inline QVariant get(bool convert = false) const {
         return DQBaseField::get(convert);
     }
