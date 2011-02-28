@@ -28,6 +28,16 @@ public:
     DQConnection &operator=(const DQConnection &rhs);
     ~DQConnection();
 
+    /// Operator== overloadig
+    /** It will return TRUE if they share the same database
+     */
+    bool operator==(const DQConnection &rhs);
+
+    /// Operator != overloadig
+    /** It will return TRUE if they do not share the same database
+     */
+    bool operator!=(const DQConnection &rhs);
+
     /// Open the connection to database
     bool open(QSqlDatabase db);
 
@@ -71,6 +81,9 @@ public:
 \endcode
      */
     static DQConnection defaultConnection();
+
+    /// Change the current connection to default connection
+    void setToDefaultConnection();
 
     /// Run "create table" for all added model.
     /**

@@ -43,6 +43,14 @@ DQConnection & DQConnection::operator=(const DQConnection &rhs){
 DQConnection::~DQConnection(){
 }
 
+bool DQConnection::operator==(const DQConnection &rhs) {
+    return d.constData() == rhs.d.constData();
+}
+
+bool DQConnection::operator!=(const DQConnection &rhs) {
+    return d.constData() != rhs.d.constData();
+}
+
 bool DQConnection::open(QSqlDatabase db){
     Q_ASSERT(db.isOpen());
 
@@ -88,6 +96,12 @@ bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
 
 DQConnection DQConnection::defaultConnection(){
     return m_defaultConnection;
+}
+
+void DQConnection::setToDefaultConnection(){
+    if (this != &m_defaultConnection) {
+        m_defaultConnection.d.operator =(d);
+    }
 }
 
 bool DQConnection::createTables(){

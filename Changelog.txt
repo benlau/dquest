@@ -1,4 +1,4 @@
-Release 0.2
+Next release
 
 Changes:
 
@@ -13,3 +13,7 @@ Changes:
   
  DQBaseField::get() / DQModelMetaInfo::value() - Added a new argument "convert"
  - It is true if the QVariant return should be converted to a type which is suitable for saving.
+
+ DQConnection
+ - Change this connection to be the default connection
+ - operator == / !- compare is two connection share the same database
