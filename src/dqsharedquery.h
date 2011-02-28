@@ -33,7 +33,25 @@ public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection(
 
     ~DQSharedQuery();
 
-    /// Contract a new query object with assign filter
+    /// Construct a new query object with only the fields assigned in result
+    /**
+        By default, DQSharedQuery retrieve all the field of the model.
+        Call this function if you only interest for specific fields.
+
+        @remarks If you don't specific the "id" field. It will not load the field. If you save the model , it will insert a new entity to the database.
+     */
+    DQSharedQuery select(QStringList fields);
+
+    /// Construct a new query object with only a single field in result
+    /**
+        By default, DQSharedQuery retrieve all the field of the model.
+        Call this function if you only interest for a single field
+
+        @remarks If the field is not the "id" field, and you call the save() method on the model. It will insert a new entity to the database
+     */
+    DQSharedQuery select(QString field);
+
+    /// Construct a new query object with assigned filter
     DQSharedQuery filter(DQWhere where);
 
     /// Construct a new query object with limitation no. of result

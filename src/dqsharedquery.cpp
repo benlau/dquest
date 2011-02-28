@@ -32,6 +32,20 @@ void DQSharedQuery::setMetaInfo(DQModelMetaInfo *info){
     data->metaInfo = info;
 }
 
+DQSharedQuery DQSharedQuery::select(QStringList fields) {
+    DQSharedQuery query(*this);
+    query.data->fields = fields;
+    return query;
+}
+
+DQSharedQuery DQSharedQuery::select(QString field) {
+    DQSharedQuery query(*this);
+    QStringList fields;
+    fields << field;
+    query.data->fields = fields;
+    return query;
+}
+
 DQSharedQuery DQSharedQuery::filter(DQWhere where) {
     DQSharedQuery query(*this);
     query.data->expression = DQExpression(where);

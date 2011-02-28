@@ -82,7 +82,7 @@ public:
      */
     static DQConnection defaultConnection();
 
-    /// Change the current connection to default connection
+    /// Change this connection to be the default connection
     void setToDefaultConnection();
 
     /// Run "create table" for all added model.

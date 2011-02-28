@@ -8,12 +8,15 @@ Changes:
  DQIndex - A new class for sqlite indexing
  
  DQField<T>
- - Supported bool and QStringList as the template type
- - Added operator T() casting. It can be casted to T automatically..
+ * Supported bool and QStringList as the template type T
+ * Added operator T() casting. It can be casted to T automatically.
   
  DQBaseField::get() / DQModelMetaInfo::value() - Added a new argument "convert"
- - It is true if the QVariant return should be converted to a type which is suitable for saving.
+ * It is true if the QVariant return should be converted to a type which is suitable for saving.
 
  DQConnection
- - Change this connection to be the default connection
- - operator == / !- compare is two connection share the same database
+ * Change this connection to be the default connection
+ * operator == / !- compare is two connection share the same database
+
+ DQSharedQuery
+ * Added new function select() - Construct a new query object with only the fields assigned in result 

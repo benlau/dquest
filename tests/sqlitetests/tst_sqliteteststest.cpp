@@ -53,6 +53,7 @@ private Q_SLOTS:
     void select();
 
     void queryAll();
+    void querySelect();
 
     /// Test can it load model through foreign key
     void foreignKeyLoad();
@@ -380,6 +381,24 @@ void SqlitetestsTest::queryAll(){
     QVERIFY(record.at(0)->value() == "value0");
     QVERIFY(record.at(1)->key() == "initial1");
     QVERIFY(record.at(1)->value() == "value1");
+
+    // Alernative way
+
+    record = Model2::objects().all();
+    QVERIFY(record.size() == 7);
+
+}
+
+void SqlitetestsTest::querySelect() {
+    DQQuery<Model2> query;
+
+    DQList<Model2> record = query.select("key").all();
+
+    QVERIFY(record.size() == 7); // 5 initial record + 2 newly inserted record
+    QVERIFY(record.at(0)->key() == "initial0");
+    QVERIFY(record.at(0)->value().isNull()); // It is not loaded
+    QVERIFY(record.at(1)->key() == "initial1");
+    QVERIFY(record.at(1)->value().isNull()); // It is not loaded
 
     // Alernative way
 
