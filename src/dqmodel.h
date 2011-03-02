@@ -34,6 +34,9 @@
   call DQConnection.lastQuery to obtain the last query object (QSqlQuery).
   It contains the sql being executed and error found.
 
+  @see DQ_MODEL
+  @see DQ_DECLARE_MODEL
+
  */
 
 class DQModel : public DQAbstractModel {
@@ -185,6 +188,35 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
         }
 
 /// Declare a model
+/**
+  For example,
+
+\code
+
+#include <dquest.h>
+
+/// User account database
+class User : public DQModel {
+    DQ_MODEL
+public:
+    DQField<QString> userId;
+    DQField<QDateTime> creationDate;
+    DQField<qreal> karma;
+};
+
+/// Declare the model and the field clause
+DQ_DECLARE_MODEL(User,
+                 "user", // the table name.
+                 DQ_FIELD(userId , DQNotNull | DQUnique),
+                 DQ_FIELD(creationDate , DQDefault("CURRENT_TIMESTAMP") ),
+                 DQ_FIELD(karma)
+                 );
+
+\endcode
+
+@see DQ_MODEL
+@see DQ_FIELD
+ */
 #define DQ_DECLARE_MODEL(MODEL,NAME,FIELDS...) \
         DQ_DECLARE_MODEL_BEGIN(MODEL,NAME) \
             result << DQModelMetaInfoHelper<DQModel>::fields(); \
@@ -202,6 +234,33 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
 
 /// The DQ_MODEL macro must appear in the class definition that declares model's virtual function for database access
 /** \def DQ_MODEL
+
+  For example,
+
+\code
+
+#include <dquest.h>
+
+/// User account database
+class User : public DQModel {
+    DQ_MODEL
+public:
+    DQField<QString> userId;
+    DQField<QDateTime> creationDate;
+    DQField<qreal> karma;
+};
+
+/// Declare the model and the field clause
+DQ_DECLARE_MODEL(User,
+                 "user", // the table name.
+                 DQ_FIELD(userId , DQNotNull | DQUnique),
+                 DQ_FIELD(creationDate , DQDefault("CURRENT_TIMESTAMP") ),
+                 DQ_FIELD(karma)
+                 );
+
+\endcode
+
+@see DQ_DECLARE_MODEL
  */
 #define DQ_MODEL \
 public: \
