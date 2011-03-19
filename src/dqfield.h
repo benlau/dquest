@@ -47,6 +47,14 @@ public:
         return get() != t;
     }
 
+    inline bool operator==(const char *string) const {
+        return get() == QString(string);
+    }
+
+    inline bool operator!=(const char *string) const {
+        return get() != QString(string);
+    }
+
     inline QVariant get(bool convert = false) const {
         return DQBaseField::get(convert);
     }

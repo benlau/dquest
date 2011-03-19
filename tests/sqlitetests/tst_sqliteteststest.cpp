@@ -434,7 +434,7 @@ void SqlitetestsTest::model4() {
 
     QVERIFY (item2.load(DQWhere("key = ","test")));
 
-    QVERIFY(item2.help == QString("..."));
+    QVERIFY(item2.help == "...");
 
 }
 
