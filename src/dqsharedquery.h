@@ -57,6 +57,35 @@ public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection(
     /// Construct a new query object with limitation no. of result
     DQSharedQuery limit(int val);
 
+    /// Construct a new query object with required sorting order
+    /**
+      @param terms The ordering terms
+
+      The ordering terms is basically equal to the field name.
+      You may add the clause ASC / DESC next to the field name,
+      then it will be sorted by asc / desc ordering.
+
+      Example:
+\code
+    DQQuery<HealthCheck> query;
+
+    DQList<HealthCheck> result;
+
+    result = query.orderBy("height").all();
+    result = query.orderBy("height asc").all();
+    result = query.orderBy("height desc").all();
+
+\endcode
+
+     */
+    DQSharedQuery orderBy(QStringList terms);
+
+    /// Construct a new query object with required sorting order
+    /**
+      It is a overloaded function
+     */
+    DQSharedQuery orderBy(QString term);
+
     /// Execute the query
     bool exec();
 

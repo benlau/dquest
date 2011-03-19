@@ -45,3 +45,7 @@ DQModelMetaInfo *DQQueryRules::metaInfo(){
 QStringList DQQueryRules::fields(){
     return data->fields;
 }
+
+QStringList DQQueryRules::orderBy() {
+    return data->orderBy;
+}

@@ -20,7 +20,8 @@ Changes:
  * operator == / !- compare is two connection share the same database
 
  DQSharedQuery
- * Added new function select() - Construct a new query object with only the fields assigned in result 
+ * Added new function select()  - Construct a new query object with only the fields assigned in result 
+ * Added new function orderBy() - Construct a new query object with required sorting order
 
  DQStream
  * A new class, it provides a stream interface for reading and writing data model field

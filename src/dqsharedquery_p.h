@@ -31,6 +31,8 @@ public:
 
     /// select(fields)
     QStringList fields;
+
+    QStringList orderBy;
 };
 
 #endif // DQABSTRACTQUERY_P_H

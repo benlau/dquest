@@ -31,7 +31,7 @@ public:
     DQField<QString> name;
     DQField<int>     height;
     DQField<double>  weight;
-    DQField<QDateTime>   recordDate;
+    DQField<QDate>   recordDate;
 };
 
 DQ_DECLARE_MODEL(HealthCheck,

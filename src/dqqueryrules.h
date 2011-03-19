@@ -32,7 +32,11 @@ public:
     /// Get the DQModelMetaInfo instance of the query model
     DQModelMetaInfo *metaInfo();
 
+    /// Get the field for result column
     QStringList fields();
+
+    /// Get the field for orderBy
+    QStringList orderBy();
 
 private:
     QSharedDataPointer<DQSharedQueryPriv> data;

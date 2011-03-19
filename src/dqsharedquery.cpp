@@ -58,6 +58,20 @@ DQSharedQuery DQSharedQuery::limit(int val){
     return query;
 }
 
+DQSharedQuery DQSharedQuery::orderBy(QStringList terms){
+    DQSharedQuery query(*this);
+    query.data->orderBy = terms;
+    return query;
+}
+
+DQSharedQuery DQSharedQuery::orderBy(QString term){
+    DQSharedQuery query(*this);
+    QStringList fields;
+    fields << term;
+    query.data->orderBy = fields;
+    return query;
+}
+
 bool DQSharedQuery::exec() {
     data->query = data->connection.query();
 

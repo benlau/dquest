@@ -7,6 +7,7 @@
 #include <dqsqlitestatement.h>
 #include <dqquery.h>
 #include <dqsql.h>
+#include <dqlistwriter.h>
 
 #include "model1.h"
 #include "model2.h"
@@ -67,6 +68,8 @@ private Q_SLOTS:
     /// Verify the save and load for specific type
     void checkTypeSaveAndLoad();
 
+    void queryOrderBy();
+
 private:
     DQConnection connect;
     QSqlDatabase db;
@@ -106,7 +109,6 @@ void SqlitetestsTest::initTestCase()
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
 
-    // Register Model1,2,4
     QVERIFY ( connect.addModel<Model1>() );
     QVERIFY ( connect.addModel<Model2>() );
     QVERIFY (!connect.addModel<Model1>() );
@@ -116,6 +118,7 @@ void SqlitetestsTest::initTestCase()
     QVERIFY ( connect.addModel<Config>() );
     QVERIFY ( connect.addModel<ExamResult>() );
     QVERIFY ( connect.addModel<AllType>() );
+    QVERIFY ( connect.addModel<HealthCheck>());
 
     QVERIFY( connect.dropTables() );
 
@@ -491,6 +494,48 @@ void SqlitetestsTest::checkTypeSaveAndLoad(){
     QVERIFY(type2.load(DQWhere("id=",type1.id) ) );
 
     QVERIFY(type2.b == false);
+
+}
+
+void SqlitetestsTest::queryOrderBy(){
+    DQQuery<HealthCheck> query;
+
+    QVERIFY(query.remove());
+
+    DQList<HealthCheck> records;
+
+    DQListWriter writer(&records);
+
+    writer << "tester 1" << 160 << 120 << writer.next()
+           << "tester 2" << 120 << 170 << writer.next()
+           << "tester 3" << 140 << 110 << writer.next();
+
+    writer.close();
+    for (int i = 0 ; i < records.size() ;i++){
+        records.at(i)->save();
+    }
+
+    DQList<HealthCheck> result = query.all();
+    QVERIFY(result.size() == 3);
+
+    result = query.orderBy("height asc").all();
+
+    QVERIFY(result.size() == 3);
+
+    QVERIFY(result.at(0)->name == "tester 2");
+    QVERIFY(result.at(2)->name == "tester 1");
+
+    result = query.orderBy("height desc").all();
+    QVERIFY(result.at(0)->name == "tester 1");
+    QVERIFY(result.at(2)->name == "tester 2");
+
+    result = query.orderBy("weight desc").all();
+    QVERIFY(result.at(0)->name == "tester 2");
+    QVERIFY(result.at(2)->name == "tester 3");
+
+    result = query.orderBy("weight asc").all();
+    QVERIFY(result.at(0)->name == "tester 3");
+    QVERIFY(result.at(2)->name == "tester 2");
 
 }
 

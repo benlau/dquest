@@ -79,6 +79,8 @@ protected:
 
     virtual QString limitAndOffset(int limit, int offset = 0);
 
+    virtual QString orderBy(DQQueryRules rules);
+
 };
 
 

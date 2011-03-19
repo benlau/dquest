@@ -60,6 +60,10 @@ QString DQSqlStatement::select(DQSharedQuery query) {
         sql << limitAndOffset(rules.limit());
     }
 
+    if (rules.orderBy().size() > 0) {
+        sql << orderBy(rules);
+    }
+
     sql << ";";
 
     return sql.join(" ");
@@ -128,6 +132,15 @@ QString DQSqlStatement::limitAndOffset(int limit, int offset) {
         res << QString("OFFSET %1").arg(offset);
     }
     return res.join(" ");
+}
+
+QString DQSqlStatement::orderBy(DQQueryRules rules){
+    QStringList orderingTerms;
+
+    orderingTerms << "ORDER BY";
+    orderingTerms << rules.orderBy().join(",");
+
+    return orderingTerms.join(" ");
 }
 
 QString DQSqlStatement::formatValue(QVariant value,bool trimStrings) {
