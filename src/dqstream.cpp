@@ -15,10 +15,10 @@ DQStream::DQStream(DQAbstractModel* model) {
     m_model = 0;
     m_current = 0;
 
-    setModel(model);
+    open(model);
 }
 
-void DQStream::setModel(DQAbstractModel* model){
+void DQStream::open(DQAbstractModel* model){
     m_model = model;
     m_current = 0;
 
@@ -68,6 +68,11 @@ void DQStream::read(QVariant &target) {
     if (m_current >= metaInfo->size() ) {
         m_current = 0 ; // reset the count to zero.
     }
+}
+
+void DQStream::close() {
+    m_current = 0;
+    m_model = 0;
 }
 
 DQStream& DQStream::operator<< (const QVariant value){

@@ -15,6 +15,7 @@
 #include "dqlist.h"
 #include "misc.h"
 #include "dqstream.h"
+#include "dqlistwriter.h"
 
 /// A set of tests which don't involve database access
 
@@ -66,8 +67,11 @@ private Q_SLOTS:
     void stringlistField();
     void stringlistField_data();
 
-    /// test DQModelStream
+    /// test DQStream
     void stream();
+
+    /// Test DQListWriter
+    void listWriter();
 
 };
 
@@ -436,6 +440,20 @@ void CoretestsTest::stream() {
     QVERIFY(record.height == height);
     QVERIFY(record.weight == weight);
     QVERIFY(record.recordDate == recordDate);
+}
+
+void CoretestsTest::listWriter() {
+    DQList<HealthCheck> list;
+    DQListWriter writer(&list);
+
+    QVERIFY(list.size() == 0);
+
+    writer << "Tester 1" << 179 << 120.5 << QDateTime::currentDateTime();
+    QVERIFY(list.size() == 1);
+    writer << "Tester 2" << 160 << 80 << QDateTime::currentDateTime()
+           << "Tester 3" << 120 << 60 << QDateTime::currentDateTime();
+    QVERIFY(list.size() == 3);
+
 }
 
 QTEST_MAIN(CoretestsTest);

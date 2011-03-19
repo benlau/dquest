@@ -67,16 +67,17 @@ public:
 
     /// Construct a DQStream operates on target model
     /**
-      @see setModel
+      The constructor will open the target model for read/write automatically
+      @see open
      */
     DQStream(DQAbstractModel* model);
 
-    /// Set the target model for read / write
+    /// Open and set the target model for read / write
     /**
       @param model The target model for read / write. The model must contains more than a field. Otherwise the operation will be failed.
       @remarks It will reset the value returned by currentField()
      */
-    void setModel(DQAbstractModel* model);
+    void open(DQAbstractModel* model);
 
     /// Get the target model
     DQAbstractModel* model();
@@ -92,6 +93,9 @@ public:
 
     /// Read the current field and save to target variable
     void read(QVariant &target);
+
+    /// Close the stream and release the resource holding
+    void close();
 
     /// Write the value to data model at current field
     /**

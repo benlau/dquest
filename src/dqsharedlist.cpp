@@ -17,6 +17,7 @@ public:
             delete model;
         }
         list.clear();
+        metaInfo = 0;
     }
 
     QList <DQAbstractModel*> list;

@@ -108,6 +108,7 @@ public:
     /// The list of initial data which should be inserted to database during table creation. Derived class should override the function to provide their custom record
     /**
       @see DQConnection::createTables
+      @see DQListWriter
      */
     virtual DQSharedList initialData() const;
 

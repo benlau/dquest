@@ -20,6 +20,7 @@ public:
 
     /// Default constructor
     DQList() : DQSharedList() {
+        setMetaInfo(dqMetaInfo<T>());
     }
 
     DQList(const DQList &rhs) : DQSharedList(rhs) {
