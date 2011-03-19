@@ -95,6 +95,9 @@ public:
     /// Set value of a field on a model
     bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
 
+    /// Set the value of a field at index
+    bool setValue(DQAbstractModel *model,int index, const QVariant& val);
+
     /// Get value of a field from a model
     /**
       @param convert True if the QVariant return should be converted to a type which is suitable for saving.
@@ -102,6 +105,9 @@ public:
       @see DQBaseField::get()
      */
     QVariant value(const DQAbstractModel *model,QString field,bool convert = false) const;
+
+    /// Get value of a field from a model at index
+    QVariant value(const DQAbstractModel *model,int index ,bool convert = false) const;
 
     /// The table name
     QString name() const;

@@ -85,6 +85,18 @@ bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVari
     return true;
 }
 
+bool DQModelMetaInfo::setValue(DQAbstractModel *model,int index, const QVariant& val){
+    if (index< 0 || index > size() ) {
+        return false;
+    }
+
+    int offset = m_fieldList[index].offset;
+
+    DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
+    f->set(val);
+    return true;
+}
+
 QVariant DQModelMetaInfo::value(const DQAbstractModel *model,QString field,bool convert) const{
     QVariant v;
     if (!m_fields.contains(field))
@@ -93,6 +105,17 @@ QVariant DQModelMetaInfo::value(const DQAbstractModel *model,QString field,bool 
 
     DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
 
+    return f->get(convert);
+}
+
+QVariant DQModelMetaInfo::value(const DQAbstractModel *model,int index ,bool convert) const{
+    if (index< 0 || index > size() ) {
+        return QVariant();
+    }
+
+    int offset = m_fieldList[index].offset;
+
+    DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
     return f->get(convert);
 }
 
