@@ -28,6 +28,10 @@ DQSharedQuery::~DQSharedQuery()
 {
 }
 
+void DQSharedQuery::setConnection(DQConnection connection) {
+    data->connection = connection;
+}
+
 void DQSharedQuery::setMetaInfo(DQModelMetaInfo *info){
     data->metaInfo = info;
 }

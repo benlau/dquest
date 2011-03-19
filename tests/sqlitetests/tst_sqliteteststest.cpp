@@ -511,9 +511,7 @@ void SqlitetestsTest::queryOrderBy(){
            << "tester 3" << 140 << 110 << writer.next();
 
     writer.close();
-    for (int i = 0 ; i < records.size() ;i++){
-        records.at(i)->save();
-    }
+    QVERIFY(records.save());
 
     DQList<HealthCheck> result = query.all();
     QVERIFY(result.size() == 3);

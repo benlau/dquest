@@ -69,6 +69,17 @@ public:
     /// Removes the item at index position i. i must be a valid index position in the list (i.e., 0 <= i < size()).
     void removeAt(int index);
 
+    /// Save all the contained item to database
+    /**
+      @param forceInsert  TRUE if the data should be inserted to the database as a new record regardless of the original id. The id field will be updated after operation.
+      @param forceAllField TRUE if all the field should be saved no matter it is null or not. If false, then null field will be skipped.
+      @see DQModel::save()
+
+      @return TRUE if all of the item is successfully saved
+     */
+
+    bool save(bool forceInsert = false,bool forceAllField = false);
+
     /// Get the binded model's meta info
     /** If this function non-null value , then this object is binded
       to specific model, it could only be used to store single model type.

@@ -33,6 +33,9 @@ public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection(
 
     ~DQSharedQuery();
 
+    /// Set the connection
+    void setConnection(DQConnection connection);
+
     /// Construct a new query object with only the fields assigned in result
     /**
         By default, DQSharedQuery retrieve all the field of the model.

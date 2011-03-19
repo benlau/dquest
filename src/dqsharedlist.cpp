@@ -70,6 +70,20 @@ void DQSharedList::removeAt(int index){
     delete model;
 }
 
+bool DQSharedList::save(bool forceInsert,bool forceAllField) {
+    int n = size();
+    bool res = true;
+
+    for (int i = 0 ; i < n ;i++){
+        DQAbstractModel* model = at(i);
+        if (!model->save(forceInsert,forceAllField)) {
+            res = false;
+        }
+    }
+
+    return res;
+}
+
 DQModelMetaInfo* DQSharedList::metaInfo(){
     return data->metaInfo;
 }

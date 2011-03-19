@@ -22,9 +22,13 @@ Changes:
  DQSharedQuery
  * Added new function select()  - Construct a new query object with only the fields assigned in result 
  * Added new function orderBy() - Construct a new query object with required sorting order
+ * Added new function setConnection() - Set the database connection
 
  DQStream
  * A new class, it provides a stream interface for reading and writing data model field
 
  DQListWriter 
  * A new class, it is a utility class to create the content for DQList object with predefined field 
+ 
+ DQSharedList
+ * Added new function save() - Save all the contained item to database
