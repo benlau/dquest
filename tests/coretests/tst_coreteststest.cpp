@@ -454,6 +454,10 @@ void CoretestsTest::listWriter() {
            << "Tester 3" << 120 << 60 << QDateTime::currentDateTime();
     QVERIFY(list.size() == 3);
 
+    writer << "Tester 4" << 130 << writer.next()
+           << "Tester 5" << 160 << writer.next();
+    QVERIFY(list.size() == 5);
+
 }
 
 QTEST_MAIN(CoretestsTest);

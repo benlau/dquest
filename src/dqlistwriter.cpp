@@ -28,6 +28,11 @@ DQSharedList *DQListWriter::list(){
 }
 
 void DQListWriter::append(QVariant v) {
+    if (v.userType() == qMetaTypeId<Next>()) {
+        m_stream.close();
+        return;
+    }
+
     Q_ASSERT(m_list);
     DQModelMetaInfo* metaInfo = m_list->metaInfo();
 
@@ -45,6 +50,12 @@ void DQListWriter::append(QVariant v) {
 void DQListWriter::close(){
     m_stream.close();
     m_list = 0;
+}
+
+QVariant DQListWriter::next(){
+    QVariant v;
+    v.setValue<DQListWriter::Next> (Next());
+    return v;
 }
 
 DQListWriter& DQListWriter::operator<< (const QVariant value){
