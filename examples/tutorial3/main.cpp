@@ -32,14 +32,14 @@ DQ_DECLARE_MODEL(User,
 DQSharedList User::initialData() const{
     // DQSharedList is the base class DQList , and they can be casted their data type to other.
     DQList<User> res;
+    DQListWriter writer(&res);
 
     // It should create 5 default account in table creation.
-    User user;
-    user.userId = "tester1"; user.passwd = "12345678";  res << user;
-    user.userId = "tester2"; user.passwd = "12345678";  res << user;
-    user.userId = "tester3"; user.passwd = "12345678";  res << user;
-    user.userId = "tester4"; user.passwd = "12345678";  res << user;
-    user.userId = "tester5"; user.passwd = "12345678";  res << user;
+    writer << "tester1" << "12345678" << writer.next()
+           << "tester2" << "12345678" << writer.next()
+           << "tester3" << "12345678" << writer.next()
+           << "tester4" << "12345678" << writer.next()
+           << "tester5" << "12345678" << writer.next();
 
     return res;
 }
