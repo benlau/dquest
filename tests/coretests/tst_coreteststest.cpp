@@ -14,6 +14,7 @@
 #include "dqexpression.h"
 #include "dqlist.h"
 #include "misc.h"
+#include "dqstream.h"
 
 /// A set of tests which don't involve database access
 
@@ -64,6 +65,9 @@ private Q_SLOTS:
     /// Test DQField<QStringList>
     void stringlistField();
     void stringlistField_data();
+
+    /// test DQModelStream
+    void stream();
 
 };
 
@@ -396,6 +400,35 @@ void CoretestsTest::stringlistField_data() {
 
 }
 
+void CoretestsTest::stream() {
+    HealthCheck record;
+    DQStream stream(&record);
+
+    QVERIFY(stream.model() == &record);
+    QVERIFY(stream.currentField() == 0);
+
+    stream << "Tester 1" << 179 << 120.5 << QDateTime::currentDateTime();
+
+    QVERIFY(record.name == "Tester 1");
+    QVERIFY(record.height == 179);
+    QVERIFY(record.weight == 120.5);
+    QString name;
+    int height;
+    double weight;
+    QDateTime recordDate;
+
+    QVERIFY(stream.currentField() == 0);
+
+    stream >> name
+           >> height
+           >> weight
+           >> recordDate;
+
+    QVERIFY(record.name == name);
+    QVERIFY(record.height == height);
+    QVERIFY(record.weight == weight);
+    QVERIFY(record.recordDate == recordDate);
+}
 
 QTEST_MAIN(CoretestsTest);
 

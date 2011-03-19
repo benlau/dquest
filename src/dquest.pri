@@ -24,6 +24,7 @@ DQUEST_HEADERS += \
     $$PWD/dqabstractmodel.h \
     $$PWD/dqsharedlist.h \
     $$PWD/dqindex.h \
+    $$PWD/dqstream.h \
     $$PWD/dquest.h
 
 DQUEST_PRIV_HEADERS = \
@@ -49,4 +50,5 @@ SOURCES += \
     $$PWD/dqexpression.cpp \
     $$PWD/dqabstractmodel.cpp \
     $$PWD/dqsharedlist.cpp \
-    $$PWD/dqindex.cpp
+    $$PWD/dqindex.cpp \
+    $$PWD/dqstream.cpp
