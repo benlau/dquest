@@ -17,6 +17,8 @@ template <class T>
 class DQList : public DQSharedList
 {
 public:
+
+    /// Default constructor
     DQList() : DQSharedList() {
     }
 
@@ -46,8 +48,14 @@ public:
         return (T*) m;
     }
 
+    /// Append a model to the list
+    /**
+      It is a overloaded function for append().
+     */
     DQList& operator<<(const T& model){
-        append(model);
+        if (!append(model)){
+            qWarning() << "DQList::operator<<(model) - Failed to append";
+        }
         return *this;
     }
 
@@ -56,9 +64,13 @@ public:
     /**
       @param model The input model. A copy of instance of the model will be stored to the list.
      */
-    void append(const T& model) {
+    bool append(const T& model) {
         T* t = new T(model);
-        DQSharedList::append(t);
+        bool res = DQSharedList::append(t);
+        if (!res) {
+            delete t;
+        }
+        return res;
     }
 
     /// Append a model to the list.
@@ -66,10 +78,11 @@ public:
       @param model The input model. Ownership will be taken.
      */
 
-    void append(T* model) {
-        DQSharedList::append(model);
+    bool append(T* model) {
+        return DQSharedList::append(model);
     }
 
+    /// Cast it to DQSharedList
     operator DQSharedList() {
         DQSharedList res (*this);
         return res;

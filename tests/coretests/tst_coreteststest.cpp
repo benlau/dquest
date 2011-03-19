@@ -330,8 +330,8 @@ void CoretestsTest::dqList(){
     item1.key = "test1";
     item2.key = "test2";
     item3.key = "test4";
-    list.append(item1);
-    list.append(item2);
+    QVERIFY(list.append(item1));
+    QVERIFY(list.append(item2));
 
     QVERIFY(list.size() == 2);
 
@@ -355,6 +355,14 @@ void CoretestsTest::dqList(){
     QVERIFY(list.size() == 0);
     QVERIFY(list2.size() == 0);
 
+    // Prove that DQShareList and DQList are exchangable.
+    DQSharedList list3;
+    list2.append(item1);list2.append(item2);
+    list3 = list2;
+    QVERIFY(list2.size() == list3.size());
+
+    list2 = list3;
+    QVERIFY(list2.size() == 2);
 }
 
 void CoretestsTest::stringlistField(){
