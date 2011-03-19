@@ -17,10 +17,11 @@
 #include <dqforeignkey.h>
 
 /// Database model class
-/** DQModel is the core of DQuest that provide a ORM to sql database. To declare your database model, you should:
+/** DQModel is the core of DQuest that provide an ORM interface to sql database table.
+  To declare your database model, you should:
 
   <ul>
-  <li>  Create a class that inherits DQModel </li>
+  <li> Create a class that inherits DQModel </li>
   <li> Added a DQ_MODEL macro to the class declaration</li>
   <li> Design your database field by using DQField template type</li>
   <li> Register your model with DQ_DECLARE_MODEL macro function. </li>
@@ -36,7 +37,8 @@
 
   @see DQ_MODEL
   @see DQ_DECLARE_MODEL
-
+  @see DQQuery
+  @see DQList
  */
 
 class DQModel : public DQAbstractModel {
@@ -50,6 +52,7 @@ public:
      */
     explicit DQModel();
 
+    /// Construct a DQModel object and set the database connection
     explicit DQModel(DQConnection connection);
 
     virtual ~DQModel();

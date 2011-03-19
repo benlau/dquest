@@ -8,14 +8,15 @@
 
 class DQSharedListPriv;
 
-/// DQSharedList is the base class of DList
+/// DQSharedList is the base class of DQList
 /**
-  DQSharedListhe base class of DQListimplements the storage
+  DQSharedList is the base class of DQList that implements the storage
   and DQAbstractModel management. It is a explicity shared class which could be
   used to exchange data between different objects.
 
-  Although most of the function return DQSharedListead of DQListser should always use DQSharedListy are exchangable , that means
-  DQSharedListbe converted to DQListd vice visa.
+  Although most of the function return DQSharedList stead of DQListser.
+  You should always use DQSharedList, as they are exchangable , that means
+  DQSharedList can be converted to DQListd, and vice visa.
 
   @remarks It is an explicity shared class
   */
