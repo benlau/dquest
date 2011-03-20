@@ -8,7 +8,7 @@
 #include <dqlist.h>
 #include <dqstream.h>
 
-/// DQListWriter is a utility class to create the content for DQList object with predefined field
+/// DQListWriter is a utility class to create the content on DQList object
 /**
 
   DQListWriter provides a stream interface for writing data to target DQList.
@@ -20,7 +20,7 @@
   or << operator is redirected to the model instance through the DQStream
   interface. The stream will be closed when all of the field is written already.
 
-  The next time you call append() or << operator inserts a new model instance
+  The next time you call append() or << operator will inserts a new model instance
   and repeat the above process.
 
   For example:
@@ -47,7 +47,7 @@ DQ_DECLARE_MODEL(HealthCheck,
                  );
 \endcode
 
-  You may create a DQList with predefined fields by :
+  You may create the content on DQList by :
 
 \code
 
@@ -63,7 +63,7 @@ DQ_DECLARE_MODEL(HealthCheck,
 
   Sometimes you may not want to set all of the field on the model instance.
   Only the first n-th column are interested. Then you may
-  append the result of next() to the stream, it is closed immediately.
+  append the result of next() to the stream, the stream will be closed immediately.
   The next append() or trigger will trigger the insertion of new model instance.
 
 Example:
@@ -74,7 +74,7 @@ Example:
 
     writer << "Tester 1" << 179 << DQListWriter::next()  // weight field is ignored.
            << "Tester 2" << 160 << writer.next() // An alternative to call next().
-           << "Tester 3" << 120;  // list.size == 3
+           << "Tester 3" << 120;  // list.size() == 3
 
 \endcode
   @see DQStream
@@ -84,11 +84,24 @@ Example:
 class DQListWriter
 {
 public:
-    /// Default constructor
+    /// Construct a DQListWriter object. Before you can use it for reading or writing , you should call open() to assign a target list.
     DQListWriter();
 
-    /// Construct a DQListReader operates on target list
+    /// Construct a DQListwriter operates on target list
+    /** This constructor will construct the DQListWriter object and open the target list for reading or writing.
+      @see open
+     */
     DQListWriter(DQSharedList *list);
+
+    /// Construct a DQListWriter operates on target list with specific database connection
+    /**
+      This constructor will construct the DQListWriter object and open the target list for reading or writing.
+      Moreover, it will set the default database connection for newly created model.
+
+      @see open
+      @see setConnection
+     */
+    DQListWriter(DQSharedList *list,DQConnection connection);
 
     /// Open and set the target list for writing
     /**
@@ -155,10 +168,26 @@ DQ_DECLARE_MODEL(HealthCheck,
      */
     static QVariant next();
 
+    /// Set the database connection for newly created model
+    /** DQListWriter create new model on the target DQList
+      when user append content. It will initialize model's
+      connection according to the value set in this function.
+
+      Usually you don't need to use this function unless you
+      have multiple database connection in the application.
+     */
+    void setConnection(DQConnection value);
+
 private:
+
+    /// The target list for writing
     DQSharedList *m_list;
+
+    /// The stream for writing to target list
     DQStream m_stream;
 
+    /// The connection set for newly created model instance
+    DQConnection m_connection;
 };
 
 Q_DECLARE_METATYPE(DQListWriter::Next);

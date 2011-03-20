@@ -6,6 +6,9 @@
 class DQModelMetaInfo;
 
 /// Abstract Data Model
+/** It is the based class of DQModel.
+  @remarks Never derive your own class based on DQAbstractModel. Due to optimization , many classes like DQListWriter assume that the only derived class is DQModel.
+ */
 class DQAbstractModel
 {
 public:

@@ -7,10 +7,17 @@
 DQListWriter::DQListWriter()
 {
     m_list = 0;
+    m_connection = DQConnection::defaultConnection();
 }
 
 DQListWriter::DQListWriter(DQSharedList *list){
     open(list);
+    m_connection = DQConnection::defaultConnection();
+}
+
+DQListWriter::DQListWriter(DQSharedList *list,DQConnection connection){
+    open(list);
+    setConnection(connection);
 }
 
 bool DQListWriter::open(DQSharedList *list){
@@ -38,6 +45,8 @@ void DQListWriter::append(QVariant v) {
 
     if (m_stream.currentField() == 0 ) { // it should create a new model
         DQAbstractModel* model = metaInfo->create();
+        DQModel *m = static_cast<DQModel*>(model);
+        m->setConnection(m_connection);
         m_list->append(model);
 
         m_stream.close();
@@ -56,6 +65,10 @@ QVariant DQListWriter::next(){
     QVariant v;
     v.setValue<DQListWriter::Next> (Next());
     return v;
+}
+
+void DQListWriter::setConnection(DQConnection val){
+    m_connection = val;
 }
 
 DQListWriter& DQListWriter::operator<< (const QVariant value){

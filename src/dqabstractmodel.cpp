@@ -5,7 +5,6 @@ DQAbstractModel::DQAbstractModel()
 }
 
 DQAbstractModel::~DQAbstractModel(){
-
 }
 
 DQModelMetaInfo *DQAbstractModel::metaInfo() const{
