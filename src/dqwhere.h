@@ -10,6 +10,9 @@
 class DQWhere
 {
 public:
+    /// Construct a null DQWhere object
+    /** It is the default constructor of DQWhere. Every operand is not set. It is completely null.
+     */
     DQWhere();
 
     /// Construct a DQWhere object with expression
@@ -23,17 +26,41 @@ public:
     /// Construct a DQWhere with left operand and operator combined in a single string
     /**
       @param leftAndOp A argument with left operand and operator combined. It is faster way to construct a DQWhere object.
+      @param right The right operand
+
+      Example:
+
+\code
+    DQWhere filter1("field1 = ",1);
+    DQWhere filter2("field2 <",2);
+\endcode
+
      */
     DQWhere(QString leftAndOp , QVariant right);
+
+    /// Construct a DQWhere object which is a copy of other.
     DQWhere(const DQWhere &other);
 
-    /// Check is null. DQWhere is null if no any operend is assigned.
+    /// Returns true if this bit array is null; otherwise returns false.
+    /** DQWhere is null if no any operend is assigned.
+      */
     bool isNull();
 
     /// Convert to string
     QString toString();
 
+    /// Return a DQWhere object which is the result of "this" and "other"
+    /**
+      @deprecated
+      @remarks Please use && in new code
+     */
     DQWhere operator&(const DQWhere other);
+
+    /// Return a DQWhere object which is the result of "this" or "other"
+    /**
+      @deprecated
+      @remarks Please use || in new code
+     */
     DQWhere operator|(const DQWhere other);
 
     /// Get the left operand
