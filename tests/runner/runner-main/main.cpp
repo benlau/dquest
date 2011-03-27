@@ -7,8 +7,8 @@ int main(int argc, char *argv[])
 
     TestRunner runner;
 
-    runner.run("../../sqlitetests/tst_sqliteteststest");
     runner.run("../../coretests/tst_coreteststest");
+    runner.run("../../sqlitetests/tst_sqliteteststest");
 
     runner.report();
 

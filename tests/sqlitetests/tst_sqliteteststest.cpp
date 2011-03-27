@@ -278,6 +278,8 @@ void SqlitetestsTest::deleteAll() {
     query = DQQuery<Model1>().filter(DQWhere("key" , "=" , "temp"));
     QVERIFY(query.remove());
 
+    qDebug() << query.lastQuery().lastQuery();
+
     query = DQQuery<Model1>();
 
     count = query.count();
@@ -432,9 +434,11 @@ void SqlitetestsTest::querySelectWhere(){
     query =query.filter(DQWhere("height") == (DQWhere("weight")));
     list = query.all();
 
-    qDebug() << query.lastQuery().lastQuery();
+    QString sql = query.lastQuery().lastQuery();
+    qDebug() << sql;
+    QVERIFY(sql == "SELECT ALL * FROM healthcheck WHERE height = weight ;");
 
-    QEXPECT_FAIL("","DQExpression is not able to handle new DQWhere design yet",Abort);
+//    QEXPECT_FAIL("","DQExpression is not able to handle new DQWhere design yet",Abort);
     QVERIFY(list.size() == 1); // Tester 4;
 
     // TODO

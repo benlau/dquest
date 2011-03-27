@@ -1,6 +1,8 @@
 #include <QtCore>
 #include "dqexpression.h"
 
+static int typeId = qMetaTypeId<DQWhere>();
+
 DQExpression::DQExpression(){
     m_null = true;
 }
@@ -35,28 +37,34 @@ void DQExpression::process(DQWhere& where){
 }
 
 QString DQExpression::_process(DQWhere& where) {
+    if (where.isField())
+        return where.toString();
+
     QString leftString,rightString;
-    QVariant left = where.left();
-    QVariant right = where.right();
-    int typeId = qMetaTypeId<DQWhere>();
-    DQWhere w2;
 
-    if (left.userType() ==  typeId ) {
-        w2 = left.value<DQWhere>();
-        leftString =QString("(%1)").arg(_process( w2 ));
-    } else {
-        leftString =left.toString();
-    }
-
-    if (right.userType() == typeId) {
-        w2 = right.value<DQWhere>();
-        rightString =QString("(%1)").arg(_process( w2 ));
-    } else {
-        QString arg = QString(":arg%1").arg(m_num++);
-        m_values[arg] = right;
-        rightString = arg;
-    }
+    leftString = _process(where.left());
+    rightString = _process(where.right());
 
     return QString("%1 %2 %3").arg(leftString).arg(where.op()).arg(rightString);
 
+}
+
+QString DQExpression::_process(QVariant v) {
+    QString res;
+    if (v.userType() == typeId) {
+        DQWhere w = v.value<DQWhere>();
+
+        if (w.isField()) {
+            res = w.toString();
+        } else {
+            res = QString("(%1)").arg(_process(w));
+        }
+
+    } else {
+        QString arg = QString(":arg%1").arg(m_num++);
+        m_values[arg] = v;
+        res = arg;
+    }
+
+    return res;
 }

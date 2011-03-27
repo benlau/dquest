@@ -5,6 +5,9 @@
 #include <QMap>
 
 /// Construct an expression based on DQWhere clause
+/**
+   @remarks It is a private in implementation. User should not use this class.
+ */
 class DQExpression
 {
 public:
@@ -21,7 +24,13 @@ public:
 
 private:
     void process(DQWhere& where);
+
+    /// A recusrive verison of process()
     QString _process(DQWhere& where);
+
+    /// A recursive function to prcess the operand in DQWhere
+    QString _process(QVariant v);
+
 
     /// The string expression
     QString m_string;
