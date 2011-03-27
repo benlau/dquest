@@ -200,6 +200,23 @@ void CoretestsTest::where(){
         QVERIFY(where.left() == "key");
         QVERIFY(where.toString() == "key = 3");
     }
+
+    DQWhere price("price");
+    QVariant v = "price";
+    QVERIFY(v.type() == QVariant::String);
+
+    // The data field is not stored in QString.
+    QVERIFY(price.left().type() != QVariant::String);
+
+    DQWhere filter = price > 3;
+    QVERIFY(filter.toString() == "price > 3");
+
+    DQWhere qty("qty");
+
+    filter = (price <= 10) &  (qty > 100);
+    qDebug() << filter.toString();
+    QVERIFY(filter.toString() == "( price <= 10 ) and ( qty > 100 )");
+
 }
 
 void CoretestsTest::expression(){

@@ -5,6 +5,14 @@ static int typeId = qMetaTypeId<DQWhere>();
 
 static QString variantToString(QVariant v,bool quoteString);
 
+/// A private datastructure to represent the database field in DQWhere
+class DQWhereFieldPriv : public QString {
+};
+
+Q_DECLARE_METATYPE(DQWhereFieldPriv)
+
+static int fieldTypeId = qMetaTypeId<DQWhereFieldPriv>();
+
 DQWhere::DQWhere()
 {
     m_isNull = true;
@@ -42,6 +50,14 @@ DQWhere::DQWhere(QString leftAndOp , QVariant right)  : m_right(right){
     m_isNull = false;
 }
 
+DQWhere::DQWhere(QString field){
+    DQWhereFieldPriv f;
+    f.append(field);
+    m_left.setValue<DQWhereFieldPriv>(f);
+    m_isNull = false;
+}
+
+
 QVariant DQWhere::left(){
     return m_left;
 }
@@ -59,7 +75,15 @@ bool DQWhere::isNull(){
     return m_isNull;
 }
 
-QString DQWhere::toString(){
+bool DQWhere::isField() {
+    return m_right.isNull() && m_left.userType() == fieldTypeId;
+}
+
+QString DQWhere::toString() {
+    if (isField()) {
+        return variantToString(m_left,false);
+    }
+
     if (m_left.isNull() || m_right.isNull())
         return "";
 
@@ -70,6 +94,17 @@ QString DQWhere::toString(){
     op2 = variantToString(m_right,true);
 
     return QString("%1 %2 %3").arg(op1).arg(m_op).arg(op2);
+}
+
+DQWhere DQWhere::expr(QString op,QVariant right){
+    DQWhere w;
+
+    w.m_left.setValue<DQWhere>(*this);
+    w.m_right = right;
+    w.m_op = op;
+    w.m_isNull = false;
+
+    return w;
 }
 
 DQWhere DQWhere::operator&(const DQWhere other) {
@@ -94,14 +129,40 @@ DQWhere DQWhere::operator|(const DQWhere other) {
     return w;
 }
 
+DQWhere DQWhere::operator< (QVariant right){
+    return expr("<",right);
+}
+
+DQWhere DQWhere::operator<= (QVariant right){
+    return expr("<=",right);
+}
+
+DQWhere DQWhere::operator> (QVariant right){
+    return expr(">",right);
+}
+
+DQWhere DQWhere::operator>= (QVariant right){
+    return expr(">=",right);
+}
 
 QString variantToString(QVariant v,bool quoteString){
     QString res;
     /// @todo Implement QVariant::convert()
+//    qDebug() << v.userType() << v;
 
     if (v.type() == QVariant::UserType &&
         v.userType() == typeId) {
-        res = QString("( %1 )").arg(v.value<DQWhere>().toString() );
+
+        DQWhere w = v.value<DQWhere>();
+        QString pattern = "( %1 )";
+        if (w.isField()) {
+            pattern = "%1";
+        }
+        res = QString(pattern).arg(w.toString() );
+    } else if (v.userType() == fieldTypeId) {
+        DQWhereFieldPriv f;
+        f = v.value<DQWhereFieldPriv>();
+        res = f;
     } else if (v.type() == QVariant::String
                && quoteString) {
         res = QString("\"%1\"").arg(v.toString());
