@@ -5,6 +5,14 @@
 
 /// DQWhere represent an expression used in WHERE statement
 /**
+   The DQWhere object represent an expression / rule in query for filter the result
+   retrived. Each DQWhere object contains three parts : The left operand ,
+   operator and right operand.
+
+   Operand in DQWhere can be the field name of database model , a value
+   or other DQWhere object with more complex rule.
+
+   Reference: http://www.sqlite.org/lang_expr.html
  */
 
 class DQWhere
@@ -46,7 +54,16 @@ public:
       */
     bool isNull();
 
-    /// Convert to string
+    /// Get the left operand in the expression
+    QVariant left();
+
+    /// Get the right operand in the expression
+    QVariant right();
+
+    /// Get the operator in the expression
+    QString op();
+
+    /// Convert the expression to string
     QString toString();
 
     /// Return a DQWhere object which is the result of "this" and "other"
@@ -63,24 +80,7 @@ public:
      */
     DQWhere operator|(const DQWhere other);
 
-    /// Get the left operand
-    inline QVariant left(){
-        return m_left;
-    }
-
-    /// Get the right operand
-    inline QVariant right(){
-        return m_right;
-    }
-
-    /// Get the operator
-    inline QString op(){
-        return m_op;
-    }
-
 private:
-    QString variantToString(QVariant v,bool quoteString = false);
-
     /// left Operand
     QVariant m_left;
     QString m_op;

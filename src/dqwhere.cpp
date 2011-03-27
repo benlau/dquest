@@ -3,6 +3,8 @@
 
 static int typeId = qMetaTypeId<DQWhere>();
 
+static QString variantToString(QVariant v,bool quoteString);
+
 DQWhere::DQWhere()
 {
     m_isNull = true;
@@ -39,6 +41,19 @@ DQWhere::DQWhere(QString leftAndOp , QVariant right)  : m_right(right){
 
     m_isNull = false;
 }
+
+QVariant DQWhere::left(){
+    return m_left;
+}
+
+QVariant DQWhere::right(){
+    return m_right;
+}
+
+QString DQWhere::op(){
+    return m_op;
+}
+
 
 bool DQWhere::isNull(){
     return m_isNull;
@@ -80,7 +95,7 @@ DQWhere DQWhere::operator|(const DQWhere other) {
 }
 
 
-QString DQWhere::variantToString(QVariant v,bool quoteString){
+QString variantToString(QVariant v,bool quoteString){
     QString res;
     /// @todo Implement QVariant::convert()
 
