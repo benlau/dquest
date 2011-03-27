@@ -56,6 +56,10 @@ private Q_SLOTS:
     void queryAll();
     void querySelect();
 
+    /// test different combination of where
+    void querySelectWhere();
+
+
     /// Test can it load model through foreign key
     void foreignKeyLoad();
 
@@ -410,8 +414,43 @@ void SqlitetestsTest::querySelect() {
 
 }
 
+void SqlitetestsTest::querySelectWhere(){
+    DQQuery<HealthCheck> query;
+
+    QVERIFY(query.remove());
+
+    DQList<HealthCheck> list;
+    DQListWriter writer(&list);
+
+    writer << "Tester 1" << 180 << 150 << writer.next()
+           << "Tester 2" << 170 << 120 << writer.next()
+           << "Tester 3" << 150 << 180 << writer.next()
+           << "Tester 4" << 130 << 130 << writer.next();
+
+    list.save();
+
+    query =query.filter(DQWhere("height") == (DQWhere("weight")));
+    list = query.all();
+
+    qDebug() << query.lastQuery().lastQuery();
+
+    QEXPECT_FAIL("","DQExpression is not able to handle new DQWhere design yet",Abort);
+    QVERIFY(list.size() == 1); // Tester 4;
+
+    // TODO
+    // <>
+    // between
+    // in
+    // like
+
+    QVERIFY(query.remove());
+}
+
 void SqlitetestsTest::foreignKeyLoad() {
-    DQQuery<Config> query = DQQuery<Config>().filter(DQWhere("key=","config1")).limit(1);
+
+    DQQuery<Config> query;
+
+    query = DQQuery<Config>().filter(DQWhere("key=","config1")).limit(1);
 
     QVERIFY(query.exec());
     QVERIFY(query.next());

@@ -140,6 +140,12 @@ public:
     DQWhere operator>= (QVariant right);
 
     /// Return a DQWhere object which is the expression of "this" = "other"
+    DQWhere operator==(QVariant right);
+
+    /// Return a DQWhere object which is the expression of "this" <> "other"
+    DQWhere operator!=(QVariant right);
+
+    /// Return a DQWhere object which is the expression of "this" = "other"
     DQWhere equal(QVariant right);
 
     /// Return a DQWhere object which is the expression of "this" <> "other"

@@ -1,6 +1,14 @@
 #include <QtCore>
 #include "dqwhere.h"
 
+/* Test cases:
+
+  coretests::where()
+
+  sqlitetests::querySelectWhere()
+
+ */
+
 static int typeId = qMetaTypeId<DQWhere>();
 
 static QString variantToString(QVariant v,bool quoteString);
@@ -165,6 +173,14 @@ DQWhere DQWhere::operator> (QVariant right){
 
 DQWhere DQWhere::operator>= (QVariant right){
     return expr(">=",right);
+}
+
+DQWhere DQWhere::operator==(QVariant right){
+    return expr("=",right);
+}
+
+DQWhere DQWhere::operator!=(QVariant right){
+    return expr("<>",right);
 }
 
 DQWhere DQWhere::equal(QVariant right){
