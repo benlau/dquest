@@ -127,8 +127,8 @@ void SqlitetestsTest::initTestCase()
     DQIndex<Model1> index1("index1");
     index1 << "value";
 
-    QVERIFY(sql.createIndexIfNotExists(index1));
-
+//    QVERIFY(sql.createIndexIfNotExists(index1));
+    QVERIFY(connect.createIndex(index1));
 }
 
 void SqlitetestsTest::cleanupTestCase()

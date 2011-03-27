@@ -73,7 +73,7 @@ public:
     /// Construct a DQWhere object which is a copy of other.
     DQWhere(const DQWhere &other);
 
-    /// Returns true if this bit array is null; otherwise returns false.
+    /// Returns true if the object is null; otherwise returns false.
     /** DQWhere is null if no any operend is assigned.
       */
     bool isNull();
@@ -145,16 +145,20 @@ public:
     /// Return a DQWhere object which is the expression of "this" <> "other"
     DQWhere notEqual (QVariant right);
 
+    /// Cast the object to QVariant type
     operator QVariant() const;
 
 private:
     /// left Operand
     QVariant m_left;
+
+    /// The operator
     QString m_op;
 
     /// right Operand
     QVariant m_right;
 
+    /// Is it null?
     bool m_isNull;
 
 };

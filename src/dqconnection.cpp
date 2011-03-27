@@ -149,6 +149,10 @@ bool DQConnection::dropTables() {
     return res;
 }
 
+bool DQConnection::createIndex(const DQBaseIndex &index) {
+    return d->m_sql.createIndexIfNotExists(index);
+}
+
 DQSql& DQConnection::sql(){
     return d->m_sql;
 }

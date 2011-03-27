@@ -8,6 +8,7 @@
 #include <QExplicitlySharedDataPointer>
 
 #include <dqmodelmetainfo.h>
+#include <dqindex.h>
 
 class DQModelMetaInfo;
 class DQSql;
@@ -94,6 +95,9 @@ public:
 
     /// Drop all the tables
     bool dropTables();
+
+    /// Create index
+    bool createIndex(const DQBaseIndex &index);
 
     /// Get the SQL interface that you may run predefined sql operations on the database
     DQSql& sql();
