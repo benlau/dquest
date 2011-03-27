@@ -118,7 +118,29 @@ DQWhere DQWhere::operator&(const DQWhere other) {
     return w;
 }
 
+DQWhere DQWhere::operator&&(const DQWhere other) {
+    DQWhere w;
+
+    w.m_left.setValue<DQWhere>(*this);
+    w.m_right.setValue<DQWhere>( other);
+    w.m_op = "and";
+    w.m_isNull = false;
+
+    return w;
+}
+
 DQWhere DQWhere::operator|(const DQWhere other) {
+    DQWhere w;
+
+    w.m_left.setValue<DQWhere>(*this);
+    w.m_right.setValue<DQWhere>( other);
+    w.m_op = "or";
+    w.m_isNull = false;
+
+    return w;
+}
+
+DQWhere DQWhere::operator||(const DQWhere other) {
     DQWhere w;
 
     w.m_left.setValue<DQWhere>(*this);
@@ -143,6 +165,20 @@ DQWhere DQWhere::operator> (QVariant right){
 
 DQWhere DQWhere::operator>= (QVariant right){
     return expr(">=",right);
+}
+
+DQWhere DQWhere::equal(QVariant right){
+    return expr("=",right);
+}
+
+DQWhere DQWhere::notEqual(QVariant right){
+    return expr("<>",right);
+}
+
+DQWhere::operator QVariant() const{
+    QVariant v;
+    v.setValue<DQWhere>(*this);
+    return v;
 }
 
 QString variantToString(QVariant v,bool quoteString){

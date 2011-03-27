@@ -213,9 +213,14 @@ void CoretestsTest::where(){
 
     DQWhere qty("qty");
 
-    filter = (price <= 10) &  (qty > 100);
-    qDebug() << filter.toString();
+    filter = (price <= 10) &&  (qty > 100);
     QVERIFY(filter.toString() == "( price <= 10 ) and ( qty > 100 )");
+
+    filter = price.equal(qty);
+    QVERIFY(filter.toString() == "price = qty");
+
+    filter = price.notEqual(qty);
+    QVERIFY(filter.toString() == "price <> qty");
 
 }
 
