@@ -25,17 +25,17 @@ public:
 
     /// Construct a DQWhere object with expression
     /**
-      @param left The left operand in expression
+      @param field The field name in target data model
       @param op The operator in expression
       @param right The right operand in expression
 
       @deprecated
      */
-    DQWhere(QVariant left,QString op, QVariant right);
+    DQWhere(QString field,QString op, QVariant right);
 
     /// Construct a DQWhere with left operand and operator combined in a single string
     /**
-      @param leftAndOp A argument with left operand and operator combined. It is faster way to construct a DQWhere object.
+      @param fieldAndOp A argument with data model field name and operator combined. It is faster way to construct a DQWhere object.
       @param right The right operand
 
       Example:
@@ -47,7 +47,7 @@ public:
 
     @deprecated
      */
-    DQWhere(QString leftAndOp , QVariant right);
+    DQWhere(QString fieldAndOp , QVariant right);
 
     /// Construct a DQWhere object to represent a data model field
     /** The DQWhere constructed in this way will only contains the

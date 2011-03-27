@@ -26,8 +26,11 @@ DQWhere::DQWhere()
     m_isNull = true;
 }
 
-DQWhere::DQWhere(QVariant left,QString op, QVariant right)
-    : m_left(left) ,m_op(op),m_right(right){
+DQWhere::DQWhere(QString field,QString op, QVariant right)
+    : m_op(op),m_right(right){
+
+    m_left = DQWhere(field);
+
     m_isNull = false;
 }
 
@@ -38,20 +41,21 @@ DQWhere::DQWhere(const DQWhere &other){
     m_isNull = other.m_isNull;
 }
 
-DQWhere::DQWhere(QString leftAndOp , QVariant right)  : m_right(right){
+DQWhere::DQWhere(QString fieldAndOp , QVariant right)  : m_right(right){
     QRegExp rx("^\\s*[a-zA-Z0-9]+");
-    int pos = rx.indexIn(leftAndOp);
+    int pos = rx.indexIn(fieldAndOp);
 
     if (pos < 0){
-        qWarning() << QString("DQWhere() : can not parse %1").arg(leftAndOp);
+        qWarning() << QString("DQWhere() : can not parse %1").arg(fieldAndOp);
         return;
     }
     int len = rx.matchedLength();
 
-    QString str = leftAndOp.mid(pos,len);
-    m_left = str.trimmed();
+    QString str = fieldAndOp.mid(pos,len);
+//    m_left = str.trimmed();
+    m_left = DQWhere(str.trimmed());
 
-    str = leftAndOp.mid(pos + len);
+    str = fieldAndOp.mid(pos + len);
 
     m_op = str.trimmed();
 
