@@ -8,6 +8,8 @@
     DQField store the value of a field in database model. The format is QVariant.
     Therefore you may assign a QVariant to DQField direclty, and you may access
     the stored QVariant by using operator-> or get() function.
+
+    @see DQForeignKey
  */
 
 template <typename T>
