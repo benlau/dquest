@@ -1,5 +1,6 @@
 #include <QtCore>
 #include "dqwhere.h"
+#include "dqwhere_p.h"
 
 /* Test cases:
 
@@ -12,6 +13,26 @@
 static int typeId = qMetaTypeId<DQWhere>();
 
 static QString variantToString(QVariant v,bool quoteString);
+
+DQWhereDataPriv::DQWhereDataPriv(){
+    m_type = None;
+}
+
+DQWhereDataPriv::DQWhereDataPriv(Type type) : m_type(type){
+}
+
+DQWhereDataPriv& DQWhereDataPriv::operator<<(QVariant v){
+    m_list << v;
+    return *this;
+}
+
+QList<QVariant> DQWhereDataPriv::list(){
+    return m_list;
+}
+
+DQWhereDataPriv::Type DQWhereDataPriv::type(){
+    return m_type;
+}
 
 /// A private datastructure to represent the database field in DQWhere
 class DQWhereFieldPriv : public QString {
@@ -193,6 +214,15 @@ DQWhere DQWhere::equal(QVariant right){
 
 DQWhere DQWhere::notEqual(QVariant right){
     return expr("<>",right);
+}
+
+DQWhere DQWhere::between(QVariant v1,QVariant v2){
+    DQWhereDataPriv data(DQWhereDataPriv::Between);
+    data << v1 << v2;
+    QVariant v;
+    v.setValue<DQWhereDataPriv>(data);
+
+    return expr("between",v);
 }
 
 DQWhere::operator QVariant() const{

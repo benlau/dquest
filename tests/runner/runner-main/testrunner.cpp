@@ -23,7 +23,9 @@ bool TestRunner::run(QString executable,QStringList args){
     res = process.waitForStarted();
 
     if (!res) {
-        qWarning() << "Failed to start" << executable;
+        qWarning() << "FAIL!  : Can not start" << executable;
+        m_failed++;
+        return res;
     }
 
     process.waitForFinished();

@@ -29,6 +29,7 @@ DQUEST_HEADERS += \
     $$PWD/dquest.h
 
 DQUEST_PRIV_HEADERS = \
+    $$PWD/dqwhere_p.h \
     $$PWD/dqsharedquery_p.h \
     $$PWD/dqmetainfoquery_p.h
 

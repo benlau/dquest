@@ -438,12 +438,16 @@ void SqlitetestsTest::querySelectWhere(){
     qDebug() << sql;
     QVERIFY(sql == "SELECT ALL * FROM healthcheck WHERE height = weight ;");
 
-//    QEXPECT_FAIL("","DQExpression is not able to handle new DQWhere design yet",Abort);
     QVERIFY(list.size() == 1); // Tester 4;
+
+    query.reset();
+    query =query.filter(DQWhere("height").between(150,170));
+    list = query.all();
+//    qDebug() << query.lastQuery().lastQuery();
+    QVERIFY(list.size() == 2);
 
     // TODO
     // <>
-    // between
     // in
     // like
 

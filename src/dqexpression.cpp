@@ -1,6 +1,7 @@
 #include <QtCore>
 #include <QSharedData>
 #include "dqexpression.h"
+#include "dqwhere_p.h"
 
 class DQExpressionPriv : public QSharedData {
 public:
@@ -8,6 +9,10 @@ public:
     QString m_string;
 
     QMap<QString,QVariant> m_values;
+
+    int m_num;
+
+    bool m_null;
 
     void process(DQWhere& where);
 
@@ -17,12 +22,16 @@ public:
     /// A recursive function to prcess the operand in DQWhere
     QString _process(QVariant v);
 
-    int m_num;
-    bool m_null;
+    QString _process(DQWhereDataPriv& data);
+
+    /// Bind the values , and return its argument name
+    QString bind(QVariant v);
 };
 
 
 static int typeId = qMetaTypeId<DQWhere>();
+
+static int dataPrivTypeId = qMetaTypeId<DQWhereDataPriv>();
 
 DQExpression::DQExpression(){
     d = new DQExpressionPriv();
@@ -96,12 +105,42 @@ QString DQExpressionPriv::_process(QVariant v) {
         } else {
             res = QString("(%1)").arg(_process(w));
         }
-
+    } else if (v.userType() == dataPrivTypeId) {
+        DQWhereDataPriv data = v.value<DQWhereDataPriv>();
+        res = _process(data);
     } else {
-        QString arg = QString(":arg%1").arg(m_num++);
-        m_values[arg] = v;
-        res = arg;
+        res = bind(v);
+//        QString arg = QString(":arg%1").arg(m_num++);
+//        m_values[arg] = v;
+//        res = arg;
     }
 
     return res;
+}
+
+QString DQExpressionPriv::_process(DQWhereDataPriv& data){
+    QString res;
+    QString arg1,arg2;
+    QList<QVariant> list;
+    list = data.list();
+
+    switch (data.type() ) {
+    case DQWhereDataPriv::Between:
+        Q_ASSERT(list.size() == 2);
+        arg1 = bind(list.at(0));
+        arg2 = bind(list.at(1));
+        res = QString("%1 and %2").arg(arg1).arg(arg2);
+        break;
+    default:
+        qWarning() << "DQWhereDataPriv - Unsupported type";
+        break;
+    }
+
+    return res;
+}
+
+QString DQExpressionPriv::bind(QVariant v){
+    QString arg = QString(":arg%1").arg(m_num++);
+    m_values[arg] = v;
+    return arg;
 }
