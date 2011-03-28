@@ -151,8 +151,11 @@ public:
     /// Return a DQWhere object which is the expression of "this" <> "other"
     DQWhere notEqual (QVariant right);
 
-    /// Return a DQWhere object which is the expression ot "this between v1 and v2"
+    /// Return a DQWhere object which is the expression of "this between v1 and v2"
     DQWhere between(QVariant v1,QVariant v2);
+
+    /// Return a DQWhere object which is the expression of "this in (list)"
+    DQWhere in (QList<QVariant> list);
 
     /// Cast the object to QVariant type
     operator QVariant() const;

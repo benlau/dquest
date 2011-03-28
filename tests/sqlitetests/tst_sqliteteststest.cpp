@@ -441,14 +441,25 @@ void SqlitetestsTest::querySelectWhere(){
     QVERIFY(list.size() == 1); // Tester 4;
 
     query.reset();
+    QVERIFY(query.filter(DQWhere("height") != 130 ).all().size() == 3);
+
+    query.reset();
     query =query.filter(DQWhere("height").between(150,170));
     list = query.all();
 //    qDebug() << query.lastQuery().lastQuery();
     QVERIFY(list.size() == 2);
 
+    query.reset();
+    QList<QVariant> range;
+    range << 120 << 130 << 150 << 300;
+
+    query =query.filter(DQWhere("weight").in(range));
+    list = query.all();
+    qDebug() << query.lastQuery().lastQuery();
+    QVERIFY(list.size() == 3);
+
+
     // TODO
-    // <>
-    // in
     // like
 
     QVERIFY(query.remove());

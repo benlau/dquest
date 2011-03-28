@@ -30,6 +30,10 @@ QList<QVariant> DQWhereDataPriv::list(){
     return m_list;
 }
 
+void DQWhereDataPriv::setList(QList<QVariant> list){
+    m_list = list;
+}
+
 DQWhereDataPriv::Type DQWhereDataPriv::type(){
     return m_type;
 }
@@ -223,6 +227,15 @@ DQWhere DQWhere::between(QVariant v1,QVariant v2){
     v.setValue<DQWhereDataPriv>(data);
 
     return expr("between",v);
+}
+
+DQWhere DQWhere::in(QList<QVariant> list){
+    DQWhereDataPriv data(DQWhereDataPriv::In);
+    data.setList(list);
+    QVariant v;
+    v.setValue<DQWhereDataPriv>(data);
+
+    return expr("in",v);
 }
 
 DQWhere::operator QVariant() const{

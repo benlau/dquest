@@ -24,6 +24,8 @@ public:
 
     QList<QVariant> list();
 
+    void setList(QList<QVariant> list);
+
     Type type();
 
 private:

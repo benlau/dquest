@@ -120,9 +120,12 @@ QString DQExpressionPriv::_process(QVariant v) {
 
 QString DQExpressionPriv::_process(DQWhereDataPriv& data){
     QString res;
-    QString arg1,arg2;
+    QString arg,arg1,arg2;
+    QStringList args;
     QList<QVariant> list;
     list = data.list();
+
+    QVariant v;
 
     switch (data.type() ) {
     case DQWhereDataPriv::Between:
@@ -131,6 +134,15 @@ QString DQExpressionPriv::_process(DQWhereDataPriv& data){
         arg2 = bind(list.at(1));
         res = QString("%1 and %2").arg(arg1).arg(arg2);
         break;
+
+    case DQWhereDataPriv::In:
+        foreach (v,list) {
+            arg = bind(v);
+            args << arg;
+        }
+        res = QString("(%1)").arg(args.join(","));
+        break;
+
     default:
         qWarning() << "DQWhereDataPriv - Unsupported type";
         break;
