@@ -466,21 +466,36 @@ void SqlitetestsTest::querySelectWhere(){
 }
 
 void SqlitetestsTest::foreignKeyLoad() {
+    User user;
+    user.name = "foreignKeyLoad";
+    user.userId = "foreignKeyLoad";
+    user.passwd = "12345678";
 
-    DQQuery<Config> query;
+    QVERIFY(user.save());
+    Config config1;
+    config1.key = "autoLogin";
+    config1.value = "true";
+    QVERIFY(!config1.save()); // config.uid can not be null
+    QVERIFY(config1.id->isNull());
 
-    query = DQQuery<Config>().filter(DQWhere("key=","config1")).limit(1);
+    QVERIFY(!config1.uid.isLoaded());
+
+    config1.uid = user; // Test can DQForeignKey read from DQModel.
+    QVERIFY(config1.save());
+
+    QVERIFY(config1.uid.isLoaded());
+
+    DQQuery<Config> query = DQQuery<Config>().filter(DQWhere("key = ", "autoLogin")).limit(1);
 
     QVERIFY(query.exec());
     QVERIFY(query.next());
 
-    Config config = query.record();
-    QVERIFY(config.key() == "config1");
+    Config config2 = query.record();
+    QVERIFY(config2.key() == "autoLogin");
 
-    QVERIFY(!config.uid.isLoaded());
-    QVERIFY(config.uid->name() == "Ben Lau");
-    QVERIFY(config.uid.isLoaded());
-
+    QVERIFY(!config2.uid.isLoaded());
+    QVERIFY(config2.uid->name() == "foreignKeyLoad");
+    QVERIFY(config2.uid.isLoaded());
 }
 
 void SqlitetestsTest::model4() {

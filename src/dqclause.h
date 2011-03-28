@@ -70,6 +70,7 @@ The declaration is equivalent to make this SQL table for SQLITE
 class DQClause
 {
 public:
+    /// Supported type of clause
     enum Type{
         UNIQUE = 0,
         DEFAULT,
@@ -81,12 +82,17 @@ public:
         LAST
     };
 
+    /// Constructs a null DQClause
     DQClause();
+
+    /// Constructs a copy of other
     DQClause(const DQClause& other);
 
+    /// Constructs a DQClause and set the clause type
     DQClause(DQClause::Type type);
-    DQClause(Type type, QVariant value);
 
+    /// Constructs a DQClause and set the clause type and its value
+    DQClause(Type type, QVariant value);
 
     /// TRUE if this type of clause flag is set
     bool testFlag(Type);
@@ -94,6 +100,7 @@ public:
     /// Get the value of the clause type
     QVariant flag(Type);
 
+    /// Set the clause type with its value
     void setFlag(Type type,QVariant val = true);
 
     /// | operation overloading

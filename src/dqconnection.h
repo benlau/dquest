@@ -24,9 +24,16 @@ template <typename T> inline DQModelMetaInfo* dqMetaInfo();
 class DQConnection
 {
 public:
+    /// Constructs a new DQConnetion object
     explicit DQConnection();
+
+    /// Constructs a DQConnection which is the reference to other
     DQConnection(const DQConnection& other);
-    DQConnection &operator=(const DQConnection &rhs);
+
+    /// Refer to other DQConnection and returns a reference to this DQConnection
+    DQConnection &operator=(const DQConnection &other);
+
+    /// Destructor
     ~DQConnection();
 
     /// Operator== overloadig

@@ -30,6 +30,7 @@ public:
     /// The default clause of that field type
     static DQClause clause();
 
+    /// Assign the value from a QVariant type source.
     virtual QVariant operator=(const QVariant &val);
 
     /// Provides access to stored QVariant value
