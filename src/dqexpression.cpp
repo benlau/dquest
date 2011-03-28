@@ -1,32 +1,69 @@
 #include <QtCore>
+#include <QSharedData>
 #include "dqexpression.h"
+
+class DQExpressionPriv : public QSharedData {
+public:
+    /// The string expression
+    QString m_string;
+
+    QMap<QString,QVariant> m_values;
+
+    void process(DQWhere& where);
+
+    /// A recusrive verison of process()
+    QString _process(DQWhere& where);
+
+    /// A recursive function to prcess the operand in DQWhere
+    QString _process(QVariant v);
+
+    int m_num;
+    bool m_null;
+};
+
 
 static int typeId = qMetaTypeId<DQWhere>();
 
 DQExpression::DQExpression(){
-    m_null = true;
+    d = new DQExpressionPriv();
+
+    d->m_null = true;
 }
 
 DQExpression::DQExpression(DQWhere where)
 {
-    process(where);
-    m_null = false;
+    d = new DQExpressionPriv();
+
+    d->process(where);
+    d->m_null = false;
+}
+
+DQExpression::DQExpression(const DQExpression& rhs) : d(rhs.d){
+}
+
+DQExpression & DQExpression::operator=(const DQExpression &rhs){
+    if (this != &rhs)
+        d.operator=(rhs.d);
+    return *this;
+}
+
+DQExpression::~DQExpression(){
 }
 
 bool DQExpression::isNull(){
-    return m_null;
+    return d->m_null;
 }
 
 
 QString DQExpression::string(){
-    return m_string;
+    return d->m_string;
 }
 
 QMap<QString,QVariant> DQExpression::bindValues(){
-    return m_values;
+    return d->m_values;
 }
 
-void DQExpression::process(DQWhere& where){
+void DQExpressionPriv::process(DQWhere& where){
     m_string.clear();
     m_values.clear();
 
@@ -36,7 +73,7 @@ void DQExpression::process(DQWhere& where){
         m_string = _process(where);
 }
 
-QString DQExpression::_process(DQWhere& where) {
+QString DQExpressionPriv::_process(DQWhere& where) {
     if (where.isField())
         return where.toString();
 
@@ -49,7 +86,7 @@ QString DQExpression::_process(DQWhere& where) {
 
 }
 
-QString DQExpression::_process(QVariant v) {
+QString DQExpressionPriv::_process(QVariant v) {
     QString res;
     if (v.userType() == typeId) {
         DQWhere w = v.value<DQWhere>();
