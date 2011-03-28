@@ -1,6 +1,17 @@
 Next release
 
+Feature enhancements:
+ * Supported to create index
+ * Supported to query for more complex filter
+ * New utility class to create data model initial field
+
 Changes:
+
+ DQWhere
+ * Changed the definition of constructor. The left operand pass to constructor is restricted to data model field only. It may not be compatible with old code
+ * Improved the operator overloading mechanism. It become a more powerful class
+ * Supported to query by compare the value on different field. The following query become possible:
+  - select * from table where field1 = field2
 
  DQ_DECLARE_MODEL
  * Supported private field
@@ -13,7 +24,7 @@ Changes:
  * Added operator T() casting. It can be casted to T automatically.
   
  DQBaseField::get() / DQModelMetaInfo::value() - Added a new argument "convert"
- * It is true if the QVariant return should be converted to a type which is suitable for saving.
+ * It is true if the QVariant return should be converted to a type which is suitable for saving. It is designed for type like QStringList which is not supported by SQLite backend by default.
 
  DQConnection
  * Change this connection to be the default connection

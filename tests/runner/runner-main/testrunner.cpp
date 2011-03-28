@@ -4,9 +4,9 @@
 
 TestRunner::TestRunner(QObject *parent) :
     QObject(parent),
-    passed(0),
-    failed(0),
-    skipped(0)
+    m_passed(0),
+    m_failed(0),
+    m_skipped(0)
 {
 }
 
@@ -30,7 +30,7 @@ bool TestRunner::run(QString executable,QStringList args){
 
     if (!findResult) {
         qWarning() << "The test program crashed?";
-        failed++;
+        m_failed++;
     }
 
     return res;
@@ -41,8 +41,8 @@ void TestRunner::parse() {
 
     QRegExp regexp("Totals: ([0-9]*) passed, ([0-9]*) failed, ([0-9]*) skipped");
 
-    while (process->bytesAvailable() >= 2) {
-        QByteArray line = process->readLine(process->bytesAvailable());
+    while (process->canReadLine()) {
+        QByteArray line = process->readLine();
         QString string(line);
         string = string.trimmed();
         if (string.size() == 0)
@@ -51,9 +51,9 @@ void TestRunner::parse() {
         if (regexp.exactMatch(string)){
             string.replace(regexp,"\\1 \\2 \\3");
             QStringList token = string.split(" ");
-            passed += token.at(0).toInt();
-            failed += token.at(1).toInt();
-            skipped += token.at(2).toInt();
+            m_passed += token.at(0).toInt();
+            m_failed += token.at(1).toInt();
+            m_skipped += token.at(2).toInt();
             findResult = true;
         }
     }
@@ -61,10 +61,23 @@ void TestRunner::parse() {
 
 void TestRunner::report() {
    qDebug() << QString("Totals: %1 passed, %2 failed, %3 skipped")
-               .arg(passed)
-               .arg(failed)
-               .arg(skipped).toAscii().constData();
+               .arg(m_passed)
+               .arg(m_failed)
+               .arg(m_skipped).toAscii().constData();
 
    qDebug() << "********* Finished testing *********";
 
 }
+
+int TestRunner::passed(){
+    return m_passed;
+}
+
+int TestRunner::failed(){
+    return m_failed;
+}
+
+int TestRunner::skipped(){
+    return m_skipped;
+}
+
