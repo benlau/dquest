@@ -9,14 +9,21 @@
 template <typename T>
 class DQForeignKey : public DQField<int> {
 public:
+    /// Construct a foreign key field
     DQForeignKey() : model(0){
     }
 
+    /// Destruct the foreign key field
     ~DQForeignKey() {
         if (model)
             delete model;
     }
 
+    /// Copy from other DQForeignKey object.
+    /** It will copy the contained model from other
+      DQForeignKey object. The original model
+      will destroyed.
+     */
     DQForeignKey& operator=(T& rhs) {
         set(rhs.id());
         if (model){

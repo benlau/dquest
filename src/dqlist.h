@@ -18,24 +18,25 @@ class DQList : public DQSharedList
 {
 public:
 
-    /// Default constructor
+    /// Construct an empty DQList instance
     DQList() : DQSharedList() {
         setMetaInfo(dqMetaInfo<T>());
     }
 
+    /// Construct a DQList which is the reference to other DQList instance
     DQList(const DQList &rhs) : DQSharedList(rhs) {
     }
 
+    /// Construct a DQList which is a refernece to a DQSharedList
     DQList(const DQSharedList& rhs ) : DQSharedList(rhs) {
-
     }
 
+    /// Make a reference to other DQList
+    /** It will drop the reference of current data and refer to other DQList
+     */
     DQList &operator=(const DQList &rhs){
         DQSharedList::operator=( rhs);
         return *this;
-    }
-
-    ~DQList(){
     }
 
     /// Returns the item at index position i in the list. i must be a valid index position in the list (i.e., 0 <= i < size()).

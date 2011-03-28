@@ -15,6 +15,7 @@ public:
      */
     DQBaseIndex(DQModelMetaInfo* metaInfo, QString name);
 
+    /// Get the associated model's meta info object
     const DQModelMetaInfo* metaInfo() const;
 
     /// The index name
@@ -23,6 +24,7 @@ public:
     /// Get the list of fields
     QStringList columnDefList() const;
 
+    /// Set the column definition list
     void setColumnDefList(QStringList columnDefList);
 
     /// Append column definition through operator<< overloading
@@ -37,12 +39,18 @@ private:
     QStringList m_columnDefList;
 };
 
-/// SQL Indexing
+/// SQL Indexing information
+/** DQIndex is a data sturctore to create index on SQL database.
+  You have to declare you index using DQIndex then create it
+  by DQConnection.
+
+ */
 template <typename T>
 class DQIndex : public DQBaseIndex {
 public:
-    DQIndex(QString name) : DQBaseIndex(dqMetaInfo<T>() , name)  {
 
+    /// Construct a DQIndex object for specific data model
+    DQIndex(QString name) : DQBaseIndex(dqMetaInfo<T>() , name)  {
     }
 
 

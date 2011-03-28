@@ -14,6 +14,7 @@ template <typename T>
 class DQField : public DQBaseField
 {
 public:
+    /// Default constructor
     DQField(){
     }
 
@@ -22,47 +23,58 @@ public:
         return (QVariant::Type) qMetaTypeId<T>();
     }
 
+    /// Copy the value from a QVariant object
     inline QVariant operator=(const QVariant &val){
         set(val);
         return val;
     }
 
+    /// Compare with other DQField
     inline bool operator==(const DQField& rhs) const {
         return get() == rhs.get();
     }
 
+    /// Compare with QVariant type
     inline bool operator==(const QVariant &rhs) const {
         return get() == rhs;
     }
 
+    /// Compare with QVariant type
     inline bool operator!=(const QVariant &rhs) const {
         return get() != rhs;
     }
 
+    /// Compare with its template type
     inline bool operator==(const T& t) const {
         return get() == t;
     }
 
+    /// Compare with its template type
     inline bool operator!=(const T& t) const {
         return get() != t;
     }
 
+    /// Compare with string type
     inline bool operator==(const char *string) const {
         return get() == QString(string);
     }
 
+    /// Compare with string type
     inline bool operator!=(const char *string) const {
         return get() != QString(string);
     }
 
+    /// Get the value of the field
     inline QVariant get(bool convert = false) const {
         return DQBaseField::get(convert);
     }
 
+    /// Set the value of the field
     inline bool set(QVariant value) {
         return DQBaseField::set(value);
     }
 
+    /// Cast it to the template type
     inline operator T() const {
         QVariant v = get();
         return v.value<T>();

@@ -84,6 +84,7 @@ public:
     /// List of foreign key name
     QStringList foreignKeyNameList();
 
+    /// List of foreign key
     QList<DQModelMetaInfoField> foreignKeyList();
 
     /// No. of field
@@ -100,6 +101,8 @@ public:
 
     /// Get value of a field from a model
     /**
+      @param model The reading model
+      @param field The field name
       @param convert True if the QVariant return should be converted to a type which is suitable for saving.
 
       @see DQBaseField::get()
@@ -107,6 +110,11 @@ public:
     QVariant value(const DQAbstractModel *model,QString field,bool convert = false) const;
 
     /// Get value of a field from a model at index
+    /**
+      @param model The reading model
+      @param index The index of the field. Which is equal to the registration order
+      @param convert True if the QVariant return should be converted to a type which is suitable for saving.
+     */
     QVariant value(const DQAbstractModel *model,int index ,bool convert = false) const;
 
     /// The table name
@@ -122,11 +130,13 @@ public:
     DQAbstractModel* create();
 
 protected:
+    /// Default constructor
     DQModelMetaInfo();
 
     /// Set the table name
     void setName(QString val);
 
+    /// Set the class name
     void setClassName(QString val);
 
     /// Register a field
