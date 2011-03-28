@@ -19,13 +19,13 @@ DQ_DECLARE_MODEL(User,
 
 DQSharedList User::initialData() const {
     DQList<User> res;
+    DQListWriter writer(&res);
 
-    User user;
-    user.userId = "tester1"; res << user;
-    user.userId = "tester2"; res << user;
-    user.userId = "tester3"; res << user;
-    user.userId = "tester4"; res << user;
-    user.userId = "tester5"; res << user;
+    writer << "tester1"
+           << "tester2"
+           << "tester3"
+           << "tester4"
+           << "tester5";
 
     return res;
 }
@@ -85,13 +85,13 @@ int main(int argc, char *argv[])
     connection.createTables(); // Create table for all added model
 
     User tester1;
-    tester1.load(DQWhere("userId = ", "tester1"));
+    tester1.load(DQWhere("userId") == "tester1");
 
     User tester2;
-    tester2.load(DQWhere("userId = ", "tester2"));
+    tester2.load(DQWhere("userId") == "tester2");
 
     User tester3;
-    tester3.load(DQWhere("userId = ", "tester3"));
+    tester3.load(DQWhere("userId") == "tester3");
 
     FriendShip friendship;
     friendship.a = tester1; // Link up tester 1 & tester2
@@ -103,7 +103,7 @@ int main(int argc, char *argv[])
     friendship.save(true); // Insert the link
 
     DQList<FriendShip> list = FriendShip::objects()
-                              .filter(DQWhere("a = ", tester1.id )).all();
+                              .filter(DQWhere("a") ==  tester1.id ).all();
 
     qDebug() << list;
 

@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 
     User user;
 
-    if (!user.load( DQWhere("userId = " , "anonymous") )) { // Load the record from database where userId = anonymous
+    if (!user.load( DQWhere("userId") == "anonymous" )) { // Load the record from database where userId = anonymous
         // The account is not existed. Insert by ourself.
 
         user.userId = "anonymous"; // Assign the field value directly.

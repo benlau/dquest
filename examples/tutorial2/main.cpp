@@ -42,22 +42,18 @@ int main(int argc, char *argv[])
     connection.createTables(); // Create table for all added model
 
     /* Create initial record */
-    User user;
-    QStringList userIdList;
-    QList<qreal> karmaList;
 
-    userIdList << "tester1";  karmaList << 50;
-    userIdList << "tester2";  karmaList << 10;
-    userIdList << "tester3";  karmaList << 60;
-    userIdList << "tester4";  karmaList << 80;
-    userIdList << "tester5";  karmaList << 100;
+    // Initial data to be inserted to database
+    DQList<User> initialData;
+    DQListWriter writer(&initialData);
 
-    int n = userIdList.size();
-    for (int i = 0 ; i < n;i++){
-        user.userId = userIdList.at(i);
-        user.karma = karmaList.at(i);
-        user.save(true); // Force record insert. It will insert a record instead of update the original record.
-    }
+    writer << "tester1" << 50
+           << "tester2" << 10
+           << "tester3" << 60
+           << "tester4" << 80
+           << "tester5" << 100;
+
+    initialData.save(); // save the list of record to database
 
     // Construct query object
     DQQuery<User> query; // A query object for performing database queries and deletion
@@ -65,9 +61,12 @@ int main(int argc, char *argv[])
     // Storage of query result
     DQList<User> list;
 
+    // An instance of user data model
+    User user;
+
     /* Read record one by one */
 
-    query = query.filter(DQWhere("karma > ",50)); // Contruct a query object to find user where karma > 50;
+    query = query.filter(DQWhere("karma") > 50); // Contruct a query object to find user where karma > 50;
     if (query.exec()){ // Execute the query
         while (query.next()) { // contains unread record
             query.recordTo(user); // Save the record
@@ -78,15 +77,15 @@ int main(int argc, char *argv[])
     /* Alternative way */
 
     // Get the list of user where "karam > 50 "
-    list = query.filter(DQWhere("karma > ",50)  ).all();
+    list = query.filter(DQWhere("karma") > 50  ).all();
     qDebug() << list;
 
     // Get the list of user where "karam > 50 and karam <  80"
-    list = query.filter(DQWhere("karma > ",50) & DQWhere("karma < ", 80) ).all();
+    list = query.filter(DQWhere("karma") > 50 && DQWhere("karma") < 80).all();
     qDebug() << list;
 
     // Count no. of record .
-    int count = query.filter(DQWhere("karma > ",50)).count();
+    int count = query.filter(DQWhere("karma") > 50).count();
 
     qDebug() << count; // = 3;
 
