@@ -45,3 +45,9 @@ QVariant DQBaseField::operator() () const {
  void DQBaseField::clear(){
     m_value.clear();
  }
+
+ QDebug operator<<(QDebug dbg, const DQBaseField &field){
+     dbg.nospace() << field.get();
+
+     return dbg.space();
+ }

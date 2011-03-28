@@ -48,5 +48,7 @@ private:
     QVariant m_value;
 };
 
+QDebug operator<<(QDebug dbg, const DQBaseField &field);
+
 
 #endif // DQBASEFIELD_H
