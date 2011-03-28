@@ -27,10 +27,18 @@ class DQWhere;
 
 class DQSharedQuery
 {
-public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection());
+public:
+
+    /// Construct a DQSharedQuery object and set the database connection
+    DQSharedQuery(DQConnection connection = DQConnection::defaultConnection());
+
+    /// Copy constructor
     DQSharedQuery(const DQSharedQuery &);
+
+    /// Assignment operator overloading
     DQSharedQuery &operator=(const DQSharedQuery &);
 
+    /// Default destructor
     ~DQSharedQuery();
 
     /// Set the connection
@@ -111,7 +119,7 @@ public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection(
     /// Execute the query and call specific function on the result
     /**
       @param func The function name (e.g sum , avg , ...)
-      @param fields A list of fields that could be passed to the function
+      @param field The field that should be passed to the function
      */
     QVariant call(QString func , QString field);
 
@@ -127,10 +135,12 @@ public: DQSharedQuery(DQConnection connection = DQConnection::defaultConnection(
     /// Returns the QSqlQuery object being used
     QSqlQuery lastQuery();
 
-    // Reset the query to initial status , but keep the connection and associated object unchanged.
+    /// Reset the query to initial status , but keep the connection and associated object unchanged.
     void reset();
 
 protected:
+
+    /// Set the associated data model
     void setMetaInfo(DQModelMetaInfo *info);
 
     /* The design of DQSharedQuery do not allow user to pass DQModel to any argument.
