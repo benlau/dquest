@@ -138,7 +138,7 @@ public:
       operator will insert a new model instance instead of write to
       the orignal writing model.
 
-Example:
+Example model:
 
 \code
 class HealthCheck : public DQModel {
@@ -156,6 +156,10 @@ DQ_DECLARE_MODEL(HealthCheck,
                  DQ_FIELD(height),
                  DQ_FIELD(weight)
                  );
+\endcode
+
+Example code:
+\code
     DQList<HealthCheck> list;
     DQListWriter writer(&list);
 

@@ -112,6 +112,20 @@ public:
      */
     virtual DQSharedList initialData() const;
 
+    /// Return a query object to retrieve record from this model
+    /** The DQ_MODEL macro will add an objects() function for the derived class.
+      It will return a DQSharedQuery / DQQuery<T> object instance to query
+      data from this data model.
+
+      It provides a faster coding way for you to retrieve data:
+
+      Example code:
+\code
+    qDebug() << User::objects().call("sum","karma").toInt(); // User is a DQModel.
+\endcode
+     */
+    static DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection());
+
 protected:
 
 private:

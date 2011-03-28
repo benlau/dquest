@@ -80,8 +80,12 @@ int main(int argc, char *argv[])
     list = query.filter(DQWhere("karma") > 50  ).all();
     qDebug() << list;
 
-    // Get the list of user where "karam > 50 and karam <  80"
+    // Get the list of user where "karam > 50 and karma <  80"
     list = query.filter(DQWhere("karma") > 50 && DQWhere("karma") < 80).all();
+    qDebug() << list;
+
+    // Get the list of user where "karam >= 50 and karma <= 80"
+    list = query.filter(DQWhere("karma").between(50,80)).all();
     qDebug() << list;
 
     // Count no. of record .
