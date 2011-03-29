@@ -258,6 +258,15 @@ DQWhere DQWhere::in(QList<QVariant> list){
     return expr("in",v);
 }
 
+DQWhere DQWhere::notIn (QList<QVariant> list) {
+    DQWhereDataPriv data(DQWhereDataPriv::In);
+    data.setList(list);
+    QVariant v;
+    v.setValue<DQWhereDataPriv>(data);
+
+    return expr("not in",v);
+}
+
 DQWhere DQWhere::like (QVariant other){
     return expr("like",other);
 }

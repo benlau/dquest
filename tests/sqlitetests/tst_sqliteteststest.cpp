@@ -459,6 +459,9 @@ void SqlitetestsTest::querySelectWhere(){
     qDebug() << query.lastQuery().lastQuery();
     QVERIFY(list.size() == 3);
 
+    query.reset();
+    QVERIFY(query.filter(DQWhere("weight").notIn(range)).all().size() == 1);
+
     QVERIFY(query.filter(DQWhere("name").like("Tester%")).all().size() == 4);
     QVERIFY(query.filter(DQWhere("name").like("Tester")).all().size() == 0);
 

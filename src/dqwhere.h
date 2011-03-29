@@ -172,6 +172,9 @@ public:
     /// Return a DQWhere object which is the expression of "this in (list)"
     DQWhere in (QList<QVariant> list);
 
+    /// Return a DQWhere object which is the expression of "this not in (list)"
+    DQWhere notIn (QList<QVariant> list);
+
     /// Return a DQWhere object which is the expression of "this" "like"  "v"
     DQWhere like (QVariant other);
 
