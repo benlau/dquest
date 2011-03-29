@@ -8,10 +8,12 @@ Feature enhancements:
 Changes:
 
  DQWhere
+ * Deprecated &,| operator overloading. It is replaced by && and ||
  * Changed the definition of constructor. The left operand pass to constructor is restricted to data model field only. It may not be compatible with old code
  * Improved the operator overloading mechanism. It become a more powerful class
  * Supported to query by compare the value on different field. The following query become possible:
   - select * from table where field1 = field2
+ 
 
  DQ_DECLARE_MODEL
  * Supported private field

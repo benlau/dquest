@@ -107,22 +107,7 @@ public:
     DQWhere expr(QString op,QVariant right);
 
     /// Return a DQWhere object which is the result of "this" and "other"
-    /**
-      @deprecated
-      @remarks Please use && in new code
-     */
-    DQWhere operator&(const DQWhere other);
-
-    /// Return a DQWhere object which is the result of "this" and "other"
     DQWhere operator&&(const DQWhere other);
-
-
-    /// Return a DQWhere object which is the result of "this" or "other"
-    /**
-      @deprecated
-      @remarks Please use || in new code
-     */
-    DQWhere operator|(const DQWhere other);
 
     /// Return a DQWhere object which is the result of "this" or "other"
     DQWhere operator||(const DQWhere other);

@@ -225,7 +225,7 @@ void CoretestsTest::where(){
 }
 
 void CoretestsTest::expression(){
-    DQWhere where = DQWhere("key = ","test") & DQWhere("length > ", 5);
+    DQWhere where = DQWhere("key = ","test") && DQWhere("length > ", 5);
     DQExpression expression(where);
 
     qDebug() << expression.string();

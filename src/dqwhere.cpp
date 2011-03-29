@@ -144,6 +144,7 @@ DQWhere DQWhere::expr(QString op,QVariant right){
     return w;
 }
 
+/*
 DQWhere DQWhere::operator&(const DQWhere other) {
     DQWhere w;
 
@@ -154,6 +155,7 @@ DQWhere DQWhere::operator&(const DQWhere other) {
 
     return w;
 }
+*/
 
 DQWhere DQWhere::operator&&(const DQWhere other) {
     DQWhere w;
@@ -166,6 +168,7 @@ DQWhere DQWhere::operator&&(const DQWhere other) {
     return w;
 }
 
+/*
 DQWhere DQWhere::operator|(const DQWhere other) {
     DQWhere w;
 
@@ -176,6 +179,7 @@ DQWhere DQWhere::operator|(const DQWhere other) {
 
     return w;
 }
+*/
 
 DQWhere DQWhere::operator||(const DQWhere other) {
     DQWhere w;
