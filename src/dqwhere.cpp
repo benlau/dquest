@@ -212,6 +212,26 @@ DQWhere DQWhere::operator!=(QVariant right){
     return expr("<>",right);
 }
 
+DQWhere DQWhere::operator+(QVariant right){
+    return expr("*",right);
+}
+
+DQWhere DQWhere::operator-(QVariant right){
+    return expr("*",right);
+}
+
+DQWhere DQWhere::operator*(QVariant right){
+    return expr("*",right);
+}
+
+DQWhere DQWhere::operator/(QVariant right){
+    return expr("/",right);
+}
+
+DQWhere DQWhere::operator%(QVariant right){
+    return expr("%",right);
+}
+
 DQWhere DQWhere::equal(QVariant right){
     return expr("=",right);
 }
@@ -236,6 +256,22 @@ DQWhere DQWhere::in(QList<QVariant> list){
     v.setValue<DQWhereDataPriv>(data);
 
     return expr("in",v);
+}
+
+DQWhere DQWhere::like (QVariant other){
+    return expr("like",other);
+}
+
+DQWhere DQWhere::glob (QVariant other){
+    return expr("glob",other);
+}
+
+DQWhere DQWhere::is (QVariant other){
+    return expr("is",other);
+}
+
+DQWhere DQWhere::isNot(QVariant other){
+    return expr("is not",other);
 }
 
 DQWhere::operator QVariant() const{

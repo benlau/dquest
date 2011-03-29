@@ -59,7 +59,6 @@ private Q_SLOTS:
     /// test different combination of where
     void querySelectWhere();
 
-
     /// Test can it load model through foreign key
     void foreignKeyLoad();
 
@@ -424,10 +423,10 @@ void SqlitetestsTest::querySelectWhere(){
     DQList<HealthCheck> list;
     DQListWriter writer(&list);
 
-    writer << "Tester 1" << 180 << 150 << writer.next()
-           << "Tester 2" << 170 << 120 << writer.next()
-           << "Tester 3" << 150 << 180 << writer.next()
-           << "Tester 4" << 130 << 130 << writer.next();
+    writer << "Tester 1 - Alvin" << 180 << 150 << writer.next()
+           << "Tester 2 - Ben" << 170 << 120 << writer.next()
+           << "Tester 3 - Candy" << 150 << 180 << writer.next()
+           << "Tester 4 - David" << 130 << 130 << writer.next();
 
     list.save();
 
@@ -442,6 +441,8 @@ void SqlitetestsTest::querySelectWhere(){
 
     query.reset();
     QVERIFY(query.filter(DQWhere("height") != 130 ).all().size() == 3);
+    QVERIFY(query.filter(DQWhere("height").isNot(130) ).all().size() == 3);
+    QVERIFY(query.filter(DQWhere("height").is(130) ).all().size() == 1);
 
     query.reset();
     query =query.filter(DQWhere("height").between(150,170));
@@ -458,9 +459,10 @@ void SqlitetestsTest::querySelectWhere(){
     qDebug() << query.lastQuery().lastQuery();
     QVERIFY(list.size() == 3);
 
+    QVERIFY(query.filter(DQWhere("name").like("Tester%")).all().size() == 4);
+    QVERIFY(query.filter(DQWhere("name").like("Tester")).all().size() == 0);
 
-    // TODO
-    // like
+    QCOMPARE(query.filter(DQWhere("name").glob("Tester*")).all().size() , 4);
 
     QVERIFY(query.remove());
 }

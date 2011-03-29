@@ -145,6 +145,21 @@ public:
     /// Return a DQWhere object which is the expression of "this" <> "other"
     DQWhere operator!=(QVariant right);
 
+    /// Return a DQWhere object which is the expression of "this" + "other"
+    DQWhere operator+(QVariant right);
+
+    /// Return a DQWhere object which is the expression of "this" - "other"
+    DQWhere operator-(QVariant right);
+
+    /// Return a DQWhere object which is the expression of "this" * "other"
+    DQWhere operator*(QVariant right);
+
+    /// Return a DQWhere object which is the expression of "this" / "other"
+    DQWhere operator/(QVariant right);
+
+    /// Return a DQWhere object which is the expression of "this" % "other"
+    DQWhere operator%(QVariant right);
+
     /// Return a DQWhere object which is the expression of "this" = "other"
     DQWhere equal(QVariant right);
 
@@ -156,6 +171,18 @@ public:
 
     /// Return a DQWhere object which is the expression of "this in (list)"
     DQWhere in (QList<QVariant> list);
+
+    /// Return a DQWhere object which is the expression of "this" "like"  "v"
+    DQWhere like (QVariant other);
+
+    /// Return a DQWhere object which is the expression of "this" "glob"  "v"
+    DQWhere glob (QVariant other);
+
+    /// Return a DQWhere object which is the expression of "this" "is"  "v"
+    DQWhere is (QVariant other);
+
+    /// Return a DQWhere object which is the expression of "this" "is not"  "v"
+    DQWhere isNot (QVariant other);
 
     /// Cast the object to QVariant type
     operator QVariant() const;
