@@ -71,6 +71,10 @@ void DQListWriter::setConnection(DQConnection val){
     m_connection = val;
 }
 
+DQConnection DQListWriter::connection(){
+    return m_connection;
+}
+
 DQListWriter& DQListWriter::operator<< (const QVariant value){
     append(value);
     return *this;

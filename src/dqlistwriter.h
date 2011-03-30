@@ -182,6 +182,9 @@ Example code:
      */
     void setConnection(DQConnection value);
 
+    /// Get the database connection set for newly created model
+    DQConnection connection();
+
 private:
 
     /// The target list for writing
