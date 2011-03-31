@@ -1,18 +1,23 @@
-Next release
+Release 0.2
+===========
 
 Feature enhancements:
  * Supported to create index
- * Supported to query for more complex filter
+ * Supported to query for more complex rules
  * New utility class to create data model initial field
 
-Changes:
+Critial Changes:
+ * The usage of DQWhere class is changed to adapt a faster way of usage. It is incompatible with 0.1.
+
+Detailed Changes:
 
  DQWhere
- * Deprecated &,| operator overloading. It is replaced by && and ||
- * Changed the definition of constructor. The left operand pass to constructor is restricted to data model field only. It may not be compatible with old code
+ * Deprecated &,| operator overloading and removed from code. It is replaced by && and ||
+ * Changed the definition of constructor. The left operand pass to constructor is restricted to data model field only. It is not compatible with old code
  * Improved the operator overloading mechanism. It become a more powerful class
  * Supported to query by compare the value on different field. The following query become possible:
   - select * from table where field1 = field2
+ * New supported operators: &&,||,+,-,*,/,%,equal,notEqual,between,in,notIn,like,glob,is,isNot.
  
 
  DQ_DECLARE_MODEL

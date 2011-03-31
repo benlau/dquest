@@ -59,7 +59,7 @@ The declaration is equivalent to make this SQL table for SQLITE
     );
   \endcode
 
-   Remarks: Usually you won't use DQClause directly. There have wrapper macro for common clause avilable.
+   @remarks Usually you won't use DQClause directly. There have wrapper macro for common clause available.
 
     @see DQNotNull
     @see DQDefault
@@ -115,12 +115,21 @@ private:
 };
 
 /// "Unique" clause
+/** The database field should be unique. No other record share the same value.
+
+  e.g In a data model of user information , userId should be unique.
+ */
 #define DQUnique DQClause(DQClause::UNIQUE)
 
 /// "NotNull" clause
+/** This field must be set. Otherwise it will reject the write.
+ */
 #define DQNotNull DQClause(DQClause::NOT_NULL)
 
 /// The "Default" clause
+/** Assign the default value of the field. If it is not set,
+  then it will use the assigned value automatically.
+ */
 #define DQDefault(value) DQClause(DQClause::DEFAULT,value)
 
 /// Encode the string

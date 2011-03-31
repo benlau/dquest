@@ -9,6 +9,7 @@
     Therefore you may assign a QVariant to DQField direclty, and you may access
     the stored QVariant by using operator-> or get() function.
 
+    @see DQModel
     @see DQForeignKey
  */
 

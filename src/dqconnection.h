@@ -17,8 +17,53 @@ template <typename T> inline DQModelMetaInfo* dqMetaInfo();
 
 /// Connection to QSqlDatabase
 /**
+  DQuest is an ORM library , but it do not interact with database backend(e.g SQLite) directly. Instead
+  it just use Qt's own database framework and provides the ORM wrapper interface over the framework.
+
+  In order to provide a more flexible way of operation, user have to create a QSqlDatabase by themself.
+
+  Then the DQConnection will hold the connection information to the QSqlDatabase instance. It will
+  store all the supported model , and return a DQSql object to this database for more advanced
+  database operation.
+
   @todo Thread-safe implemention.
   @remarks It is an explicitly shared class
+
+
+Example code:
+\code
+
+int main(int argc, char *argv[])
+{
+    QCoreApplication a(argc, argv);
+
+    // Open database using Qt library
+    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName( "your.db" );
+
+    db.open();
+
+    // Hold a connection to a database. It is needed before any database access using DQModel.
+    DQConnection connection;
+
+    connection.open(db); // Establish the connection to database. It will become the "default connection" shared by all DQModel
+
+    connection.addModel<User>(); // Register a model to the connection
+
+    connection.createTables(); // Create table for all added model if it is not existed.
+
+    ///////////////////
+    // Your own code...
+    ///////////////////
+
+    connection.close(); // Please close the connection on quit.
+
+    return 0;
+
+}
+
+\endcode
+
  */
 
 class DQConnection

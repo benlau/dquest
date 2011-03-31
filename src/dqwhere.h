@@ -3,14 +3,23 @@
 
 #include <QVariant>
 
-/// DQWhere represent an expression used in WHERE statement
+/// The filter rules
 /**
-   The DQWhere object represent an expression / rule in query for filter the result
-   retrived. Each DQWhere object contains three parts : The left operand ,
-   operator and right operand.
+   The DQWhere object represent an expression / rules in query for filter the result
+   retrived.  It represent the expression used in WHERE sql statement.
+
+   Each DQWhere object contains three parts : The left operand ,
+   operator and right operand in an expression.
 
    Operand in DQWhere can be the field name of database model , a value
    or other DQWhere object with more complex rule.
+
+   The operator compare or mathematical calculation between left and right
+   operand. It is stored by QString. Therefore, you may specific the operator
+   by yourself using expr() or using the predefined operator in DQWhere. DQWhere
+   should have supported most of the operator in SQLite.
+
+   For the complete list of supported operaters, please refer to the document of SQLite
 
    Reference: http://www.sqlite.org/lang_expr.html
  */
@@ -29,7 +38,14 @@ public:
       @param op The operator in expression
       @param right The right operand in expression
 
+      Example:
+\code
+    DQWhere filter1("field1","=",1);
+    DQWhere filter2("field2","<",2);
+\endcode
+
       @deprecated
+      @remarks It is a deprecated way. It is recommended to use DQWhere(QString field) constructor
      */
     DQWhere(QString field,QString op, QVariant right);
 
@@ -46,6 +62,7 @@ public:
 \endcode
 
     @deprecated
+    @remarks It is a deprecated way. It is recommended to use DQWhere(QString field) constructor
      */
     DQWhere(QString fieldAndOp , QVariant right);
 
@@ -59,6 +76,8 @@ public:
 
 \code
     DQWhere field("price"); // The price field in a data model
+
+    qDebug() << field.isField(); // The value is true
 
     DQWhere filter = field < 3;
 

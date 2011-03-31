@@ -23,6 +23,10 @@ class DQSqlPriv;
    lastQuery() be overriden in another thread. A deep copy of object
    will be created when error.
 
+   User are not supposed to use this class except for error checking. User
+   may call lastQuery() to retreive the detailed information of last
+   query. It is useful to debug SQL level error.
+
    @remarks The thread safe capability is not verified.
    @remarks It is implicitly shared classes
  */
