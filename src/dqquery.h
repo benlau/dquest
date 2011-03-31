@@ -12,8 +12,11 @@ template <typename T>
 class DQQuery : public DQSharedQuery{
 public:
 
+    /// Construct q DQQuery and use default connection
+    DQQuery();
+
     /// Construct a DQQuery object and set the database connection
-    DQQuery(DQConnection connection = DQConnection::defaultConnection())  : DQSharedQuery(connection) {
+    DQQuery(DQConnection connection)  : DQSharedQuery(connection) {
         setMetaInfo(dqMetaInfo<T>());
     }
 
@@ -49,5 +52,10 @@ public:
     }
 
 };
+
+template <typename T>
+DQQuery<T>::DQQuery() : DQSharedQuery() {
+    setMetaInfo(dqMetaInfo<T>());
+}
 
 #endif // DQQUERY_H

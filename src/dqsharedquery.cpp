@@ -8,6 +8,10 @@
 #include "dqsqlstatement.h"
 #include "dqexpression.h"
 
+DQSharedQuery::DQSharedQuery() : data(new DQSharedQueryPriv) {
+    data->connection = DQConnection::defaultConnection();
+}
+
 DQSharedQuery::DQSharedQuery(DQConnection connection) : data(new DQSharedQueryPriv)
 {
     data->connection = connection;

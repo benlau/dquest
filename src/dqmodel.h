@@ -124,7 +124,13 @@ public:
     qDebug() << User::objects().call("sum","karma").toInt(); // User is a DQModel.
 \endcode
      */
-    static DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection());
+    static DQSharedQuery objects();
+    /// Return a query object to retrieve record from this model for specific database connection
+    /**
+        @param connecion The connection
+        It is a overloaded function
+     */
+    static DQSharedQuery objects(DQConnection connection);
 
 protected:
 
@@ -195,6 +201,10 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
                 meta = dqMetaInfo<MODEL>(); \
             } \
             return meta; \
+        } \
+        inline DQSharedQuery MODEL::objects() { \
+            DQQuery<MODEL> query; \
+            return query; \
         } \
         inline DQSharedQuery MODEL::objects(DQConnection connection) { \
             DQQuery<MODEL> query(connection); \
@@ -286,7 +296,8 @@ public: \
     virtual inline QString tableName() const ; \
     static inline QString TableName(); \
     virtual inline DQModelMetaInfo *metaInfo() const; \
-    static inline DQSharedQuery objects(DQConnection connection = DQConnection::defaultConnection()); \
+    static inline DQSharedQuery objects(); \
+    static inline DQSharedQuery objects(DQConnection connection); \
     template <class T> friend class DQModelMetaInfoHelper;\
 
 /// Print model field for debugging

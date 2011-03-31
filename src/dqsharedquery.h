@@ -29,8 +29,11 @@ class DQSharedQuery
 {
 public:
 
+    /// Construct a DQSharedQuery object and use the default database connection
+    DQSharedQuery();
+
     /// Construct a DQSharedQuery object and set the database connection
-    DQSharedQuery(DQConnection connection = DQConnection::defaultConnection());
+    DQSharedQuery(DQConnection connection);
 
     /// Copy constructor
     DQSharedQuery(const DQSharedQuery &);
