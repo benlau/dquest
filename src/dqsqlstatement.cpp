@@ -21,7 +21,7 @@ QString DQSqlStatement::createIndexIfNotExists(const DQBaseIndex& index){
 
     QString sql = createIndex.arg(index.name())
                              .arg(index.metaInfo()->name())
-                             .arg(index.columnDefList().join("\n"));
+                             .arg(index.columnDefList().join(","));
 
     return sql;
 }

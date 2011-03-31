@@ -127,10 +127,11 @@ void SqlitetestsTest::initTestCase()
 
     QVERIFY( connect.createTables() ); // recreate table
 
-    DQIndex<Model1> index1("index1");
-    index1 << "value";
+    /* Create index */
 
-//    QVERIFY(sql.createIndexIfNotExists(index1));
+    DQIndex<Model1> index1("index1");
+    index1 << "key" << "value";
+
     QVERIFY(connect.createIndex(index1));
 
     // drop the index
