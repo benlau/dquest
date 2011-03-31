@@ -153,6 +153,10 @@ bool DQConnection::createIndex(const DQBaseIndex &index) {
     return d->m_sql.createIndexIfNotExists(index);
 }
 
+bool DQConnection::dropIndex(QString name){
+    return d->m_sql.dropIndexIfExists(name);
+}
+
 DQSql& DQConnection::sql(){
     return d->m_sql;
 }

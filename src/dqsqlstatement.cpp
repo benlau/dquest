@@ -26,6 +26,14 @@ QString DQSqlStatement::createIndexIfNotExists(const DQBaseIndex& index){
     return sql;
 }
 
+QString DQSqlStatement::dropIndexIfExists(QString name){
+    QString createIndex = "DROP INDEX IF EXISTS %1;";
+
+    QString sql = createIndex.arg(name);
+
+    return sql;
+}
+
 QString DQSqlStatement::insertInto(DQModelMetaInfo *info,QStringList fields){
     return _insertInto(info,"INSERT",fields);
 }

@@ -67,9 +67,14 @@ private:
     DQIndex<HealthCheck> index2("index2"); // Going to create an index called "index2"
     index2 << "weight";
 
+    DQIndex<HealthCheck> index3("index3"); // Going to create an index called "index3"
+    index3 << "height" << "weight"; // Index on height and weight
+
     connection.createIndex(index1);
 
     connection.createIndex(index2);
+
+    connection.createIndex(index3);
 
 \endcode
 

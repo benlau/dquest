@@ -50,9 +50,14 @@ int main(int argc, char *argv[])
     DQIndex<HealthCheck> index2("index2"); // Going to create an index called "index2"
     index2 << "weight";
 
+    DQIndex<HealthCheck> index3("index3"); // Going to create an index called "index3"
+    index3 << "height" << "weight"; // Index on height and weight
+
     connection.createIndex(index1);
 
     connection.createIndex(index2);
+
+    connection.createIndex(index3);
 
     connection.close();
 
@@ -72,6 +77,7 @@ recordDate DATE
 );
 CREATE INDEX index1 on healthcheck (height);
 CREATE INDEX index2 on healthcheck (weight);
+CREATE INDEX index3 on healthcheck (height,weight);
 
 For how to use index to optimize the query result , please refer to this document:
 http://www.sqlite.org/optoverview.html

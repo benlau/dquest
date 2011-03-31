@@ -151,6 +151,8 @@ public:
     /// Create index
     bool createIndex(const DQBaseIndex &index);
 
+    bool dropIndex(QString name);
+
     /// Get the SQL interface that you may run predefined sql operations on the database
     DQSql& sql();
 

@@ -62,6 +62,9 @@ public:
     /// Create index
     bool createIndexIfNotExists(const DQBaseIndex &index);
 
+    /// Drop index
+    bool dropIndexIfExists(QString name);
+
     /// Is the model exists on database?
     bool exists(DQModelMetaInfo* info);
 

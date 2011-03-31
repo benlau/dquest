@@ -45,6 +45,9 @@ public:
     /// Create index statement
     virtual QString createIndexIfNotExists(const DQBaseIndex& index);
 
+    /// Drop the index
+    virtual QString dropIndexIfExists(QString name);
+
     /// Insert into statement
     /**
       @param with_id TRUE if the "id" field should be included.

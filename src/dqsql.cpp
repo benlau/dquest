@@ -94,6 +94,14 @@ bool DQSql::createIndexIfNotExists(const DQBaseIndex &index) {
     return d->m_lastQuery.exec(sql);
 }
 
+bool DQSql::dropIndexIfExists(QString name){
+    QString sql = d->m_statement->dropIndexIfExists(name);
+
+    d->m_lastQuery = query();
+
+    return d->m_lastQuery.exec(sql);
+}
+
 bool DQSql::exists(DQModelMetaInfo* info){
     if (d->m_db.driverName() != "QSQLITE") {
         qWarning() << "Only QSQLITE dirver is supported.";

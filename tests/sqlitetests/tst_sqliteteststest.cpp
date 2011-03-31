@@ -132,6 +132,9 @@ void SqlitetestsTest::initTestCase()
 
 //    QVERIFY(sql.createIndexIfNotExists(index1));
     QVERIFY(connect.createIndex(index1));
+
+    // drop the index
+    QVERIFY(connect.dropIndex(index1.name()));
 }
 
 void SqlitetestsTest::cleanupTestCase()
