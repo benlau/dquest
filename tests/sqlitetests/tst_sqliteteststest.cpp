@@ -141,6 +141,7 @@ void SqlitetestsTest::initTestCase()
 void SqlitetestsTest::cleanupTestCase()
 {
     connect.close();
+    db.close();
 }
 
 void SqlitetestsTest::verifyCreateTable(){
