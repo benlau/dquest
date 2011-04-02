@@ -132,6 +132,16 @@ public:
      */
     static DQSharedQuery objects(DQConnection connection);
 
+    /// Get the meta info object of the model (static function)
+    /**
+      It is the static version of the metaInfo() function. You don't
+      need to create it for the derived class as long as you have
+      put the DQ_MODEL macro line in the class declaration.
+
+      @remarks DQModel did not implement this function.
+     */
+    static DQModelMetaInfo* staticMetaInfo();
+
 protected:
 
 private:
@@ -209,6 +219,9 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
         inline DQSharedQuery MODEL::objects(DQConnection connection) { \
             DQQuery<MODEL> query(connection); \
             return query; \
+        } \
+        inline DQModelMetaInfo * MODEL::staticMetaInfo() { \
+            return dqMetaInfo<MODEL>();\
         } \
         inline QDebug operator<< (QDebug d, const MODEL& model) { \
             d.nospace() << &model; \
@@ -298,6 +311,7 @@ public: \
     virtual inline DQModelMetaInfo *metaInfo() const; \
     static inline DQSharedQuery objects(); \
     static inline DQSharedQuery objects(DQConnection connection); \
+    static inline DQModelMetaInfo* staticMetaInfo(); \
     template <class T> friend class DQModelMetaInfoHelper;\
 
 /// Print model field for debugging

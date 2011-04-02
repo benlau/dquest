@@ -110,6 +110,9 @@ void CoretestsTest::metaInfo(){
     QVERIFY(initialData.at(0)->key == "initial0");
     QVERIFY(initialData.at(4)->key == "initial4");
 
+    // Test staticMetaInfo
+    QVERIFY(Model2::staticMetaInfo() == dqMetaInfo<Model2>() );
+
 }
 
 void CoretestsTest::modelCast() {
