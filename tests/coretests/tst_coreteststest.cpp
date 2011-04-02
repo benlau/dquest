@@ -116,13 +116,13 @@ void CoretestsTest::metaInfo(){
 }
 
 void CoretestsTest::modelCast() {
-    DQAbstractModel *am = dqMetaInfo<Model1>()->create();
+    DQAbstractModel *am = dqMetaInfo<Model2>()->create();
 
-    Model1 *m1 = dqmodel_cast<Model1>(am);
-    QVERIFY(m1);
+    Model1 *m1 = dqmodel_cast<Model1*>(am);
+    QVERIFY(!m1);
 
-    Model2 *m2 = dqmodel_cast<Model2>(am);
-    QVERIFY(!m2);
+    Model2 *m2 = dqmodel_cast<Model2*>(am);
+    QVERIFY(m2);
 
     delete am;
 }

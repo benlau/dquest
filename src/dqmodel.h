@@ -138,7 +138,6 @@ public:
       need to create it for the derived class as long as you have
       put the DQ_MODEL macro line in the class declaration.
 
-      @remarks DQModel did not implement this function.
      */
     static DQModelMetaInfo* staticMetaInfo();
 
