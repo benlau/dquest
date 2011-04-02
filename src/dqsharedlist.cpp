@@ -20,7 +20,7 @@ public:
         }
         */
         list.clear();
-        metaInfo = 0;
+//        metaInfo = 0;
     }
 
     QList < QSharedPointer<DQAbstractModel> > list;
