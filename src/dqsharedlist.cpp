@@ -45,12 +45,20 @@ DQSharedList::~DQSharedList()
 {
 }
 
+bool DQSharedList::isEmpty(){
+    return data->list.isEmpty();
+}
+
 int DQSharedList::size() const{
     return data->list.size();
 }
 
 DQAbstractModel* DQSharedList::at(int i) const{
     return data->list.value(i).data();
+}
+
+DQAbstractModel* DQSharedList::last() const{
+    return data->list.last().data();
 }
 
 bool DQSharedList::append(DQAbstractModel* model){
@@ -61,6 +69,16 @@ bool DQSharedList::append(DQAbstractModel* model){
 
     QSharedPointer<DQAbstractModel>  ptr(model);
     data->list << ptr;
+    return true;
+}
+
+bool DQSharedList::append(DQSharedList& other){
+    if (data->metaInfo &&
+        other.metaInfo() != data->metaInfo){
+        return false;
+    }
+
+    data->list.append(other.data->list);
     return true;
 }
 

@@ -1,3 +1,10 @@
+Next release
+============
+
+ DQList
+ * Bug Fix on clear() function. It should not clear the binded meta info
+ * added append(DQList<T>)  , last()
+
 Release 0.2
 ===========
 
