@@ -262,4 +262,18 @@ inline QString _dqModelTableName(QString model){
 
 #define DQ_MODEL_NAME(X) _dqModelTableName<X>(#X)
 
+/// Returns the given abstract model cast to type T* if the model is of type T; otherwise returns 0. If model is 0 then it will also return 0.
+/**
+  The class T must inherit (directly or indirectly) DQModel and be declared with the DQ_MODEL macro.
+ */
+template <typename T>
+inline T* dqmodel_cast(DQAbstractModel* model) {
+    T* res = 0;
+    if (model->metaInfo() == dqMetaInfo<T>()){
+        res = static_cast<T*>(model);
+    }
+
+    return res;
+}
+
 #endif // DQMODELMETATYPE_H

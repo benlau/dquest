@@ -32,6 +32,9 @@ private Q_SLOTS:
 
     void metaInfo();
 
+    /// test dqmodel_cast()
+    void modelCast();
+
     void sqliteColumnConstraint();
     void sqlCreateTable();
 
@@ -107,6 +110,18 @@ void CoretestsTest::metaInfo(){
     QVERIFY(initialData.at(0)->key == "initial0");
     QVERIFY(initialData.at(4)->key == "initial4");
 
+}
+
+void CoretestsTest::modelCast() {
+    DQAbstractModel *am = dqMetaInfo<Model1>()->create();
+
+    Model1 *m1 = dqmodel_cast<Model1>(am);
+    QVERIFY(m1);
+
+    Model2 *m2 = dqmodel_cast<Model2>(am);
+    QVERIFY(!m2);
+
+    delete am;
 }
 
 void CoretestsTest::sqliteColumnConstraint(){
