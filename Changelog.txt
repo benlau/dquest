@@ -1,6 +1,8 @@
 Next release
 ============
 
+ Add dqmodel_cast<T>() function
+
  DQList
  * Bug Fix on clear() function. It should not clear the binded meta info
  * added append(DQList<T>)  , last()
