@@ -155,6 +155,9 @@ public:
     QString op();
 
     /// Convert the expression to string
+    /**
+      @remarks Never pass the result from this function to SQL backend. It can't prevent SQL injection. DQuest use another mechanism to convert DQWhere to sql statement and it will prevent SQL injection
+     */
     QString toString();
 
     /// Form an expression which is the result of doing an operation between "this" and "other"

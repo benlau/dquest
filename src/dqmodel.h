@@ -227,9 +227,9 @@ new DQModelMetaInfoField(#field,offsetof(Table,field),m.field.type(), m.field.cl
             return d.space(); \
         }
 
-/// Declare a model
+/// Declare a data model
 /**
-  For example,
+  Example usage:
 
 \code
 
@@ -253,6 +253,10 @@ DQ_DECLARE_MODEL(User,
                  );
 
 \endcode
+
+@param MODEL The declare model type. It must be inherit DQModel directly.
+@param NAME The table name in database. Usually it should not be equal to the model name
+@param FIELDS List of fields on this model. Each field must be declared with DQ_FIELD macro
 
 @see DQ_MODEL
 @see DQ_FIELD
