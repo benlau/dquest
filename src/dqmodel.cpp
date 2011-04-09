@@ -10,8 +10,10 @@
 //#define TABLE_NAME "Model without DQ_MODEL"
 #define TABLE_NAME ""
 
+/// Prepare the connection , if it is null , use default connection
+#define PREPARE_CONN() {if (m_connection.isNull()) m_connection = DQConnection::defaultConnection(); }
 
-DQModel::DQModel() : m_connection ( DQConnection::defaultConnection()){
+DQModel::DQModel() {
 
 }
 
@@ -35,10 +37,13 @@ void DQModel::setConnection(DQConnection connection){
 }
 
 DQConnection DQModel::connection(){
+    PREPARE_CONN();
     return m_connection;
 }
 
 bool DQModel::save(bool forceInsert,bool forceAllField) {
+    PREPARE_CONN();
+
     if (!clean() ) {
         return false;
     }
@@ -82,6 +87,7 @@ bool DQModel::save(bool forceInsert,bool forceAllField) {
 }
 
 bool DQModel::load(DQWhere where){
+    PREPARE_CONN();
     bool res = false;
 
     _DQMetaInfoQuery query( metaInfo() ,  m_connection);
@@ -102,6 +108,8 @@ bool DQModel::load(DQWhere where){
 }
 
 bool DQModel::remove() {
+    PREPARE_CONN();
+
     if (id->isNull())
         return false;
 
