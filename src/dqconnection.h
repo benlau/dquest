@@ -165,20 +165,8 @@ public:
      */
     static DQConnection defaultConnection(DQModelMetaInfo* metaInfo);
 
-    /// Get the default connection object for specific data model
-    /**
-
-      In order to simplify the process for single database application ,
-
-      In single database application, no matter what argument is passed,
-      the result is same as defaultConnection.
-
-      But in multiple database condition application , the result could be
-      different depend on the meta info instance.
-     */
-
-    /// Change this connection to be the default connection
-    void setToDefaultConnection();
+    /// Change the default connection for specific model
+    void setDefaultConnection(DQModelMetaInfo* metaInfo);
 
     /// Run "create table" for all added model.
     /**

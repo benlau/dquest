@@ -25,9 +25,6 @@ class DQConnectionPriv : public QSharedData
     QMutex mutex;
 };
 
-/// The default connection shared for all objects
-static DQConnection m_defaultConnection;
-
 /// The mapping of default connection
 static QMap<DQModelMetaInfo* , DQConnection> mapping;
 
@@ -71,6 +68,7 @@ bool DQConnection::open(QSqlDatabase db){
         return false;
     }
 
+    /*
     if (!m_defaultConnection.isOpen()
         && this != &m_defaultConnection
         ) {
@@ -82,6 +80,7 @@ bool DQConnection::open(QSqlDatabase db){
         d.operator = (m_defaultConnection.d); // It become the default connection
 
     }
+    */
 
     if (isNull()) {
         d = new DQConnectionPriv();
@@ -149,10 +148,8 @@ DQConnection DQConnection::defaultConnection(DQModelMetaInfo* metaInfo){
     return ret;
 }
 
-void DQConnection::setToDefaultConnection(){
-    if (this != &m_defaultConnection) {
-        m_defaultConnection.d.operator =(d);
-    }
+void DQConnection::setDefaultConnection(DQModelMetaInfo* metaInfo) {
+    mapping[metaInfo] = *this;
 }
 
 bool DQConnection::createTables(){
