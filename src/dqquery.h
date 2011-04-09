@@ -54,7 +54,7 @@ public:
 template <typename T>
 DQQuery<T>::DQQuery() : DQSharedQuery() {
     setMetaInfo(dqMetaInfo<T>());
-    setConnection(DQConnection::defaultConnection());
+    setConnection(DQConnection::defaultConnection(dqMetaInfo<T>()));
 }
 
 template <typename T>

@@ -3,12 +3,14 @@
 #include <QCoreApplication>
 #include <QSqlError>
 #include <QMutex>
+#include <QMap>
 
 #include "dqmodel.h"
 #include "dqconnection.h"
 #include "dqsqlitestatement.h"
 #include "dqsql.h"
 
+/// The private database structure for DQConnection
 class DQConnectionPriv : public QSharedData
 {
   public:
@@ -24,7 +26,10 @@ class DQConnectionPriv : public QSharedData
 };
 
 /// The default connection shared for all objects
-DQConnection m_defaultConnection;
+static DQConnection m_defaultConnection;
+
+/// The mapping of default connection
+static QMap<DQModelMetaInfo* , DQConnection> mapping;
 
 DQConnection::DQConnection()
 {
@@ -102,6 +107,12 @@ void DQConnection::close(){
     if (!d)
         return;
     d->m_sql.setDatabase(QSqlDatabase());
+
+    foreach (DQModelMetaInfo* metaInfo , d->m_models) {
+        if (mapping.contains(metaInfo)) {
+            mapping.take(metaInfo);
+        }
+    }
 }
 
 bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
@@ -116,12 +127,26 @@ bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
     if (!d->m_models.contains(metaInfo)) {
         d->m_models << metaInfo;
         res = true;
+
+        if (!mapping.contains(metaInfo)) { // set as default connection
+            mapping[metaInfo] = *this;
+        }
     }
     return res;
 }
 
-DQConnection DQConnection::defaultConnection(){
-    return m_defaultConnection;
+DQConnection DQConnection::defaultConnection(DQModelMetaInfo* metaInfo){
+    DQConnection ret;
+    if (!metaInfo)
+        return ret;
+
+    if (mapping.contains(metaInfo)) {
+        ret = mapping[metaInfo];
+    } else {
+        qWarning() << QString("Model %1 is not added to any connection yet").arg(metaInfo->name());
+    }
+
+    return ret;
 }
 
 void DQConnection::setToDefaultConnection(){
@@ -151,7 +176,9 @@ bool DQConnection::createTables(){
             DQSharedList initialData = info->initialData();
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {
-                initialData.at(i)->save();
+                DQModel *model = static_cast<DQModel*>(initialData.at(i));
+                model->setConnection(*this);
+                model->save();
             }
         }
     }

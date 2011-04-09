@@ -11,10 +11,9 @@
 #define TABLE_NAME ""
 
 /// Prepare the connection , if it is null , use default connection
-#define PREPARE_CONN() {if (m_connection.isNull()) m_connection = DQConnection::defaultConnection(); }
+#define PREPARE_CONN() {if (m_connection.isNull()) m_connection = DQConnection::defaultConnection(metaInfo()); }
 
 DQModel::DQModel() {
-
 }
 
 DQModel::DQModel(DQConnection connection) : m_connection(connection)

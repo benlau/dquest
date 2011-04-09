@@ -81,7 +81,7 @@ private Q_SLOTS:
 
 private:
     DQConnection conn1,conn2;
-    QSqlDatabase db;
+    QSqlDatabase db,db2;
 };
 
 SqlitetestsTest::SqlitetestsTest()
@@ -93,14 +93,12 @@ void SqlitetestsTest::initTestCase()
     verifyCreateTable();
     foreignKey();
 
-    DQConnection defaultConnection = DQConnection::defaultConnection();
+//    DQConnection defaultConnection = DQConnection::defaultConnection();
 
     db = QSqlDatabase::addDatabase("QSQLITE");
     db.setDatabaseName( "test1.db" );
 
     QVERIFY( db.open() );
-
-//    QVERIFY( !defaultConnection.isOpen());
 
     QVERIFY (conn1.isNull());
     QVERIFY (conn1.open(db) );
@@ -148,12 +146,13 @@ void SqlitetestsTest::initTestCase()
 
     /* Second connection */
 
-    QSqlDatabase db2 = QSqlDatabase::addDatabase("QSQLITE","second-connection");
+    db2 = QSqlDatabase::addDatabase("QSQLITE","second-connection");
     db2.setDatabaseName( "test2.db" );
 
     QVERIFY( db2.open() );
     QVERIFY (conn2.open(db2) );
     QVERIFY (conn2.addModel<User>() );
+    QVERIFY (conn2.addModel<Conn2Model>() );
     QVERIFY( conn2.dropTables() );
 
     QVERIFY( conn2.createTables() ); // recreate table
@@ -164,6 +163,8 @@ void SqlitetestsTest::cleanupTestCase()
 {
     conn1.close();
     db.close();
+    conn2.close();
+    db2.close();
 }
 
 void SqlitetestsTest::verifyCreateTable(){
@@ -236,14 +237,19 @@ void SqlitetestsTest::insertInto(){
     sql = statement.replaceInto(info,info->fieldNameList());
     QVERIFY( sql == "REPLACE INTO model2 (id,key,value) values (:id,:key,:value);" );
 
+    /* defaultConnection(void) is deprecated
     DQConnection connection = DQConnection::defaultConnection();
     QVERIFY (connection.isOpen() );
-
+    */
 
 }
 
 void SqlitetestsTest::dqModelSave(){
+    DQConnection conn = DQConnection::defaultConnection(Model2::staticMetaInfo());
+    QVERIFY(conn == conn1);
+
     Model1 model1;
+    QVERIFY(model1.connection() == conn1);
 
     QVERIFY(model1.id->isNull());
 
@@ -674,6 +680,25 @@ void SqlitetestsTest::secondConnection() {
 
     QVERIFY(User::objects().count() == 0);
     QVERIFY(User::objects(conn2).count() == 5);
+
+    // Test Conn2Model which is added to conn2 only
+
+    QVERIFY(Conn2Model::objects(conn1).remove() == false); // As it is not added to conn1
+    QVERIFY(Conn2Model::objects(conn2).remove());
+
+    QVERIFY(Conn2Model::objects().remove()); // The default connection for Conn2Model should be conn2. DQQury works.
+
+    DQList<Conn2Model> list2;
+    writer = DQListWriter(&list2);
+
+    writer << 1 << 2 << 3;
+    QVERIFY(list2.save()); // DQList save works
+
+    Conn2Model model;
+    QVERIFY(model.load(DQWhere("seq") == 1)); // DQModel.load works
+
+    model.seq = 4;
+    QVERIFY(model.save()); // DQModel.save works
 
 }
 

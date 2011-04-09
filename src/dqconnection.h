@@ -119,27 +119,63 @@ public:
     /// Add a model to the connection
     bool addModel(DQModelMetaInfo* metaInfo);
 
-    /// Get the default connection object
+    /// Get the default connection for specific model.
     /**
-        Default connection is the first opened connection. Any DQConnection instance
-        can become the default connection as long as it is the first one to call open().
+        DQuest support multiple database application design. It may
+        hold multiple DQConnection binded to different QSqlDatabase.
 
-        It is fine to call defaultConnection() before to open any connection. The result
-        returned is still valid and usable after a connection is opened.
+        DQModel derived class can be added to any connection without limitation.
+        You may specific the connection / database by using DQModel::setConnection().
 
-        For example,
+        Without specific the connection , DQModel and DQQuery will choose the "default
+        connection" returned from this function.
+
+        In single database application, you may skip the setConnection() as the unique
+        connection is always be chosen as the default connection. That is why it is rarely to
+        see setConnection() in DQuest tutorial code.
+
+        In multiple database application , you should take care with the order of addModel()
+        called. When a data model is passed to the addModel(), DQConnection will check did it ever added
+        with other connection instance. If it is the first time to be added to connection,
+        the current connection will be chosen as the model's default connection.
+
+        Consider the following code:
 \code
-        DQConnection d = defaultConnection();
-        DQConnection c;
+    DQConnection conn1;
+    DQConnection conn2;
 
-        qDebug() << d.isOpen(); // False , as it is not opened.
+    conn1.addModel<Model1>();
+    conn1.addModel<ShareModel>();
 
-        c.open(database); // c become the default connection
-
-        qDebug() << d.isOpen(); // The result will become true , both of "c" and "d" are also the default connection.
+    conn2.addModel<Model2>();
+    conn2.addModel<ShareModel>();
 \endcode
+
+    Model1 is added to conne1 only, conn1 will be the default connection for Model1.
+
+    The situation of Model2 is similar , it's default connection is conn2.
+
+    ShareModel is added to both of conn1 and conn2. However, it is added to
+    conn1 first. Therefore its default connection will also be conn1.
+
+    You may call the default connection later by using setDefaultConnection()
+
+    @return The default connection for the model. If the model is never added to any connection yet, it will report wearning and return a non-opened connection
+
      */
-    static DQConnection defaultConnection();
+    static DQConnection defaultConnection(DQModelMetaInfo* metaInfo);
+
+    /// Get the default connection object for specific data model
+    /**
+
+      In order to simplify the process for single database application ,
+
+      In single database application, no matter what argument is passed,
+      the result is same as defaultConnection.
+
+      But in multiple database condition application , the result could be
+      different depend on the meta info instance.
+     */
 
     /// Change this connection to be the default connection
     void setToDefaultConnection();
