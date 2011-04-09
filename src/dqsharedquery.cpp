@@ -9,12 +9,7 @@
 #include "dqexpression.h"
 
 DQSharedQuery::DQSharedQuery() : data(new DQSharedQueryPriv) {
-    data->connection = DQConnection::defaultConnection();
-}
-
-DQSharedQuery::DQSharedQuery(DQConnection connection) : data(new DQSharedQueryPriv)
-{
-    data->connection = connection;
+//    data->connection = DQConnection::defaultConnection();
 }
 
 DQSharedQuery::DQSharedQuery(const DQSharedQuery &rhs) : data(rhs.data)
@@ -30,6 +25,10 @@ DQSharedQuery &DQSharedQuery::operator=(const DQSharedQuery &rhs)
 
 DQSharedQuery::~DQSharedQuery()
 {
+}
+
+bool DQSharedQuery::isNull() {
+    return data->metaInfo == 0;
 }
 
 void DQSharedQuery::setConnection(DQConnection connection) {

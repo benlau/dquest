@@ -7,8 +7,9 @@
 
 class _DQMetaInfoQuery : public DQSharedQuery {
 public:
-    inline _DQMetaInfoQuery(DQModelMetaInfo *metaInfo,DQConnection connection) : DQSharedQuery(connection) , m_metaInfo(metaInfo){
+    inline _DQMetaInfoQuery(DQModelMetaInfo *metaInfo,DQConnection connection) : DQSharedQuery() , m_metaInfo(metaInfo){
         setMetaInfo(metaInfo);
+        setConnection(connection);
     }
 
     _DQMetaInfoQuery& operator=(const DQSharedQuery &rhs ) {

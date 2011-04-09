@@ -51,6 +51,9 @@ private Q_SLOTS:
      */
     void prepareInitRecords();
 
+    /// test basic function of DQQuery / DQSharedQuery
+    void query();
+
     void select();
 
     void queryAll();
@@ -367,6 +370,17 @@ void SqlitetestsTest::prepareInitRecords() {
     QVERIFY(total == 130);
     QVariant avg = examResultQuery.filter(DQWhere("uid = " , user.id() )).call("avg",QStringList("mark"));
     QVERIFY(avg == 65);
+
+}
+
+void SqlitetestsTest::query(){
+    DQSharedQuery sharedquery;
+
+    QVERIFY(sharedquery.isNull());
+
+    DQQuery<Model1> query;
+
+    QVERIFY(!query.isNull());
 
 }
 
