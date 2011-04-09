@@ -97,8 +97,14 @@ public:
     /// Close the connection to database
     void close();
 
-    /// Return TRUE if the database is opened,otherwise it is false
+    /// Return TRUE if the connection is opened successfully,otherwise it is false
     bool isOpen();
+
+    /// Return TRUE if the connection is null
+    /** A DQConnection is null if open() is never called. Once
+      it is called, it will become non-null even after involved close()
+     */
+    bool isNull();
 
     /// Add a model to the connection
     /**
@@ -154,6 +160,8 @@ public:
     bool dropIndex(QString name);
 
     /// Get the SQL interface that you may run predefined sql operations on the database
+    /** @remarks The connection must be opened before using this function
+     */
     DQSql& sql();
 
     /// Create a QSqlQuery object to the connected database

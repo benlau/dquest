@@ -100,10 +100,13 @@ void SqlitetestsTest::initTestCase()
 
     QVERIFY( db.open() );
 
-    QVERIFY( !defaultConnection.isOpen());
-    QVERIFY (conn1.open(db) );
+//    QVERIFY( !defaultConnection.isOpen());
 
-    QVERIFY(defaultConnection.isOpen()); // conn1 become default connection
+    QVERIFY (conn1.isNull());
+    QVERIFY (conn1.open(db) );
+    QVERIFY (!conn1.isNull());
+
+//    QVERIFY(defaultConnection.isOpen()); // conn1 become default connection
 
     DQSql sql = conn1.sql();
 

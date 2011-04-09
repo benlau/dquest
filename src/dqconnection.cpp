@@ -28,7 +28,14 @@ DQConnection m_defaultConnection;
 
 DQConnection::DQConnection()
 {
-    d = new DQConnectionPriv();
+//    d = new DQConnectionPriv();
+
+    /* Don't create DQConnectionPriv and let the connection be null
+     Create the content on depend.
+
+     DQModel is going to change to not set default connection in constructor.
+     A null connection will reduce the memory allocation */
+
 }
 
 DQConnection::DQConnection(const DQConnection& other) : d(other.d){
@@ -63,8 +70,16 @@ bool DQConnection::open(QSqlDatabase db){
         && this != &m_defaultConnection
         ) {
 
+        if (!m_defaultConnection.d) {
+            m_defaultConnection.d = new DQConnectionPriv();
+        }
+
         d.operator = (m_defaultConnection.d); // It become the default connection
 
+    }
+
+    if (isNull()) {
+        d = new DQConnectionPriv();
     }
 
     d->m_sql.setStatement(new DQSqliteStatement());
@@ -74,10 +89,18 @@ bool DQConnection::open(QSqlDatabase db){
 }
 
 bool DQConnection::isOpen(){
+    if (!d)
+        return false;
     return d->m_sql.database().isOpen();
 }
 
+bool DQConnection::isNull(){
+    return !d;
+}
+
 void DQConnection::close(){
+    if (!d)
+        return;
     d->m_sql.setDatabase(QSqlDatabase());
 }
 
@@ -86,6 +109,9 @@ bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
     if (!metaInfo) {
         return res;
     }
+
+    if (isNull())
+        d = new DQConnectionPriv();
 
     if (!d->m_models.contains(metaInfo)) {
         d->m_models << metaInfo;
@@ -105,6 +131,8 @@ void DQConnection::setToDefaultConnection(){
 }
 
 bool DQConnection::createTables(){
+    if (!isOpen())
+        return false;
 
     bool res = true;
     foreach (DQModelMetaInfo* info ,d->m_models) {
@@ -132,6 +160,9 @@ bool DQConnection::createTables(){
 }
 
 bool DQConnection::dropTables() {
+    if (!isOpen())
+        return false;
+
     bool res = true;
 
     foreach (DQModelMetaInfo* info ,d->m_models) {
@@ -150,10 +181,16 @@ bool DQConnection::dropTables() {
 }
 
 bool DQConnection::createIndex(const DQBaseIndex &index) {
+    if (!isOpen())
+        return false;
+
     return d->m_sql.createIndexIfNotExists(index);
 }
 
 bool DQConnection::dropIndex(QString name){
+    if (!isOpen())
+        return false;
+
     return d->m_sql.dropIndexIfExists(name);
 }
 
@@ -162,16 +199,25 @@ DQSql& DQConnection::sql(){
 }
 
 QSqlQuery DQConnection::query(){
+    if (!isOpen())
+        return QSqlQuery();
+
     return d->m_sql.query();
 }
 
 void DQConnection::setLastQuery(QSqlQuery query){
+    if (!isOpen())
+        return;
+
     d->mutex.lock();
     d->lastQuery = query;
     d->mutex.unlock();
 }
 
 QSqlQuery DQConnection::lastQuery(){
+    if (!isOpen())
+        return QSqlQuery();
+
     /*
       Although lastQuery() is thread-safe, but as it do not hold the
       lastQuery per thread. The result become meaningless , as it
