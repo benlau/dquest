@@ -45,7 +45,7 @@ DQSharedList::~DQSharedList()
 {
 }
 
-bool DQSharedList::isEmpty(){
+bool DQSharedList::isEmpty() const{
     return data->list.isEmpty();
 }
 

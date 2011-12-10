@@ -8,7 +8,7 @@
 
 class DQSharedListPriv;
 
-/// DQSharedList is the base class of DQList
+/// DQSharedList is typeless list container of DQModel instance
 /**
   DQSharedList is the base class of DQList that implements the storage
   and DQAbstractModel management. It is a explicity shared class which could be
@@ -51,7 +51,7 @@ public:
     /**
       @see size
      */
-    bool isEmpty();
+    bool isEmpty() const;
 
     /// Get the size of the list
     int size() const;
