@@ -4,7 +4,7 @@
 #include "dqsql.h"
 #include "dqconnection.h"
 #include "dqsharedquery.h"
-#include "dqsharedquery_p.h"
+#include "priv/dqsharedquery_p.h"
 #include "dqsqlstatement.h"
 #include "dqexpression.h"
 

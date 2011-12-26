@@ -13,6 +13,7 @@ TEMPLATE = app
 
 SOURCES += tst_sqliteteststest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
-include (../../src/dquest.pri)
+
+include(../../src/dquest.pri)
 include(../models/models.pri)
 
