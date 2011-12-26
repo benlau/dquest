@@ -9,6 +9,7 @@
 
 #include <dqmodelmetainfo.h>
 #include <dqindex.h>
+#include <dqengine.h>
 
 class DQModelMetaInfo;
 class DQSql;
@@ -151,7 +152,7 @@ public:
     conn2.addModel<ShareModel>();
 \endcode
 
-    Model1 is added to conne1 only, conn1 will be the default connection for Model1.
+    Model1 is added to conn1 only, conn1 will be the default connection for Model1.
 
     The situation of Model2 is similar , it's default connection is conn2.
 

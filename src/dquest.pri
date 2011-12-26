@@ -5,6 +5,7 @@ QT += sql
 QMAKE_CXXFLAGS += -Wno-invalid-offsetof
 
 DQUEST_HEADERS += \
+    $$PWD/dqengine.h \
     $$PWD/dqclause.h \
     $$PWD/dqmodelmetainfo.h \
     $$PWD/dqmodel.h \
