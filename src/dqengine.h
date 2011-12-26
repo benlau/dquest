@@ -46,7 +46,7 @@ class DQEngine {
      *  
      *  @remarks The behaviour is depended on the engine itself.
      */
-    virtual void update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false) = 0;
+    virtual bool update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false) = 0;
 
     /// Create index
     virtual void createIndex(const DQBaseIndex &index) = 0;

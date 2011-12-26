@@ -16,6 +16,7 @@
 #include "config.h"
 #include "misc.h"
 #include "priv/dqsqlitestatement.h"
+#include "priv/dqsqliteengine.h"
 
 class SqlitetestsTest : public QObject
 {
@@ -78,6 +79,8 @@ private Q_SLOTS:
 
     /// test second connection
     void secondConnection();
+
+    void engine();
 
 private:
     DQConnection conn1,conn2;
@@ -702,6 +705,9 @@ void SqlitetestsTest::secondConnection() {
 
 }
 
+void SqlitetestsTest::engine(){
+    DQSqliteEngine *engine = new DQSqliteEngine();
+}
 
 QTEST_MAIN(SqlitetestsTest);
 

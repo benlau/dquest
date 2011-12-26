@@ -29,6 +29,7 @@ DQUEST_HEADERS += \
     $$PWD/dquest.h
 
 DQUEST_PRIV_HEADERS = \
+    $$PWD/priv/dqsqliteengine.h \
     $$PWD/priv/dqsqlitestatement.h \
     $$PWD/priv/dqwhere_p.h \
     $$PWD/priv/dqsharedquery_p.h \
@@ -55,4 +56,5 @@ SOURCES += \
     $$PWD/dqsharedlist.cpp \
     $$PWD/dqindex.cpp \
     $$PWD/dqstream.cpp \
-    $$PWD/dqlistwriter.cpp
+    $$PWD/dqlistwriter.cpp \
+    $$PWD/dqsqliteengine.cpp
