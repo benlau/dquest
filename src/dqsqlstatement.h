@@ -11,7 +11,7 @@
 class DQSharedQuery;
 class DQQueryRules;
 
-/// Sql Statement generator
+/// Sql Statement generator abstract interface
 
 class DQSqlStatement
 {

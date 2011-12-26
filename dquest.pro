@@ -1,4 +1,4 @@
-INCLUDEPATH += $$PWD
+INCLUDEPATH += src/$$PWD
 
 QT += sql
 
@@ -9,7 +9,7 @@ TARGET = dquest
 CONFIG += staticlib
 VERSION = 0.1
 
-include (dquest.pri)
+include (src/dquest.pri)
 
 isEmpty(PREFIX) {
     PREFIX = /usr
@@ -23,5 +23,5 @@ target.path = $$LIBDIR
 
 headers.files = $$DQUEST_HEADERS
 headers.path = $$INCDIR
-headers.extra = cp $$PWD/dquest-install.pri ${INSTALL_ROOT}$$PREFIX/include/dquest/dquest.pri
+headers.extra = cp $$PWD/src/dquest-install.pri ${INSTALL_ROOT}$$PREFIX/include/dquest/dquest.pri
 
