@@ -4,7 +4,6 @@
 
 #include <QSqlError>
 #include <dqconnection.h>
-#include <dqsqlitestatement.h>
 #include <dqquery.h>
 #include <dqsql.h>
 #include <dqlistwriter.h>
@@ -16,6 +15,7 @@
 #include "model5.h"
 #include "config.h"
 #include "misc.h"
+#include "priv/dqsqlitestatement.h"
 
 class SqlitetestsTest : public QObject
 {

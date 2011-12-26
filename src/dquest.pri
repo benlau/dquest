@@ -11,7 +11,6 @@ DQUEST_HEADERS += \
     $$PWD/dqconnection.h \
     $$PWD/dqbasefield.h \
     $$PWD/dqsqlstatement.h \
-    $$PWD/dqsqlitestatement.h \
     $$PWD/dqwhere.h \
     $$PWD/dqsql.h \
     $$PWD/dqfield.h \
@@ -29,6 +28,7 @@ DQUEST_HEADERS += \
     $$PWD/dquest.h
 
 DQUEST_PRIV_HEADERS = \
+    $$PWD/priv/dqsqlitestatement.h \
     $$PWD/priv/dqwhere_p.h \
     $$PWD/priv/dqsharedquery_p.h \
     $$PWD/priv/dqmetainfoquery_p.h

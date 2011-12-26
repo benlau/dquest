@@ -7,7 +7,7 @@
 
 #include "dqmodel.h"
 #include "dqconnection.h"
-#include "dqsqlitestatement.h"
+#include "priv/dqsqlitestatement.h"
 #include "dqsql.h"
 
 /// The private database structure for DQConnection
