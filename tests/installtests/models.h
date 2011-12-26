@@ -25,12 +25,12 @@ DQ_DECLARE_MODEL(User,
 inline DQSharedList User::initialData() {
     DQList<User> res;
 
-    User user;
-    user.userId = "tester1"; res << user;
-    user.userId = "tester2"; res << user;
-    user.userId = "tester3"; res << user;
-    user.userId = "tester4"; res << user;
-    user.userId = "tester5"; res << user;
+    DQListWriter writer(&res);
+    writer << "tester1"
+           << "tester2"
+           << "tester3"
+           << "tester4"
+           << "tester5";
 
     return res;
 }
