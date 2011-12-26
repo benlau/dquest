@@ -1,0 +1,5 @@
+#!/usr/bin/make -f
+DEB_DH_GENCONTROL_ARGS_ALL=-- -v0.2-`bzr version-info --custom --template="r{revno}"`
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/qmake.mk

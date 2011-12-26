@@ -1,0 +1,20 @@
+dquest for Debian
+-----------------
+
+ DQuest is a C++ ORM (Object-relational mapping) for Qt framework. It 
+ aims to provide a rapid development environment for application with 
+ database access. The database model declaration is very simple , just 
+ like other C++/Qt class (example). It is designed for mobile 
+ environment but also useful for desktop and embedded application that 
+ do not demand for maximized performance for database.
+ .
+ It is getting more number of application use Sqlite for their data 
+ storage. However, writing data model in SQL is complicated . Usually 
+ it need to write two set of interface : One for C/C++ and other for Sql
+ . The work load is duplicated, and debug is troublesome.
+ .
+ With DQuest, you can declare a database model using C++ directly. Read 
+ / write access can be made through the C++ interface. You won't need to
+ write any SQL to gain the benefit of using Sqlite in your application. 
+
+ -- Ben Lau <xbenlau@gmail.com>  Mon, 26 Dec 2011 16:49:55 +0800
