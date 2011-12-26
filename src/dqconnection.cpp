@@ -9,11 +9,21 @@
 #include "dqconnection.h"
 #include "priv/dqsqlitestatement.h"
 #include "dqsql.h"
+#include "priv/dqsqliteengine.h"
 
 /// The private database structure for DQConnection
 class DQConnectionPriv : public QSharedData
 {
   public:
+    DQConnectionPriv() {
+        engine = 0;
+    }
+
+    ~DQConnectionPriv() {
+        if (engine)
+            delete engine;
+    }
+
     DQSql m_sql;
 
     /// Registered modeles
@@ -23,6 +33,8 @@ class DQConnectionPriv : public QSharedData
     QSqlQuery lastQuery;
 
     QMutex mutex;
+
+    DQEngine *engine;
 };
 
 /// The mapping of default connection
@@ -85,6 +97,9 @@ bool DQConnection::open(QSqlDatabase db){
     if (isNull()) {
         d = new DQConnectionPriv();
     }
+
+    if (!d->engine) // Default engine
+        setEngine(new DQSqliteEngine());
 
     d->m_sql.setStatement(new DQSqliteStatement());
     d->m_sql.setDatabase(db);
@@ -254,4 +269,27 @@ QSqlQuery DQConnection::lastQuery(){
     d->mutex.unlock();
 
     return query;
+}
+
+bool DQConnection::setEngine(DQEngine *engine){
+    if (isOpen())
+        return false;
+    d->mutex.lock();
+
+    if (d->engine) {
+        delete d->engine;
+        d->engine = 0;
+    }
+    d->engine = engine;
+    d->mutex.unlock();
+    return true;
+}
+
+DQEngine* DQConnection::engine() const{
+    DQEngine*res = 0;
+
+    d->mutex.lock();
+    res = d->engine;
+    d->mutex.unlock();
+    return res;
 }

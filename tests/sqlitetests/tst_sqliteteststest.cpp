@@ -707,6 +707,10 @@ void SqlitetestsTest::secondConnection() {
 
 void SqlitetestsTest::engine(){
     DQSqliteEngine *engine = new DQSqliteEngine();
+    User model;
+    DQConnection connection = model.connection();
+
+    QVERIFY(connection.engine()->name() == "SQLITE");
 }
 
 QTEST_MAIN(SqlitetestsTest);
