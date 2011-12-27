@@ -70,17 +70,15 @@ bool DQModel::save(bool forceInsert,bool forceAllField) {
 
     }
 
-    bool res ;
-
-    DQSql sql = m_connection.sql();
-
+    bool _forceInsert;
     if (forceInsert || id->isNull() ) {
-        res = sql.replaceInto(info,this,nonNullFields,true);
+        _forceInsert = true;
     } else {
-        res = sql.replaceInto(info,this,nonNullFields,false);
+        _forceInsert = false;
     }
 
-    m_connection.setLastQuery(sql.lastQuery());
+    bool res = m_connection.engine()->update(this,nonNullFields,_forceInsert);
+    m_connection.setLastQuery(m_connection.engine()->lastQuery());
 
     return res;
 }
