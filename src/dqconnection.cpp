@@ -11,6 +11,13 @@
 #include "dqsql.h"
 #include "priv/dqsqliteengine.h"
 
+#define PREPARE_PRIV() {\
+    if (isNull()) \
+        d = new DQConnectionPriv(); \
+    if (!d->engine) \
+        setEngine(new DQSqliteEngine()); \
+    }
+
 /// The private database structure for DQConnection
 class DQConnectionPriv : public QSharedData
 {
@@ -31,7 +38,7 @@ class DQConnectionPriv : public QSharedData
     DQSql m_sql;
 
     /// Registered modeles
-    QList<DQModelMetaInfo*> m_models;
+//    QList<DQModelMetaInfo*> m_models;
 
     /// The last query being used.
     QSqlQuery lastQuery;
@@ -79,12 +86,7 @@ bool DQConnection::operator!=(const DQConnection &rhs) {
 bool DQConnection::open(QSqlDatabase db){
     Q_ASSERT(db.isOpen());
 
-    if (isNull()) {
-        d = new DQConnectionPriv(new DQSqliteEngine());
-    }
-
-    if (!d->engine) // The default database engine is SQLite
-        setEngine(new DQSqliteEngine());
+    PREPARE_PRIV();
 
     d->m_sql.setStatement(new DQSqliteStatement());
     d->m_sql.setDatabase(db);
@@ -94,7 +96,7 @@ bool DQConnection::open(QSqlDatabase db){
 }
 
 bool DQConnection::isOpen() const{
-    if (!d)
+    if (!d || !d->engine)
         return false;
     return d->engine->isOpen();
 }
@@ -109,7 +111,8 @@ void DQConnection::close(){
     d->m_sql.setDatabase(QSqlDatabase());
     d->engine->close();
 
-    foreach (DQModelMetaInfo* metaInfo , d->m_models) {
+    QList<DQModelMetaInfo*> models = d->engine->modelList();
+    foreach (DQModelMetaInfo* metaInfo , models) {
         if (mapping.contains(metaInfo)) {
             mapping.take(metaInfo);
         }
@@ -122,17 +125,15 @@ bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
         return res;
     }
 
-    if (isNull())
-        d = new DQConnectionPriv();
+    PREPARE_PRIV();
 
-    if (!d->m_models.contains(metaInfo)) {
-        d->m_models << metaInfo;
-        res = true;
+    res = d->engine->addModel(metaInfo);
 
-        if (!mapping.contains(metaInfo)) { // set as default connection
-            mapping[metaInfo] = *this;
-        }
+    if (res && !mapping.contains(metaInfo)) {
+        // set the default connection
+        mapping[metaInfo] = *this;
     }
+
     return res;
 }
 
@@ -159,7 +160,9 @@ bool DQConnection::createTables(){
         return false;
 
     bool res = true;
-    foreach (DQModelMetaInfo* info ,d->m_models) {
+
+    QList<DQModelMetaInfo*> models = d->engine->modelList();
+    foreach (DQModelMetaInfo* info ,models) {
 
         if (!d->m_sql.exists(info)) {
 
@@ -192,7 +195,9 @@ bool DQConnection::dropTables() {
 
     bool res = true;
 
-    foreach (DQModelMetaInfo* info ,d->m_models) {
+    QList<DQModelMetaInfo*> models = d->engine->modelList();
+
+    foreach (DQModelMetaInfo* info ,models) {
         if (!d->m_sql.exists(info))
             continue;
 
