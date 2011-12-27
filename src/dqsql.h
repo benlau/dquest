@@ -81,7 +81,7 @@ public:
       @param fields A list of fields that should be saved
       @param updateId TRUE if the ID of the model should be updated after operation
      */
-    bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId);
+    bool insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId);
 
     /// Replace the record to the database
     /**
@@ -90,7 +90,7 @@ public:
       @param fields A list of fields that should be saved
       @param updateId TRUE if the ID of the model should be updated after operation
      */
-    bool replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId);
+    bool replaceInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId);
 
     /// Create a query object to the connected database
     QSqlQuery query();
@@ -113,7 +113,7 @@ public:
 protected:
 
 private:
-    bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool with_id,bool replace);
+    bool insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool with_id,bool replace);
 
     QSharedDataPointer<DQSqlPriv> d;
 

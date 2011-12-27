@@ -121,15 +121,15 @@ bool DQSql::exists(DQModelMetaInfo* info){
     return res;
 }
 
-bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId) {
+bool DQSql::insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId) {
     return insertInto(info,model,fields,updateId,false);
 }
 
-bool DQSql::replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId){
+bool DQSql::replaceInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId){
     return insertInto(info,model,fields,updateId,true);
 }
 
-bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId,bool replace){
+bool DQSql::insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId,bool replace){
     QString sql;
     d->m_lastQuery = query();
 
@@ -154,9 +154,19 @@ bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,b
     if (d->m_lastQuery.exec()) {
         res = true;
         if (updateId) {
+            // Update default primary key
+
             int id = d->m_lastQuery.lastInsertId().toInt();
-            if (model->id.get().toInt() != id)
-                model->id.set(id);
+
+            if (info->value(model,"id").toInt() != id){
+                info->setValue(model,"id",id);
+            }
+
+            /* Comment: When multiple primary key is implemented.
+              It should use a simple and direct way to determine
+              should it update the rowId.
+             */
+
         }
     }
 
