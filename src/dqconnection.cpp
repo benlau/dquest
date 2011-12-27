@@ -19,6 +19,10 @@ class DQConnectionPriv : public QSharedData
         engine = 0;
     }
 
+    DQConnectionPriv(DQEngine *val) {
+        engine = val;
+    }
+
     ~DQConnectionPriv() {
         if (engine)
             delete engine;
@@ -75,42 +79,24 @@ bool DQConnection::operator!=(const DQConnection &rhs) {
 bool DQConnection::open(QSqlDatabase db){
     Q_ASSERT(db.isOpen());
 
-    if (db.driverName() != "QSQLITE") {
-        qWarning() << "Only QSQLITE dirver is supported.";
-        return false;
-    }
-
-    /*
-    if (!m_defaultConnection.isOpen()
-        && this != &m_defaultConnection
-        ) {
-
-        if (!m_defaultConnection.d) {
-            m_defaultConnection.d = new DQConnectionPriv();
-        }
-
-        d.operator = (m_defaultConnection.d); // It become the default connection
-
-    }
-    */
-
     if (isNull()) {
-        d = new DQConnectionPriv();
+        d = new DQConnectionPriv(new DQSqliteEngine());
     }
 
-    if (!d->engine) // Default engine
+    if (!d->engine) // The default database engine is SQLite
         setEngine(new DQSqliteEngine());
 
     d->m_sql.setStatement(new DQSqliteStatement());
     d->m_sql.setDatabase(db);
+    d->engine->open(db); /// @TODO : Change the return value to this function.
 
     return true;
 }
 
-bool DQConnection::isOpen(){
+bool DQConnection::isOpen() const{
     if (!d)
         return false;
-    return d->m_sql.database().isOpen();
+    return d->engine->isOpen();
 }
 
 bool DQConnection::isNull(){
@@ -121,6 +107,7 @@ void DQConnection::close(){
     if (!d)
         return;
     d->m_sql.setDatabase(QSqlDatabase());
+    d->engine->close();
 
     foreach (DQModelMetaInfo* metaInfo , d->m_models) {
         if (mapping.contains(metaInfo)) {
@@ -185,6 +172,7 @@ bool DQConnection::createTables(){
                 break;
             }
 
+            /// @TODO Replace by list.save()
             DQSharedList initialData = info->initialData();
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {

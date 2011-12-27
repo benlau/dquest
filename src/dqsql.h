@@ -34,6 +34,12 @@ class DQSqlPriv;
 class DQSql
 {
 public:
+    /**
+      @param statement A instance of DQSqlStatement. The ownership will be taken.
+     */
+
+    explicit DQSql(DQSqlStatement *statement = 0);
+
     /// Copy constructor
     DQSql(const DQSql&);
 
@@ -44,7 +50,7 @@ public:
     DQSqlStatement* statement();
 
     /// The connected database
-    QSqlDatabase database();
+    QSqlDatabase database() const;
 
     /// Run create table of a model
     template <typename T>
@@ -92,13 +98,6 @@ public:
     /// The last query object
     QSqlQuery lastQuery();
 
-protected:
-    /**
-      @param statement A instance of DQSqlStatement. The ownership will be taken.
-     */
-
-    explicit DQSql(DQSqlStatement *statement = 0);
-
     /// Assignment operator overloading
     DQSql& operator=(const DQSql &rhs);
 
@@ -111,8 +110,9 @@ protected:
      */
     void setStatement(DQSqlStatement *statement);
 
-private:
+protected:
 
+private:
     bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool with_id,bool replace);
 
     QSharedDataPointer<DQSqlPriv> d;

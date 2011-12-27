@@ -58,7 +58,7 @@ void DQSql::setDatabase(QSqlDatabase db){
     d->m_db = db;
 }
 
-QSqlDatabase DQSql::database(){
+QSqlDatabase DQSql::database() const{
     return d->m_db;
 }
 

@@ -21,10 +21,22 @@ class DQEngine {
     virtual bool open(QSqlDatabase  db) = 0;
 
     /// Is it opened connection to database?
-    virtual bool isOpened() const = 0;
+    virtual bool isOpen() const = 0;
+
+    /// Close the connection to database
+    virtual void close() = 0;
 
     /// Add a model to the engine
-    virtual void addModel(DQModelMetaInfo* info) = 0;
+    /**
+      @see modelList
+     */
+    virtual bool addModel(DQModelMetaInfo* info) = 0;
+
+    /// Get the list of added model
+    /**
+      @see addModel
+     */
+    virtual QList<DQModelMetaInfo*> modelList() const = 0;
 
     /// Create the model on database if it is not existed
     /**
@@ -56,6 +68,8 @@ class DQEngine {
 
     /// Get the assoicated DQSql instance
     virtual DQSql sql() = 0;
+
+    /// @TODO query
 };
 
 #endif // DQEngine_h

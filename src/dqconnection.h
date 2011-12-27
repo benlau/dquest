@@ -100,7 +100,7 @@ public:
     void close();
 
     /// Return TRUE if the connection is opened successfully,otherwise it is false
-    bool isOpen();
+    bool isOpen() const;
 
     /// Return TRUE if the connection is null
     /** A DQConnection is null if open() is never called. Once

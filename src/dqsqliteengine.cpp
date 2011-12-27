@@ -2,9 +2,10 @@
 	@author Ben Lau
  */
 
+#include "priv/dqsqlitestatement.h"
 #include "priv/dqsqliteengine.h"
 
-DQSqliteEngine::DQSqliteEngine()
+DQSqliteEngine::DQSqliteEngine() : m_sql(new DQSqliteStatement())
 {
 }
 
@@ -13,12 +14,43 @@ QString DQSqliteEngine::name(){
 }
 
 bool DQSqliteEngine::open(QSqlDatabase  db) {
+    Q_ASSERT(db.isOpen());
+
+    if (db.driverName() != "QSQLITE") {
+        qWarning() << "Only QSQLITE dirver is supported.";
+        return false;
+    }
+
+    m_sql.setDatabase(db);
+    return true;
 }
 
-bool DQSqliteEngine::isOpened() const{}
+bool DQSqliteEngine::isOpen() const{
+    return m_sql.database().isOpen();
+}
+
+void DQSqliteEngine::close(){
+    m_sql.setDatabase(QSqlDatabase());
+}
 
 /// Add a model to the engine
-void DQSqliteEngine::addModel(DQModelMetaInfo* info){}
+bool DQSqliteEngine::addModel(DQModelMetaInfo* info) {
+    bool res = false;
+    if (!info) {
+        return res;
+    }
+
+    if (!m_models.contains(info)) {
+        m_models << info;
+        res = true;
+    }
+
+    return res;
+}
+
+QList<DQModelMetaInfo*> DQSqliteEngine::modelList() const{
+    return m_models;
+}
 
 /// Create the model on database if it is not existed
 /**
@@ -49,7 +81,10 @@ bool DQSqliteEngine::createIndex(const DQBaseIndex &index){
 }
 
 /// Drop the index
-void DQSqliteEngine::dropIndex(QString name){}
+void DQSqliteEngine::dropIndex(QString name){
+}
 
 /// Get the assoicated DQSql instance
-DQSql DQSqliteEngine::sql(){}
+DQSql DQSqliteEngine::sql(){
+    return m_sql;
+}

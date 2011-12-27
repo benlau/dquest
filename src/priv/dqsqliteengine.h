@@ -5,7 +5,10 @@
 #ifndef DQSQLITEENGINE_H
 #define DQSQLITEENGINE_H
 
+#include "dqmodelmetainfo.h"
 #include "dqengine.h"
+#include "dqsql.h"
+#include "dqsqlstatement.h"
 
 /// Sqlite database engine
 
@@ -16,13 +19,16 @@ public:
 
     virtual QString name();
 
-    virtual bool open(QSqlDatabase  db) ;
+    virtual bool open(QSqlDatabase  db);
 
-    /// Is it opened connection to database?
-    virtual bool isOpened() const;
+    virtual bool isOpen() const;
+
+    virtual void close();
 
     /// Add a model to the engine
-    virtual void addModel(DQModelMetaInfo* info);
+    virtual bool addModel(DQModelMetaInfo* info);
+
+    virtual QList<DQModelMetaInfo*> modelList() const;
 
     /// Create the model on database if it is not existed
     /**
@@ -48,6 +54,11 @@ public:
     /// Get the assoicated DQSql instance
     virtual DQSql sql();
 
+private:
+    QMutex mutex;
+    DQSql m_sql;
+
+    QList<DQModelMetaInfo*> m_models;
 
 };
 
