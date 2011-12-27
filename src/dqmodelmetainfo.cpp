@@ -33,6 +33,10 @@ void DQModelMetaInfo::registerField(DQModelMetaInfoField field){
         m_foreignKeyList << field;
     }
 
+    if (field.clause.testFlag(DQClause::PRIMARY_KEY)) {
+        m_primaryKeyList << field;
+    }
+
     m_fields[field.name] = field;
     m_fieldList << field;
 }
@@ -137,6 +141,10 @@ QString DQModelMetaInfo::className() const {
 
 DQAbstractModel* DQModelMetaInfo::create(){
     return createFunc();
+}
+
+QList<DQModelMetaInfoField> DQModelMetaInfo::primeryKeyList(){
+    return m_primaryKeyList;
 }
 
 DQSharedList DQModelMetaInfo::initialData(){

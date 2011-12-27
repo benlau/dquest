@@ -3,7 +3,7 @@
 #include <QtCore/QCoreApplication>
 #include <dqwhere.h>
 #include "dqclause.h"
-#include "dqsqlitestatement.h"
+#include "priv/dqsqlitestatement.h"
 #include "model1.h"
 #include "model2.h"
 #include "model3.h"
@@ -113,6 +113,10 @@ void CoretestsTest::metaInfo(){
     // Test staticMetaInfo
     QVERIFY(Model2::staticMetaInfo() == dqMetaInfo<Model2>() );
 
+    QList<DQModelMetaInfoField> primaryKeyList = metaInfo4->primeryKeyList();
+
+    QVERIFY(primaryKeyList.size() == 1);
+    QVERIFY(primaryKeyList.at(0).name == "id");
 }
 
 void CoretestsTest::modelCast() {
