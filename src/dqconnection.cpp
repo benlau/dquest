@@ -35,11 +35,6 @@ class DQConnectionPriv : public QSharedData
             delete engine;
     }
 
-    DQSql m_sql;
-
-    /// Registered modeles
-//    QList<DQModelMetaInfo*> m_models;
-
     /// The last query being used.
     QSqlQuery lastQuery;
 
@@ -88,8 +83,6 @@ bool DQConnection::open(QSqlDatabase db){
 
     PREPARE_PRIV();
 
-    d->m_sql.setStatement(new DQSqliteStatement());
-    d->m_sql.setDatabase(db);
     d->engine->open(db); /// @TODO : Change the return value to this function.
 
     return true;
@@ -108,7 +101,6 @@ bool DQConnection::isNull(){
 void DQConnection::close(){
     if (!d)
         return;
-    d->m_sql.setDatabase(QSqlDatabase());
     d->engine->close();
 
     QList<DQModelMetaInfo*> models = d->engine->modelList();
@@ -187,6 +179,7 @@ bool DQConnection::createTables(){
         }
         */
         res = d->engine->createModel(info);
+        setLastQuery(d->engine->lastQuery());
 
         if (!res)
             break;
@@ -206,6 +199,7 @@ bool DQConnection::dropTables() {
 
     foreach (DQModelMetaInfo* info ,models) {
         d->engine->dropModel(info);
+        setLastQuery(d->engine->lastQuery());
         /*
         if (!d->m_sql.exists(info))
             continue;
@@ -226,25 +220,29 @@ bool DQConnection::createIndex(const DQBaseIndex &index) {
     if (!isOpen())
         return false;
 
-    return d->m_sql.createIndexIfNotExists(index);
+    bool res = d->engine->createIndex(index);
+    setLastQuery(d->engine->lastQuery());
+    return res;
 }
 
 bool DQConnection::dropIndex(QString name){
     if (!isOpen())
         return false;
 
-    return d->m_sql.dropIndexIfExists(name);
+    bool res = d->engine->dropIndex(name);
+    setLastQuery(d->engine->lastQuery());
+    return res;
 }
 
 DQSql& DQConnection::sql(){
-    return d->m_sql;
+    return d->engine->sql();
 }
 
 QSqlQuery DQConnection::query(){
     if (!isOpen())
         return QSqlQuery();
 
-    return d->m_sql.query();
+    return d->engine->query();
 }
 
 void DQConnection::setLastQuery(QSqlQuery query){

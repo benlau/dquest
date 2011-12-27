@@ -25,9 +25,14 @@ bool DQEngine::createIndex(const DQBaseIndex &index) {
     return false;
 }
 
-void DQEngine::dropIndex(QString name) {
+bool DQEngine::dropIndex(QString name) {
+    return false;
 }
 
 QSqlQuery DQEngine::lastQuery() {
+    return QSqlQuery();
+}
+
+QSqlQuery DQEngine::query(){
     return QSqlQuery();
 }

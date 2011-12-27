@@ -11,6 +11,10 @@ DQSqliteEngine::DQSqliteEngine() : m_sql(new DQSqliteStatement())
 {
 }
 
+DQSqliteEngine::~DQSqliteEngine(){
+
+}
+
 QString DQSqliteEngine::name(){
     return "SQLITE";
 }
@@ -43,7 +47,7 @@ bool DQSqliteEngine::addModel(DQModelMetaInfo* info) {
     }
 
     if (!m_models.contains(info)) {
-        m_models << info;
+        m_models.append(info);
         res = true;
     }
 
@@ -64,7 +68,6 @@ bool DQSqliteEngine::createModel(DQModelMetaInfo* info){
                     .arg( m_sql.lastQuery().lastError().text());
             qWarning() << m_sql.lastQuery().lastQuery();
             res = false;
-            setLastQuery( m_sql.lastQuery() );
         } else {
 
             DQSharedList initialData = info->initialData();
@@ -76,6 +79,7 @@ bool DQSqliteEngine::createModel(DQModelMetaInfo* info){
                 }
             }
         }
+        setLastQuery( m_sql.lastQuery() );
     }
 
 
@@ -89,8 +93,9 @@ bool DQSqliteEngine::dropModel(DQModelMetaInfo* info){
 
     if (!m_sql.dropTable(info)) {
         res = false;
-        setLastQuery(m_sql.lastQuery());
     }
+
+    setLastQuery(m_sql.lastQuery());
 
     return res;
 }
@@ -129,15 +134,16 @@ bool DQSqliteEngine::update(DQAbstractModel* model, QStringList fields, bool for
 
 /// Create index
 bool DQSqliteEngine::createIndex(const DQBaseIndex &index){
-    return false;
+    return m_sql.createIndexIfNotExists(index);
 }
 
 /// Drop the index
-void DQSqliteEngine::dropIndex(QString name){
+bool DQSqliteEngine::dropIndex(QString name){
+    return m_sql.dropIndexIfExists(name);
 }
 
 /// Get the assoicated DQSql instance
-DQSql DQSqliteEngine::sql(){
+DQSql& DQSqliteEngine::sql(){
     return m_sql;
 }
 
@@ -148,4 +154,12 @@ void DQSqliteEngine::setLastQuery(QSqlQuery query){
     mutex.lock();
     m_lastQuery = query;
     mutex.unlock();
+}
+
+QSqlQuery DQSqliteEngine::query(){
+    return m_sql.query();
+}
+
+QSqlQuery DQSqliteEngine::lastQuery(){
+    return m_lastQuery;
 }

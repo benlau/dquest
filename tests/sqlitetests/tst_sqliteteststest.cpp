@@ -147,6 +147,8 @@ void SqlitetestsTest::initTestCase()
     // drop the index
     QVERIFY(conn1.dropIndex(index1.name()));
 
+    QVERIFY(conn1.createIndex(index1));
+
     /* Second connection */
 
     db2 = QSqlDatabase::addDatabase("QSQLITE","second-connection");
@@ -706,7 +708,6 @@ void SqlitetestsTest::secondConnection() {
 }
 
 void SqlitetestsTest::engine(){
-    DQSqliteEngine *engine = new DQSqliteEngine();
     User model;
     DQConnection connection = model.connection();
 

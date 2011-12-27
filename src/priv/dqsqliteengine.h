@@ -16,6 +16,7 @@ class DQSqliteEngine : public DQEngine
 {
 public:
     DQSqliteEngine();
+    ~DQSqliteEngine();
 
     virtual QString name();
 
@@ -49,10 +50,14 @@ public:
     virtual bool createIndex(const DQBaseIndex &index);
 
     /// Drop the index
-    virtual void dropIndex(QString name);
+    virtual bool dropIndex(QString name);
 
     /// Get the assoicated DQSql instance
-    virtual DQSql sql();
+    virtual DQSql& sql();
+
+    virtual QSqlQuery query();
+
+    virtual QSqlQuery lastQuery();
 
 private:
     void setLastQuery(QSqlQuery query);

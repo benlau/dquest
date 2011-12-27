@@ -193,7 +193,7 @@ public:
     /// Create a QSqlQuery object to the connected database
     QSqlQuery query();
 
-    /// The last query with error used by DQConnection
+    /// Get the last query
     /**
       @threadsafe
       @remarks It is thread-safe function

@@ -64,10 +64,10 @@ class DQEngine {
     virtual bool createIndex(const DQBaseIndex &index);
 
     /// Drop the index
-    virtual void dropIndex(QString name);
+    virtual bool dropIndex(QString name);
 
     /// Get the assoicated DQSql instance
-    virtual DQSql sql() = 0;
+    virtual DQSql& sql() = 0;
 
     /// The last query with error
     /**
@@ -75,7 +75,12 @@ class DQEngine {
      */
     virtual QSqlQuery lastQuery();
 
-    /// @TODO query
+    /// Create a QSqlQuery object to the connected database
+    /**
+      @threadsafe
+     */
+
+    virtual QSqlQuery query();
 };
 
 #endif // DQEngine_h
