@@ -54,7 +54,7 @@ class DQEngine {
     /// Update the database with record.
     /** 
      *  @param fields The changed fields. If it is omitted, it will assume all the field should be updated.
-     *  @param forceInsert TRUE if the data should be inserted to the database as a new record regardless of the original id. The id field will be updated after operation.
+     *  @param forceInsert TRUE if the data should be inserted to the database as a new record regardless of the original primary key. The primary key field will be updated after operation.
      *  
      *  @remarks The behaviour is depended on the engine itself.
      */
@@ -68,6 +68,12 @@ class DQEngine {
 
     /// Get the assoicated DQSql instance
     virtual DQSql sql() = 0;
+
+    /// The last query with error
+    /**
+      @threadsafe
+     */
+    virtual QSqlQuery lastQuery();
 
     /// @TODO query
 };

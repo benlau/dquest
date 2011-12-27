@@ -164,6 +164,7 @@ bool DQConnection::createTables(){
     QList<DQModelMetaInfo*> models = d->engine->modelList();
     foreach (DQModelMetaInfo* info ,models) {
 
+        /*
         if (!d->m_sql.exists(info)) {
 
             if (!d->m_sql.createTableIfNotExists(info)){
@@ -184,9 +185,15 @@ bool DQConnection::createTables(){
                 model->save();
             }
         }
+        */
+        res = d->engine->createModel(info);
+
+        if (!res)
+            break;
     }
 
     return res;
+
 }
 
 bool DQConnection::dropTables() {
@@ -198,6 +205,8 @@ bool DQConnection::dropTables() {
     QList<DQModelMetaInfo*> models = d->engine->modelList();
 
     foreach (DQModelMetaInfo* info ,models) {
+        d->engine->dropModel(info);
+        /*
         if (!d->m_sql.exists(info))
             continue;
 
@@ -206,6 +215,7 @@ bool DQConnection::dropTables() {
             setLastQuery( d->m_sql.lastQuery() );
             break;
         }
+        */
 
     }
 

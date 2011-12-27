@@ -55,10 +55,14 @@ public:
     virtual DQSql sql();
 
 private:
+    void setLastQuery(QSqlQuery query);
+
     QMutex mutex;
     DQSql m_sql;
 
     QList<DQModelMetaInfo*> m_models;
+
+    QSqlQuery m_lastQuery;
 
 };
 
