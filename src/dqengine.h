@@ -14,6 +14,9 @@
 class DQEngine {
 
  public:
+    DQEngine();
+    virtual ~DQEngine();
+
     /// Get the name of the engine
     virtual QString name()  = 0;
 

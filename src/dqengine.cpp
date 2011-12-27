@@ -4,6 +4,11 @@
 
 #include "dqengine.h"
 
+DQEngine::DQEngine(){
+}
+
+DQEngine::~DQEngine(){
+}
 
 bool DQEngine::createModel(DQModelMetaInfo* info){
     return false;
