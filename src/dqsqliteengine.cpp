@@ -44,7 +44,9 @@ bool DQSqliteEngine::update(DQAbstractModel* model, QStringList fields, bool for
 }
 
 /// Create index
-void DQSqliteEngine::createIndex(const DQBaseIndex &index){}
+bool DQSqliteEngine::createIndex(const DQBaseIndex &index){
+    return false;
+}
 
 /// Drop the index
 void DQSqliteEngine::dropIndex(QString name){}

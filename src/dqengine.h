@@ -31,13 +31,13 @@ class DQEngine {
       @remarks It don't verify the schema.
       @return TRUE if the model is created successfully or it is already created
      */
-    virtual bool createModel(DQModelMetaInfo* info) = 0;
+    virtual bool createModel(DQModelMetaInfo* info);
 
     /// Drop the model from database
-    virtual bool dropModel(DQModelMetaInfo* info) = 0;
+    virtual bool dropModel(DQModelMetaInfo* info);
 
     /// RETURN TRUE if the model is existed in the database.
-    virtual bool existsModel(DQModelMetaInfo* info) = 0;
+    virtual bool existsModel(DQModelMetaInfo* info);
 
     /// Update the database with record.
     /** 
@@ -46,13 +46,13 @@ class DQEngine {
      *  
      *  @remarks The behaviour is depended on the engine itself.
      */
-    virtual bool update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false) = 0;
+    virtual bool update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false);
 
     /// Create index
-    virtual void createIndex(const DQBaseIndex &index) = 0;
+    virtual bool createIndex(const DQBaseIndex &index);
 
     /// Drop the index
-    virtual void dropIndex(QString name) = 0;
+    virtual void dropIndex(QString name);
 
     /// Get the assoicated DQSql instance
     virtual DQSql sql() = 0;

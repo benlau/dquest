@@ -57,4 +57,5 @@ SOURCES += \
     $$PWD/dqindex.cpp \
     $$PWD/dqstream.cpp \
     $$PWD/dqlistwriter.cpp \
-    $$PWD/dqsqliteengine.cpp
+    $$PWD/dqsqliteengine.cpp \
+    $$PWD/dqengine.cpp

@@ -40,7 +40,7 @@ public:
     virtual bool update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false);
 
     /// Create index
-    virtual void createIndex(const DQBaseIndex &index);
+    virtual bool createIndex(const DQBaseIndex &index);
 
     /// Drop the index
     virtual void dropIndex(QString name);
