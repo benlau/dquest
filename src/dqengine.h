@@ -7,8 +7,10 @@
 #include "dqsql.h"
 
 /// Database engine (Abstract class)
-/** DQEngine provides low level database access. User may override
-  this class to support other database
+/** DQEngine provides low level database access. It is the backend
+  class for DQConnection. Normally user will not use the class directly.
+  It is used for custom database backend support only.
+
  */
 
 class DQEngine {
@@ -59,7 +61,9 @@ class DQEngine {
      *  @param fields The changed fields. If it is omitted, it will assume all the field should be updated.
      *  @param forceInsert TRUE if the data should be inserted to the database as a new record regardless of the original primary key. The primary key field will be updated after operation.
      *  
+     *  @threadsafe
      *  @remarks The behaviour is depended on the engine itself.
+     *  @remarks The implementation must be threadsafe
      */
     virtual bool update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false);
 
@@ -72,7 +76,7 @@ class DQEngine {
     /// Get the assoicated DQSql instance
     virtual DQSql& sql() = 0;
 
-    /// The last query with error
+    /// The last query
     /**
       @threadsafe
      */

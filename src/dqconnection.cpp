@@ -12,7 +12,7 @@
 #include "priv/dqsqliteengine.h"
 
 #define PREPARE_PRIV() {\
-    if (isNull()) \
+    if (!d) \
         d = new DQConnectionPriv(); \
     if (!d->engine) \
         setEngine(new DQSqliteEngine()); \
@@ -273,8 +273,9 @@ QSqlQuery DQConnection::lastQuery(){
 }
 
 bool DQConnection::setEngine(DQEngine *engine){
-    if (isOpen())
-        return false;
+    if (!d)
+        d = new DQConnectionPriv();
+
     d->mutex.lock();
 
     if (d->engine) {
