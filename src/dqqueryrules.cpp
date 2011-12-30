@@ -1,4 +1,4 @@
-#include "dqqueryrules.h"
+#include "backend/dqqueryrules.h"
 #include <QSharedData>
 #include "priv/dqsharedquery_p.h"
 

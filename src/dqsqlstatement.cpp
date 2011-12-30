@@ -1,7 +1,7 @@
 #include <QStringList>
 
-#include "dqsqlstatement.h"
-#include "dqexpression.h"
+#include "backend/dqsqlstatement.h"
+#include "backend/dqexpression.h"
 
 DQSqlStatement::DQSqlStatement()
 {

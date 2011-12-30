@@ -6,9 +6,9 @@
 #define DQSQLITEENGINE_H
 
 #include "dqmodelmetainfo.h"
-#include "dqengine.h"
-#include "dqsql.h"
-#include "dqsqlstatement.h"
+#include "backend/dqengine.h"
+#include "backend/dqsql.h"
+#include "backend/dqsqlstatement.h"
 
 /// Sqlite database engine
 

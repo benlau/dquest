@@ -4,7 +4,7 @@
 #include <QSqlDatabase>
 #include <dqindex.h>
 #include "dqmodelmetainfo.h"
-#include "dqsql.h"
+#include "backend/dqsql.h"
 
 /// Database engine (Abstract class)
 /** DQEngine provides low level database access. It is the backend

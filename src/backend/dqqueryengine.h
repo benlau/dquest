@@ -6,7 +6,7 @@
 #define DQQUERYENGINE_H
 
 #include <dqabstractmodel.h>
-#include <dqqueryrules.h>
+#include <backend/dqqueryrules.h>
 
 /// Database query engine abstract interface
 /** It is the backend class used by DQSharedQuery / DQQuery.

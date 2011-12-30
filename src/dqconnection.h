@@ -9,8 +9,7 @@
 
 #include <dqmodelmetainfo.h>
 #include <dqindex.h>
-#include <dqengine.h>
-#include <dqengine.h>
+#include <backend/dqengine.h>
 
 class DQModelMetaInfo;
 class DQSql;

@@ -1,12 +1,12 @@
 #include <QSharedData>
 #include <QSqlRecord>
 
-#include "dqsql.h"
+#include "backend/dqsql.h"
 #include "dqconnection.h"
 #include "dqsharedquery.h"
 #include "priv/dqsharedquery_p.h"
-#include "dqsqlstatement.h"
-#include "dqexpression.h"
+#include "backend/dqsqlstatement.h"
+#include "backend/dqexpression.h"
 
 DQSharedQuery::DQSharedQuery() : data(new DQSharedQueryPriv) {
 //    data->connection = DQConnection::defaultConnection();

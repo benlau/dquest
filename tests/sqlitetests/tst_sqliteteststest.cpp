@@ -5,7 +5,7 @@
 #include <QSqlError>
 #include <dqconnection.h>
 #include <dqquery.h>
-#include <dqsql.h>
+#include "backend/dqsql.h"
 #include <dqlistwriter.h>
 
 #include "model1.h"

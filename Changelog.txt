@@ -12,7 +12,7 @@ Next release
   DQConnection
   * Added null state and isNull function
   * Changed the behavior / definition of defaultConnection() function for improve the multiple database access's coding affort.
-  * lastQuery() will return all the executed query instead of error query only.
+  * lastQuery() will return all kind of executed query instead of error query only.
   * Refactored to use DQEngine for backend.
 
   DQModel

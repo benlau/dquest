@@ -6,7 +6,7 @@
 #include "dqmodel.h"
 #include "dqmodelmetainfo.h"
 #include "dqwhere.h"
-#include "dqexpression.h"
+#include "backend/dqexpression.h"
 
 /// DQSharedQuery private data
 /**

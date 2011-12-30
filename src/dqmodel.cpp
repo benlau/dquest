@@ -1,11 +1,11 @@
 #include <QtCore>
 #include <QMetaObject>
 #include <QMetaProperty>
-#include "dqmodel.h"
+#include <dqmodel.h>
 #include "priv/dqmetainfoquery_p.h"
 #include "dqlist.h"
 
-#include "dqsql.h"
+#include <backend/dqsql.h>
 
 //#define TABLE_NAME "Model without DQ_MODEL"
 #define TABLE_NAME ""

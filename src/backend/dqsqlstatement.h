@@ -5,7 +5,7 @@
 
 #include <dqmodelmetainfo.h>
 #include <dqsharedquery.h>
-#include <dqqueryrules.h>
+#include <backend/dqqueryrules.h>
 #include <dqindex.h>
 
 class DQSharedQuery;

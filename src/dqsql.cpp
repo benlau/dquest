@@ -2,7 +2,7 @@
 #include <QSqlError>
 #include <QSharedDataPointer>
 #include "dqmodel.h"
-#include "dqsql.h"
+#include "backend/dqsql.h"
 #include "priv/dqsqlitestatement.h"
 
 class DQSqlPriv : public QSharedData {

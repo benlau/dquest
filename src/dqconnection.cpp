@@ -8,7 +8,7 @@
 #include "dqmodel.h"
 #include "dqconnection.h"
 #include "priv/dqsqlitestatement.h"
-#include "dqsql.h"
+#include "backend/dqsql.h"
 #include "priv/dqsqliteengine.h"
 
 #define PREPARE_PRIV() {\
