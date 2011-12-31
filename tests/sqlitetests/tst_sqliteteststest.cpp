@@ -80,6 +80,7 @@ private Q_SLOTS:
     /// test second connection
     void secondConnection();
 
+    /// Verify DQEngine
     void engine();
 
 private:

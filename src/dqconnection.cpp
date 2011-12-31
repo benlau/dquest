@@ -48,13 +48,13 @@ static QMap<DQModelMetaInfo* , DQConnection> mapping;
 
 DQConnection::DQConnection()
 {
-//    d = new DQConnectionPriv();
 
-    /* Don't create DQConnectionPriv and let the connection be null
-     Create the content on depend.
+    /* Don't create DQConnectionPriv by default. let it be null.
+     Create it on depend.
 
-     DQModel is going to change to not set default connection in constructor.
-     A null connection will reduce the memory allocation */
+     Because DQModel hold a null DQConnection by default, it could
+     reduce the memory usage and the frequencey of allocation and deallocation.
+    */
 
 }
 
@@ -83,9 +83,7 @@ bool DQConnection::open(QSqlDatabase db){
 
     PREPARE_PRIV();
 
-    d->engine->open(db); /// @TODO : Change the return value to this function.
-
-    return true;
+    return d->engine->open(db);
 }
 
 bool DQConnection::isOpen() const{

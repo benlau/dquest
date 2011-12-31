@@ -628,6 +628,7 @@ EXCLUDE_PATTERNS       =
 EXCLUDE_SYMBOLS        = _DQMetaInfoQuery DQModelMetaInfoField \
             DQModelMetaInfoHelper DQQueryRules *Priv \
             DQSqlStatement DQSqliteStatement DQExpression \
+	    DQEngine DQSqliteEngine DQQueryEngine DQSql \
             DQ_DECLARE_MODEL_* DQListWriter::Next
 
 # The EXAMPLE_PATH tag can be used to specify one or more files or

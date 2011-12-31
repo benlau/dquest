@@ -36,6 +36,7 @@ DQUEST_BACKEND_HEADERS = \
     $$PWD/backend/dqexpression.h \
     $$PWD/backend/dqqueryengine.h \
     $$PWD/backend/dqengine.h \
+    $$PWD/backend/dqbackendquery.h \
     $$PWD/backend/dqsqlstatement.h
 
 HEADERS += $$DQUEST_HEADERS
@@ -66,4 +67,5 @@ SOURCES += \
     $$PWD/dqlistwriter.cpp \
     $$PWD/dqsqliteengine.cpp \
     $$PWD/dqengine.cpp \
-    $$PWD/dqqueryengine.cpp
+    $$PWD/dqqueryengine.cpp \
+    $$PWD/backend/dqbackendquery.cpp
