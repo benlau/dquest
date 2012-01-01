@@ -7,6 +7,15 @@
 
 class DQBackendQueryData : public QSharedData {
 public:
+    DQBackendQueryData() {
+        engine = 0;
+    }
+
+    ~DQBackendQueryData(){
+        if (engine)
+            delete engine;
+    }
+
     DQQueryEngine* engine;
 };
 

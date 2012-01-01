@@ -21,9 +21,6 @@ class DQQueryEngine
 public:
     virtual ~DQQueryEngine();
 
-    /// Set the query rules for query
-    virtual void setQueryRules(DQQueryRules rules) = 0;
-
     /// Execuate the query
     /**
       It will execute the query based on the rules set in setQueryRules().
