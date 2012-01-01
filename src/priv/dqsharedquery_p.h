@@ -7,6 +7,7 @@
 #include "dqmodelmetainfo.h"
 #include "dqwhere.h"
 #include "backend/dqexpression.h"
+#include <backend/dqbackendquery.h>
 
 /// DQSharedQuery private data
 /**
@@ -28,7 +29,7 @@ public:
     DQModelMetaInfo *metaInfo;
     int limit;
 
-    QSqlQuery query;
+    DQBackendQuery query;
 
     DQExpression expression;
 

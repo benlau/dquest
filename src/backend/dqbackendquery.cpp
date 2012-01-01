@@ -54,3 +54,7 @@ bool DQBackendQuery::next(){
 bool DQBackendQuery::recordTo(DQAbstractModel * model){
     return d->engine->recordTo(model);
 }
+
+QSqlQuery DQBackendQuery::sqlQuery(){
+    return d->engine->sqlQuery();
+}

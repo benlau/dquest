@@ -57,6 +57,7 @@ public:
 
     virtual DQBackendQuery query(DQQueryRules rules);
 
+    /// @TODO The return type should be DQBackendQuery
     virtual QSqlQuery lastQuery();
 
     virtual QSqlQuery sqlQuery();

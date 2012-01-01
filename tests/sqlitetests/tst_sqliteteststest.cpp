@@ -743,6 +743,7 @@ void SqlitetestsTest::lastQuery(){
 
     query = user.connection().lastQuery();
     sql = query.executedQuery();
+//    qDebug() << sql;
     pattern.setPattern("^SELECT ALL.*");
     QVERIFY(pattern.exactMatch(sql));
 }

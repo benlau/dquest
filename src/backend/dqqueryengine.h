@@ -49,6 +49,7 @@ public:
      */
     virtual bool recordTo(DQAbstractModel * model) = 0;
 
+    virtual QSqlQuery sqlQuery() = 0;
 protected:
     DQQueryEngine();
 

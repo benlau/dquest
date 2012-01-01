@@ -20,7 +20,7 @@ public:
     DQSqlQueryEngine(DQSql sql, DQQueryRules rules);
 
     /// Get the query object used
-    QSqlQuery query();
+    virtual QSqlQuery sqlQuery();
 
     virtual bool exec();
 
