@@ -3,8 +3,10 @@
 
 #include <QSqlDatabase>
 #include <dqindex.h>
-#include "dqmodelmetainfo.h"
-#include "backend/dqsql.h"
+#include <dqmodelmetainfo.h>
+#include <backend/dqsql.h>
+#include <backend/dqbackendquery.h>
+#include <backend/dqqueryrules.h>
 
 /// Database engine (Abstract class)
 /** DQEngine provides low level database access. It is the backend
@@ -82,12 +84,15 @@ class DQEngine {
      */
     virtual QSqlQuery lastQuery();
 
-    /// Create a QSqlQuery object to the connected database
+    /// Create a DQBackendQuery object to the connected database
     /**
       @threadsafe
      */
 
-    virtual QSqlQuery query();
+    virtual DQBackendQuery query(DQQueryRules rules);
+
+    /// TODO: Remove it. It is just added for temp to prevent the software broken.
+    virtual QSqlQuery sqlQuery() = 0;
 };
 
 #endif // DQEngine_h

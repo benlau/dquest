@@ -38,6 +38,6 @@ QSqlQuery DQEngine::lastQuery() {
     return QSqlQuery();
 }
 
-QSqlQuery DQEngine::query(){
-    return QSqlQuery();
+DQBackendQuery DQEngine::query(DQQueryRules rules){
+    return DQBackendQuery();
 }

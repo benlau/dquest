@@ -55,9 +55,11 @@ public:
     /// Get the assoicated DQSql instance
     virtual DQSql& sql();
 
-    virtual QSqlQuery query();
+    virtual DQBackendQuery query(DQQueryRules rules);
 
     virtual QSqlQuery lastQuery();
+
+    virtual QSqlQuery sqlQuery();
 
 private:
     void setLastQuery(QSqlQuery query);

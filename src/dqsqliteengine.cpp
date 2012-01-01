@@ -6,6 +6,7 @@
 #include "dqmodel.h"
 #include "priv/dqsqlitestatement.h"
 #include "priv/dqsqliteengine.h"
+#include "backend/dqsqlqueryengine.h"
 
 DQSqliteEngine::DQSqliteEngine() : m_sql(new DQSqliteStatement())
 {
@@ -159,10 +160,15 @@ void DQSqliteEngine::setLastQuery(QSqlQuery query){
     mutex.unlock();
 }
 
-QSqlQuery DQSqliteEngine::query(){
-    return m_sql.query();
+DQBackendQuery DQSqliteEngine::query(DQQueryRules rules){
+    DQBackendQuery q(new DQSqlQueryEngine(m_sql,rules));
+    return q;
 }
 
 QSqlQuery DQSqliteEngine::lastQuery(){
     return m_lastQuery;
+}
+
+QSqlQuery DQSqliteEngine::sqlQuery(){
+    return m_sql.query();
 }

@@ -240,7 +240,7 @@ QSqlQuery DQConnection::query(){
     if (!isOpen())
         return QSqlQuery();
 
-    return d->engine->query();
+    return d->engine->sqlQuery();
 }
 
 void DQConnection::setLastQuery(QSqlQuery query){
