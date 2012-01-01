@@ -113,8 +113,7 @@ void SqlitetestsTest::initTestCase()
 
 //    QVERIFY(defaultConnection.isOpen()); // conn1 become default connection
 
-    DQSql sql = conn1.sql();
-
+    DQSql sql = ((DQSqliteEngine*) conn1.engine())->sql();
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
 
@@ -138,6 +137,13 @@ void SqlitetestsTest::initTestCase()
     QVERIFY ( conn1.addModel<HealthCheck>());
 
     QVERIFY( conn1.dropTables() );
+
+    DQEngine *engine = conn1.engine();
+    QVERIFY(engine->createModel(dqMetaInfo<Model1>()));
+    QVERIFY(engine->existsModel(dqMetaInfo<Model1>()));
+    QVERIFY(engine->dropModel(dqMetaInfo<Model1>()));
+    QVERIFY(!engine->existsModel(dqMetaInfo<Model1>()));
+
 
     QVERIFY( conn1.createTables() ); // recreate table
 

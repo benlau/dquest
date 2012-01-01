@@ -232,10 +232,6 @@ bool DQConnection::dropIndex(QString name){
     return res;
 }
 
-DQSql& DQConnection::sql(){
-    return d->engine->sql();
-}
-
 QSqlQuery DQConnection::query(){
     if (!isOpen())
         return QSqlQuery();

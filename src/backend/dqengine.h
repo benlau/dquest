@@ -75,9 +75,6 @@ class DQEngine {
     /// Drop the index
     virtual bool dropIndex(QString name);
 
-    /// Get the assoicated DQSql instance
-    virtual DQSql& sql() = 0;
-
     /// The last query
     /**
       @threadsafe

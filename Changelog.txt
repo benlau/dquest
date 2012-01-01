@@ -14,6 +14,7 @@ Next release
   * Changed the behavior / definition of defaultConnection() function for improve the multiple database access's coding affort.
   * lastQuery() will return all kind of executed query instead of error query only.
   * Refactored to use DQEngine for backend.
+  * Deprecated sql() function. A better backend system is implemented , no need to export the DQSql interface to public anymore
 
   DQModel
   * Do not set default connection in constructor. 

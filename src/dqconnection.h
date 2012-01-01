@@ -184,11 +184,6 @@ public:
 
     bool dropIndex(QString name);
 
-    /// Get the SQL interface that you may run predefined sql operations on the database
-    /** @remarks The connection must be opened before using this function
-     */
-    DQSql& sql();
-
     /// Create a QSqlQuery object to the connected database
     QSqlQuery query();
 

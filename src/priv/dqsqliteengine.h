@@ -52,15 +52,15 @@ public:
     /// Drop the index
     virtual bool dropIndex(QString name);
 
-    /// Get the assoicated DQSql instance
-    virtual DQSql& sql();
-
     virtual DQBackendQuery query(DQQueryRules rules);
 
     /// @TODO The return type should be DQBackendQuery
     virtual QSqlQuery lastQuery();
 
     virtual QSqlQuery sqlQuery();
+
+    /// Get the assoicated DQSql instance
+    DQSql& sql();
 
 private:
     void setLastQuery(QSqlQuery query);
