@@ -85,7 +85,9 @@ bool DQSharedQuery::exec() {
     Q_ASSERT(data->connection.isOpen());
 
     QString sql;
-    sql = data->connection.sql().statement()->select(*this);
+    DQQueryRules rules;
+    rules = *this;
+    sql = data->connection.sql().statement()->select(rules);
 
     data->query.prepare(sql);
 
@@ -113,7 +115,9 @@ bool DQSharedQuery::remove(){
     data->query = data->connection.query();
 
     QString sql;
-    sql = data->connection.sql().statement()->deleteFrom(*this);
+    DQQueryRules rules;
+    rules = *this;
+    sql = data->connection.sql().statement()->deleteFrom(rules);
 
     data->query.prepare(sql);
 

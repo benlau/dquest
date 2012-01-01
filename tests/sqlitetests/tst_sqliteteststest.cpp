@@ -406,7 +406,9 @@ void SqlitetestsTest::select()
     DQQuery<Model1> query1 = DQQuery<Model1>().filter(DQWhere("key","=","config1")).limit(1) ;
 
     DQSqliteStatement statement;
-    QString sql = statement.select(query1);
+    DQQueryRules rules;
+    rules = query1;
+    QString sql = statement.select(rules);
 
     qDebug() << sql;
 
