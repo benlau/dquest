@@ -83,6 +83,9 @@ private Q_SLOTS:
     /// Verify DQEngine
     void engine();
 
+    /// Test can DQConnection return the correct lastQuery object
+    void lastQuery();
+
 private:
     DQConnection conn1,conn2;
     QSqlDatabase db,db2;
@@ -715,6 +718,33 @@ void SqlitetestsTest::engine(){
     DQConnection connection = model.connection();
 
     QVERIFY(connection.engine()->name() == "SQLITE");
+}
+
+void SqlitetestsTest::lastQuery(){
+    User user; // test for save
+    user.userId = "lastQuery";
+    user.name = "test";
+    user.passwd = "1902371290783";
+    QVERIFY(user.save());
+
+    QSqlQuery query = user.connection().lastQuery();
+
+    QString sql = query.executedQuery();
+
+    QRegExp pattern;
+    pattern.setPattern("^REPLACE INTO user.*");
+
+    QVERIFY(pattern.exactMatch(sql));
+
+    DQQuery<User> q;
+
+    DQList<User> list = q.filter(DQWhere("userId=","lastQuery")).all();
+    QVERIFY(list.size() == 1);
+
+    query = user.connection().lastQuery();
+    sql = query.executedQuery();
+    pattern.setPattern("^SELECT ALL.*");
+    QVERIFY(pattern.exactMatch(sql));
 }
 
 QTEST_MAIN(SqlitetestsTest);

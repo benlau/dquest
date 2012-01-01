@@ -129,6 +129,9 @@ bool DQSqliteEngine::update(DQAbstractModel* model, QStringList fields, bool for
     } else {
         res = m_sql.replaceInto(info,model,fields,false);
     }
+
+    setLastQuery(m_sql.lastQuery());
+
     return res;
 }
 
