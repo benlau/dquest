@@ -10,12 +10,11 @@
 #include "priv/dqsqlitestatement.h"
 #include "backend/dqsql.h"
 #include "priv/dqsqliteengine.h"
+#include <backend/dqbackend.h>
 
 #define PREPARE_PRIV() {\
     if (!d) \
         d = new DQConnectionPriv(); \
-    if (!d->engine) \
-        setEngine(new DQSqliteEngine()); \
     }
 
 /// The private database structure for DQConnection
@@ -33,6 +32,12 @@ class DQConnectionPriv : public QSharedData
     ~DQConnectionPriv() {
         if (engine)
             delete engine;
+    }
+
+    void setEngine(DQEngine* val){
+        if (engine)
+            delete engine;
+        engine = val;
     }
 
     QMutex mutex;
@@ -78,7 +83,21 @@ bool DQConnection::operator!=(const DQConnection &rhs) {
 bool DQConnection::open(QSqlDatabase db){
     Q_ASSERT(db.isOpen());
 
+    if (isOpen()) {
+        qDebug() << "DQConnection::open() - Database is already opened";
+        return false;
+    }
+
     PREPARE_PRIV();
+
+    QString driver = db.driverName();
+
+    if (!DQBackend::isDriverSupported(driver)) {
+        qDebug() << QString("%1 is not supported.");
+        return false;
+    }
+
+    d->setEngine(DQBackend::createEngineForDriver(driver));
 
     return d->engine->open(db);
 }
@@ -95,6 +114,8 @@ bool DQConnection::isNull(){
 
 void DQConnection::close(){
     if (!d)
+        return;
+    if (!d->engine)
         return;
     d->engine->close();
 
@@ -252,21 +273,6 @@ QSqlQuery DQConnection::lastQuery(){
 //    d->mutex.unlock();
 
     return d->engine->lastSqlQuery();
-}
-
-bool DQConnection::setEngine(DQEngine *engine){
-    if (!d)
-        d = new DQConnectionPriv();
-
-    d->mutex.lock();
-
-    if (d->engine) {
-        delete d->engine;
-        d->engine = 0;
-    }
-    d->engine = engine;
-    d->mutex.unlock();
-    return true;
 }
 
 DQEngine* DQConnection::engine() const{

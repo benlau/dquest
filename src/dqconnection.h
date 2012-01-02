@@ -194,16 +194,6 @@ public:
      */
     QSqlQuery lastQuery();
 
-    /// Assign an database engine to the connection
-    /**
-      @param engine The new database engine. The ownership will be taken.
-      @threadsafe
-      @return TRUE if it is successful set,otherwise it is false. (e.g Call this function after opened the database)
-
-      @remarks Don't call this function after opened the database connection
-     */
-    bool setEngine(DQEngine *engine);
-
     /// Get the database engine currently using
     /**
       @threadsafe
