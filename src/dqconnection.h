@@ -194,14 +194,6 @@ public:
      */
     QSqlQuery lastQuery();
 
-    /// Set the last query
-    /// The last query with error used by DQConnection
-    /**
-      @threadsafe
-      @remarks It is thread-safe function
-     */
-    void setLastQuery(QSqlQuery query);
-
     /// Assign an database engine to the connection
     /**
       @param engine The new database engine. The ownership will be taken.

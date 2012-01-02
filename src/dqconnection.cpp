@@ -35,9 +35,6 @@ class DQConnectionPriv : public QSharedData
             delete engine;
     }
 
-    /// The last query being used.
-    QSqlQuery lastQuery;
-
     QMutex mutex;
 
     DQEngine *engine;
@@ -177,7 +174,7 @@ bool DQConnection::createTables(){
         }
         */
         res = d->engine->createModel(info);
-        setLastQuery(d->engine->lastSqlQuery());
+//        setLastQuery(d->engine->lastSqlQuery());
 
         if (!res)
             break;
@@ -197,7 +194,7 @@ bool DQConnection::dropTables() {
 
     foreach (DQModelMetaInfo* info ,models) {
         d->engine->dropModel(info);
-        setLastQuery(d->engine->lastSqlQuery());
+//        setLastQuery(d->engine->lastSqlQuery());
         /*
         if (!d->m_sql.exists(info))
             continue;
@@ -219,7 +216,7 @@ bool DQConnection::createIndex(const DQBaseIndex &index) {
         return false;
 
     bool res = d->engine->createIndex(index);
-    setLastQuery(d->engine->lastSqlQuery());
+//    setLastQuery(d->engine->lastSqlQuery());
     return res;
 }
 
@@ -228,7 +225,7 @@ bool DQConnection::dropIndex(QString name){
         return false;
 
     bool res = d->engine->dropIndex(name);
-    setLastQuery(d->engine->lastSqlQuery());
+//    setLastQuery(d->engine->lastSqlQuery());
     return res;
 }
 
@@ -237,15 +234,6 @@ QSqlQuery DQConnection::query(){
         return QSqlQuery();
 
     return d->engine->sqlQuery();
-}
-
-void DQConnection::setLastQuery(QSqlQuery query){
-    if (!isOpen())
-        return;
-
-    d->mutex.lock();
-    d->lastQuery = query;
-    d->mutex.unlock();
 }
 
 QSqlQuery DQConnection::lastQuery(){

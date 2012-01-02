@@ -85,7 +85,7 @@ bool DQSharedQuery::exec() {
     rules = *this;
     data->query = data->connection.engine()->query(rules);
     bool res = data->query.exec();
-    data->connection.setLastQuery(data->query.sqlQuery());
+//    data->connection.setLastQuery(data->query.sqlQuery());
     return res;
     /*
     data->query = data->connection.query(
@@ -125,7 +125,7 @@ bool DQSharedQuery::remove(){
     rules = *this;
     data->query = data->connection.engine()->query(rules);
     bool res = data->query.remove();
-    data->connection.setLastQuery(data->query.sqlQuery());
+//    data->connection.setLastQuery(data->query.sqlQuery());
     return res;
     /*
     data->query = data->connection.query();
