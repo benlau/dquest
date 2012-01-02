@@ -91,4 +91,6 @@ class DQEngine {
     virtual QSqlQuery lastSqlQuery();
 };
 
+typedef DQEngine* (*DQEngineCreatorFunc)();
+
 #endif // DQEngine_h

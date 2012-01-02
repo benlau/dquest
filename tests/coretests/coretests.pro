@@ -1,8 +1,4 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2010-09-14T18:26:15
-#
-#-------------------------------------------------
+# Test dquest core function without the involvement of any database backend
 
 QT       += sql testlib
 

@@ -38,6 +38,7 @@ DQUEST_BACKEND_HEADERS = \
     $$PWD/backend/dqengine.h \
     $$PWD/backend/dqbackendquery.h \
     $$PWD/backend/dqsqlqueryengine.h \
+    $$PWD/backend/dqbackend.h \
     $$PWD/backend/dqsqlstatement.h
 
 HEADERS += $$DQUEST_HEADERS
@@ -70,4 +71,5 @@ SOURCES += \
     $$PWD/dqengine.cpp \
     $$PWD/dqqueryengine.cpp \
     $$PWD/backend/dqsqlqueryengine.cpp \
-    $$PWD/backend/dqbackendquery.cpp
+    $$PWD/backend/dqbackendquery.cpp \
+    $$PWD/backend/dqbackend.cpp

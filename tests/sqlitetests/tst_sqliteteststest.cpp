@@ -7,6 +7,7 @@
 #include <dqquery.h>
 #include "backend/dqsql.h"
 #include <dqlistwriter.h>
+#include <backend/dqbackend.h>
 
 #include "model1.h"
 #include "model2.h"
@@ -24,6 +25,9 @@ class SqlitetestsTest : public QObject
 
 public:
     SqlitetestsTest();
+
+    /// Test the backend system
+    void backend();
 
     /// Verify the create table stmt
     void verifyCreateTable();
@@ -180,6 +184,9 @@ void SqlitetestsTest::cleanupTestCase()
     db.close();
     conn2.close();
     db2.close();
+}
+
+void SqlitetestsTest::backend(){
 }
 
 void SqlitetestsTest::verifyCreateTable(){
