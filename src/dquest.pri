@@ -39,6 +39,7 @@ DQUEST_BACKEND_HEADERS = \
     $$PWD/backend/dqbackendquery.h \
     $$PWD/backend/dqsqlqueryengine.h \
     $$PWD/backend/dqbackend.h \
+    $$PWD/backend/dqbackendregisterhelper.h \
     $$PWD/backend/dqsqlstatement.h
 
 HEADERS += $$DQUEST_HEADERS

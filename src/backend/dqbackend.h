@@ -20,7 +20,9 @@ public:
      *  
      */
     template <typename T>
-    static bool registerEngine(QString name, QString driver);
+    static bool registerEngine(QString name, QString driver) {
+        return DQBackend::registerEngine(dqEngineCreateFunc<T>,name,driver);
+    }
 
     ///  Register a database backend engine.
     /**
@@ -47,5 +49,6 @@ public:
     /// Return TRUE if the driver is supported
     static bool isDriverSupported(QString driver);
 };
+
 
 #endif // DQBackend_h

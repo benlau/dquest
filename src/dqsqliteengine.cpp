@@ -7,6 +7,16 @@
 #include "priv/dqsqlitestatement.h"
 #include "priv/dqsqliteengine.h"
 #include "backend/dqsqlqueryengine.h"
+#include <backend/dqbackendregisterhelper.h>
+
+template <>
+void DQBackendRegisterHelper<DQSqliteEngine>::postProcess(QString name , QString driver) {
+    if (!DQBackend::setDefaultEngine(name,driver)){
+        qDebug() << QString("Failed to set default engine \"%1\" to %2").arg(name).arg(driver);
+    }
+}
+
+static DQBackendRegisterHelper<DQSqliteEngine> registerHelper("SQLITE","QSQLITE");
 
 DQSqliteEngine::DQSqliteEngine() : m_sql(new DQSqliteStatement())
 {

@@ -93,4 +93,9 @@ class DQEngine {
 
 typedef DQEngine* (*DQEngineCreatorFunc)();
 
+template <typename T>
+DQEngine* dqEngineCreateFunc() {
+    return new T();
+}
+
 #endif // DQEngine_h

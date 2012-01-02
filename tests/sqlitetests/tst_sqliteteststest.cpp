@@ -101,6 +101,7 @@ SqlitetestsTest::SqlitetestsTest()
 
 void SqlitetestsTest::initTestCase()
 {
+    backend();
     verifyCreateTable();
     foreignKey();
 
@@ -187,6 +188,24 @@ void SqlitetestsTest::cleanupTestCase()
 }
 
 void SqlitetestsTest::backend(){
+
+    QStringList backendList = DQBackend::listEngine();
+    QVERIFY(backendList.size() == 1);
+    QVERIFY(backendList.at(0) == "SQLITE");
+
+    QVERIFY(DQBackend::isDriverSupported("QSQLITE"));
+
+    DQEngine *engine;
+
+    engine = DQBackend::createEngine("SQLITE");
+    QVERIFY(engine);
+    QVERIFY(engine->name() == "SQLITE");
+    delete engine;
+
+    engine = DQBackend::createEngineForDriver("QSQLITE");
+    QVERIFY(engine);
+    QVERIFY(engine->name() == "SQLITE");
+    delete engine;
 }
 
 void SqlitetestsTest::verifyCreateTable(){
