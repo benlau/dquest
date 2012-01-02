@@ -172,6 +172,7 @@ bool DQConnection::createTables(){
     bool res = true;
 
     QList<DQModelMetaInfo*> models = d->engine->modelList();
+    d->engine->transaction();
     foreach (DQModelMetaInfo* info ,models) {
 
         /*
@@ -202,6 +203,7 @@ bool DQConnection::createTables(){
         if (!res)
             break;
     }
+    d->engine->commit();
 
     return res;
 

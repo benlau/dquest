@@ -83,7 +83,7 @@ bool DQSqliteEngine::createModel(DQModelMetaInfo* info){
         } else {
 
             DQSharedList initialData = info->initialData();
-            /// TODO: Transaction
+
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {
                 if (!update(initialData.at(i))){

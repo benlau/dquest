@@ -152,8 +152,10 @@ void SqlitetestsTest::initTestCase()
     QVERIFY(engine->dropModel(dqMetaInfo<Model1>()));
     QVERIFY(!engine->existsModel(dqMetaInfo<Model1>()));
 
-
+    QTime time;
+    time.start();
     QVERIFY( conn1.createTables() ); // recreate table
+    QVERIFY( time.elapsed() < 200); // It should take less than 200ms for most of the computer.
 
     /* Create index */
 
