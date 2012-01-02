@@ -54,8 +54,7 @@ public:
 
     virtual DQBackendQuery query(DQQueryRules rules);
 
-    /// @TODO The return type should be DQBackendQuery
-    virtual QSqlQuery lastQuery();
+    virtual QSqlQuery lastSqlQuery();
 
     virtual QSqlQuery sqlQuery();
 
@@ -70,7 +69,8 @@ private:
 
     QList<DQModelMetaInfo*> m_models;
 
-    QSqlQuery m_lastQuery;
+    QSqlQuery m_lastSqlQuery;
+    DQBackendQuery m_lastQuery;
 
 };
 

@@ -317,8 +317,8 @@ void SqlitetestsTest::deleteAll() {
     QVERIFY(model1.id == model1b.id );
 
     query = DQQuery<Model1>().filter(DQWhere("key = " ,"temp")).limit(1);
-    QEXPECT_FAIL("","Normally sqlite do not support limit in delete from , unless it is build with special flag",Continue);
-    QVERIFY(query.remove());
+    //QEXPECT_FAIL("","Normally sqlite do not support limit in delete from , unless it is build with special flag",Continue);
+    QVERIFY(!query.remove());
 
     qDebug() << "Failed sql : " << query.lastQuery().lastQuery();
 

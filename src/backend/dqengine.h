@@ -75,12 +75,6 @@ class DQEngine {
     /// Drop the index
     virtual bool dropIndex(QString name);
 
-    /// The last query
-    /**
-      @threadsafe
-     */
-    virtual QSqlQuery lastQuery();
-
     /// Create a DQBackendQuery object to the connected database
     /**
       @threadsafe
@@ -88,8 +82,13 @@ class DQEngine {
 
     virtual DQBackendQuery query(DQQueryRules rules);
 
-    /// TODO: Remove it. It is just added for temp to prevent the software broken.
-    virtual QSqlQuery sqlQuery() = 0;
+    virtual QSqlQuery sqlQuery();
+
+    /// The last query
+    /**
+      @threadsafe
+     */
+    virtual QSqlQuery lastSqlQuery();
 };
 
 #endif // DQEngine_h

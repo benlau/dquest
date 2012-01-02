@@ -177,7 +177,7 @@ bool DQConnection::createTables(){
         }
         */
         res = d->engine->createModel(info);
-        setLastQuery(d->engine->lastQuery());
+        setLastQuery(d->engine->lastSqlQuery());
 
         if (!res)
             break;
@@ -197,7 +197,7 @@ bool DQConnection::dropTables() {
 
     foreach (DQModelMetaInfo* info ,models) {
         d->engine->dropModel(info);
-        setLastQuery(d->engine->lastQuery());
+        setLastQuery(d->engine->lastSqlQuery());
         /*
         if (!d->m_sql.exists(info))
             continue;
@@ -219,7 +219,7 @@ bool DQConnection::createIndex(const DQBaseIndex &index) {
         return false;
 
     bool res = d->engine->createIndex(index);
-    setLastQuery(d->engine->lastQuery());
+    setLastQuery(d->engine->lastSqlQuery());
     return res;
 }
 
@@ -228,7 +228,7 @@ bool DQConnection::dropIndex(QString name){
         return false;
 
     bool res = d->engine->dropIndex(name);
-    setLastQuery(d->engine->lastQuery());
+    setLastQuery(d->engine->lastSqlQuery());
     return res;
 }
 
@@ -258,12 +258,12 @@ QSqlQuery DQConnection::lastQuery(){
       may override by another thread.
      @todo Implement last query storage per thread.
      */
-    QSqlQuery query;
-    d->mutex.lock();
-    query = d->lastQuery;
-    d->mutex.unlock();
+//    QSqlQuery query;
+//    d->mutex.lock();
+//    query = d->lastQuery;
+//    d->mutex.unlock();
 
-    return query;
+    return d->engine->lastSqlQuery();
 }
 
 bool DQConnection::setEngine(DQEngine *engine){

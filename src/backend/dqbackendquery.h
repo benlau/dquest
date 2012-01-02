@@ -26,6 +26,8 @@ public:
     DQBackendQuery &operator=(const DQBackendQuery &);
     ~DQBackendQuery();
 
+    bool isNull();
+
     /// Execuate the query
     /**
       Returns true if the query executed successfully; otherwise returns false.

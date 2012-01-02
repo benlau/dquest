@@ -38,6 +38,7 @@ bool DQSqliteEngine::isOpen() const{
 
 void DQSqliteEngine::close(){
     m_sql.setDatabase(QSqlDatabase());
+    m_lastQuery = DQBackendQuery();
 }
 
 /// Add a model to the engine
@@ -156,17 +157,28 @@ void DQSqliteEngine::setLastQuery(QSqlQuery query){
         return;
 
     mutex.lock();
-    m_lastQuery = query;
+    m_lastSqlQuery = query;
+    m_lastQuery = DQBackendQuery();
     mutex.unlock();
 }
 
 DQBackendQuery DQSqliteEngine::query(DQQueryRules rules){
     DQBackendQuery q(new DQSqlQueryEngine(m_sql,rules));
+    mutex.lock();
+    m_lastQuery = q;
+    mutex.unlock();
     return q;
 }
 
-QSqlQuery DQSqliteEngine::lastQuery(){
-    return m_lastQuery;
+QSqlQuery DQSqliteEngine::lastSqlQuery(){
+    QSqlQuery res;
+    mutex.lock();
+    if (m_lastQuery.isNull())
+        res = m_lastSqlQuery;
+    else
+        res = m_lastQuery.sqlQuery();
+    mutex.unlock();
+    return res;
 }
 
 QSqlQuery DQSqliteEngine::sqlQuery(){

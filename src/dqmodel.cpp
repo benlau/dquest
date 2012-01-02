@@ -79,7 +79,7 @@ bool DQModel::save(bool forceInsert,bool forceAllField) {
     }
 
     bool res = m_connection.engine()->update(this,nonNullFields,_forceInsert);
-    m_connection.setLastQuery(m_connection.engine()->lastQuery());
+    m_connection.setLastQuery(m_connection.engine()->lastSqlQuery());
 
     return res;
 }

@@ -34,7 +34,11 @@ bool DQEngine::dropIndex(QString name) {
     return false;
 }
 
-QSqlQuery DQEngine::lastQuery() {
+QSqlQuery DQEngine::sqlQuery(){
+    return QSqlQuery();
+}
+
+QSqlQuery DQEngine::lastSqlQuery() {
     return QSqlQuery();
 }
 

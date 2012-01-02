@@ -39,6 +39,10 @@ DQBackendQuery::~DQBackendQuery()
 {
 }
 
+bool DQBackendQuery::isNull(){
+    return d->engine == 0;
+}
+
 bool DQBackendQuery::exec(){
     return d->engine->exec();
 }
