@@ -58,6 +58,13 @@ public:
 
     virtual QSqlQuery sqlQuery();
 
+    virtual bool transaction();
+
+    virtual bool commit();
+
+    virtual bool rollback();
+
+
     /// Get the assoicated DQSql instance
     DQSql& sql();
 

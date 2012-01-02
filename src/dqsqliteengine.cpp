@@ -194,3 +194,16 @@ QSqlQuery DQSqliteEngine::lastSqlQuery(){
 QSqlQuery DQSqliteEngine::sqlQuery(){
     return m_sql.query();
 }
+
+bool DQSqliteEngine::transaction(){
+    return m_sql.database().transaction();
+}
+
+bool DQSqliteEngine::commit(){
+    return m_sql.database().commit();
+}
+
+bool DQSqliteEngine::rollback(){
+    return m_sql.database().rollback();
+}
+

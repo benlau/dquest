@@ -184,6 +184,22 @@ public:
 
     bool dropIndex(QString name);
 
+    /// Begins a transaction on the database if the backend supports transactions. Returns true if the operation succeeded. Otherwise it returns false.
+    bool transaction();
+
+    /// Commits a transaction to the database if the driver supports transactions and a transaction() has been started. Returns true if the operation succeeded. Otherwise it returns false.
+    /**
+      Note: For some databases, the commit will fail and return false if there is an active query using the database for a SELECT. Make the query inactive before doing the commit.
+     */
+    bool commit();
+
+    /// Rolls back a transaction on the database, if the driver supports transactions and a transaction() has been started. Returns true if the operation succeeded. Otherwise it returns false.
+    /**
+      Note: For some databases, the rollback will fail and return false if there is an active query using the database for a SELECT. Make the query inactive before doing the rollback.
+      */
+    bool rollback();
+
+
     /// Create a QSqlQuery object to the connected database
     QSqlQuery query();
 

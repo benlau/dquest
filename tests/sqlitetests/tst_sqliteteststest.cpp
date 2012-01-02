@@ -90,6 +90,9 @@ private Q_SLOTS:
     /// Test can DQConnection return the correct lastQuery object
     void lastQuery();
 
+    /// Test transaction
+    void transaction();
+
 private:
     DQConnection conn1,conn2;
     QSqlDatabase db,db2;
@@ -778,6 +781,65 @@ void SqlitetestsTest::lastQuery(){
 //    qDebug() << sql;
     pattern.setPattern("^SELECT ALL.*");
     QVERIFY(pattern.exactMatch(sql));
+}
+
+void SqlitetestsTest::transaction(){
+    QString id = "transaction%1";
+    QVERIFY(conn1.transaction());
+    QVERIFY(conn1.commit());
+
+    QVERIFY(conn1.transaction());
+    User user[3];
+
+    for (int i = 0 ; i < 3;i++){
+        user[i].userId =QString(id).arg(i);
+        user[i].passwd = "901278390";
+        user[i].setConnection(conn1);
+    }
+
+    for (int i = 0 ; i < 3;i++){
+        QVERIFY(user[i].save());
+    }
+    QVERIFY(conn1.rollback());
+
+    for (int i = 0 ; i < 3;i++){
+        DQQuery<User> q;
+        QVERIFY(q.filter(DQWhere("userId =", QString(id).arg(i))).count() == 0);
+    }
+
+    QVERIFY(conn1.transaction());
+    for (int i = 0 ; i < 3;i++){
+        QVERIFY(user[i].save());
+    }
+    QVERIFY(conn1.commit());
+
+    for (int i = 0 ; i < 3;i++){
+        DQQuery<User> q;
+        QVERIFY(q.filter(DQWhere("userId =", QString(id).arg(i))).count() == 1);
+        // saved successfully
+    }
+
+    QVERIFY(conn1.transaction()); // transaction with error
+    QSqlQuery query = conn1.query();
+    query.prepare("INSERT INTO User(userId,passwd) values (:userId,:passwd);");
+    query.bindValue(":userId","transaction0");
+    query.bindValue(":passwd","sdflksjd fl ljd");
+
+    QVERIFY(!query.exec()); // it should be fail , becoz the userId is duplicated.
+
+//    qDebug() << query.lastError().text();
+
+    User tmp;
+    tmp.userId = "transaction_tmp";
+    tmp.passwd = "12312312";
+    QVERIFY(tmp.save()); // this one should work.
+    QVERIFY(conn1.commit());
+
+    tmp = User();
+
+    QVERIFY(tmp.load(DQWhere("userId = ", "transaction_tmp") ));
+
+
 }
 
 QTEST_MAIN(SqlitetestsTest);

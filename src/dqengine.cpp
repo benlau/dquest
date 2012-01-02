@@ -45,3 +45,15 @@ QSqlQuery DQEngine::lastSqlQuery() {
 DQBackendQuery DQEngine::query(DQQueryRules rules){
     return DQBackendQuery();
 }
+
+bool DQEngine::transaction(){
+    return false;
+}
+
+bool DQEngine::commit(){
+    return false;
+}
+
+bool DQEngine::rollback(){
+    return false;
+}

@@ -35,9 +35,11 @@ class DQConnectionPriv : public QSharedData
     }
 
     void setEngine(DQEngine* val){
+        mutex.lock();
         if (engine)
             delete engine;
         engine = val;
+        mutex.unlock();
     }
 
     QMutex mutex;
@@ -283,3 +285,22 @@ DQEngine* DQConnection::engine() const{
     d->mutex.unlock();
     return res;
 }
+
+bool DQConnection::transaction(){
+    if (!d || !d->engine)
+        return false;
+    return d->engine->transaction();
+}
+
+bool DQConnection::commit(){
+    if (!d || !d->engine)
+        return false;
+    return d->engine->commit();
+}
+
+bool DQConnection::rollback(){
+    if (!d || !d->engine)
+        return false;
+    return d->engine->rollback();
+}
+
