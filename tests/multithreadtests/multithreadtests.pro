@@ -16,14 +16,12 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += tst_multithreadtests.cpp \
-    model4writethread.cpp
+SOURCES += tst_multithreadtests.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 
 include(../../src/dquest.pri)
 include(../models/models.pri)
 
-HEADERS += \
-    model4writethread.h
+HEADERS +=
 

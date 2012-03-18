@@ -2,13 +2,13 @@
     @author Ben Lau
  */
 
+#include <QSqlError>
 #include <QtCore/QString>
 #include <QtTest/QtTest>
 #include <dqquery.h>
 #include <QEventLoop>
 #include "config.h"
 #include "model4.h"
-#include "model4writethread.h"
 
 class MultiThreadTests : public QObject
 {
@@ -21,57 +21,99 @@ public:
     bool waitForThreadFinished(QList<QThread*> thread,int timeout = -1);
 
 private Q_SLOTS:
-    void simple();
+
+    /// Verify the multi-threading ability using connection per thread.
+    /**
+      @remarks QSQLITE driver do not support multi-threading. It will lock database
+     */
+    void connectionPerThread();
 };
 
 MultiThreadTests::MultiThreadTests()
 {
 }
 
-void MultiThreadTests::simple()
+/// A thead write on model4 with independent database
+class QSqliteSimpleWriteThread : public QThread {
+public:
+    QSqliteSimpleWriteThread(QObject* parent) : QThread(parent) {
+        number = 100;
+    }
+
+    // no. of successfull written item
+    int written;
+    int number;
+
+    /// No. of record on the written database
+    int count;
+
+    void run() {
+        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE",QString("conn-%1").arg(objectName()));
+        db.setDatabaseName(QString("%1.db").arg(objectName()));
+        db.open();
+
+        DQConnection conn;
+        conn.open(db);
+        conn.addModel<Model4>();
+        conn.dropTables();
+        conn.createTables();
+
+        for (int i = 0 ; i < number ;i++ ) {
+            Model4 model;
+            model.key = QString("%1/%2").arg(objectName()).arg(i);
+            model.description = objectName();
+            QString order;
+            order.setNum(i);
+            model.help = order;
+            model.setConnection(conn); // @TODO Don't set connection later
+            bool res = model.save();
+            if (!res) {
+                qDebug() << conn.lastQuery().lastError();
+            } else {
+                written++;
+            }
+        }
+
+        DQQuery<Model4> query;
+        query.setConnection(conn); // @TODO Don't set connection later
+
+        count = query.count();
+
+        conn.close();
+    }
+};
+
+void MultiThreadTests::connectionPerThread()
 {
-    QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName("simple.db");
-    db.open();
-
-    DQConnection conn;
-    QVERIFY(conn.open(db));
-    conn.addModel<Model4>();
-
-    QVERIFY(conn.dropTables());
-    conn.createTables();
-
     /* Verify Model4WriteThread */
     qDebug() << "Trying non-main thread single thread write";
-    Model4WriteThread *thread = new Model4WriteThread(this);
+    int number = 20;
+    QSqliteSimpleWriteThread *thread = new QSqliteSimpleWriteThread(this);
     thread->setObjectName("single");
-    thread->setNumber(100);
-    thread->setConnection(conn);
+    thread->number = number;
 
     thread->start();
 
     QVERIFY(waitForThreadFinished(thread));
 
     thread->deleteLater();
-    DQQuery<Model4> query;
 
-    QVERIFY(query.count() == 100);
+    QVERIFY(thread->count == number);
 
+    number = 200;
     /* Verify multiple thread */
     qDebug() << "Test - Multiple thread writing";
     QList<QThread*> threads;
     for (int i = 0 ; i < 10;i++ ) {
-        Model4WriteThread *thread = new Model4WriteThread(this);
+        QSqliteSimpleWriteThread *thread = new QSqliteSimpleWriteThread(this);
         thread->setObjectName(QString("%1-%2").arg("multiple").arg(i));
-        thread->setConnection(conn);
-        thread->setNumber(250);
+        thread->number = number;
         thread->start();
         threads << thread;
     }
     QVERIFY(waitForThreadFinished(threads));
-    QVERIFY(query.count() == 100 + 250 * 10);
 
-    conn.close();
+
 }
 
 bool MultiThreadTests::waitForThreadFinished(QThread* thread,int timeout){
