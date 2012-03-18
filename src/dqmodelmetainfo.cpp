@@ -47,7 +47,7 @@ void DQModelMetaInfo::registerFields(QList<DQModelMetaInfoField> fields){
     }
 }
 
-QStringList DQModelMetaInfo::fieldNameList(){
+QStringList DQModelMetaInfo::fieldNameList() const {
     QStringList result;
     QMapIterator<QString, DQModelMetaInfoField> iter(m_fields);
     while (iter.hasNext()) {
@@ -57,11 +57,11 @@ QStringList DQModelMetaInfo::fieldNameList(){
     return result;
 }
 
-QList<DQModelMetaInfoField> DQModelMetaInfo::foreignKeyList(){
+QList<DQModelMetaInfoField> DQModelMetaInfo::foreignKeyList() const {
     return m_foreignKeyList;
 }
 
-QStringList DQModelMetaInfo::foreignKeyNameList(){
+QStringList DQModelMetaInfo::foreignKeyNameList() const {
     QStringList result;
     foreach (DQModelMetaInfoField field , m_foreignKeyList){
         result << field.name;
@@ -139,14 +139,14 @@ QString DQModelMetaInfo::className() const {
     return m_className;
 }
 
-DQAbstractModel* DQModelMetaInfo::create(){
+DQAbstractModel* DQModelMetaInfo::create() const{
     return createFunc();
 }
 
-QList<DQModelMetaInfoField> DQModelMetaInfo::primeryKeyList(){
+QList<DQModelMetaInfoField> DQModelMetaInfo::primeryKeyList() const{
     return m_primaryKeyList;
 }
 
-DQSharedList DQModelMetaInfo::initialData(){
+DQSharedList DQModelMetaInfo::initialData() const{
     return initialDataFunc();
 }

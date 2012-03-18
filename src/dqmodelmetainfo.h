@@ -72,6 +72,8 @@ DQSharedList _dqMetaInfoInitalData() {
 
   When it is created , it will set its parent to QCoreApplication,
   so that it will be destroyed automatically.
+
+  @threadsafe
  */
 
 class DQModelMetaInfo : private QObject {
@@ -79,19 +81,19 @@ class DQModelMetaInfo : private QObject {
 public:
 
     /// Return the list of field name
-    QStringList fieldNameList();
+    QStringList fieldNameList() const;
 
     /// List of foreign key name
-    QStringList foreignKeyNameList();
+    QStringList foreignKeyNameList() const;
 
     /// List of foreign key
-    QList<DQModelMetaInfoField> foreignKeyList();
+    QList<DQModelMetaInfoField> foreignKeyList() const;
 
     /// Get the primary key list
     /** In this implementation , only the default primary key is supported.
       Multiple primary key is reserved for furture expension.
      */
-    QList<DQModelMetaInfoField> primeryKeyList();
+    QList<DQModelMetaInfoField> primeryKeyList() const;
 
     /// No. of field
     int size() const;
@@ -130,10 +132,10 @@ public:
     QString className() const;
 
     /// Get the initial data for the model
-    DQSharedList initialData();
+    DQSharedList initialData() const;
 
     /// Create an instance of the associated model type
-    DQAbstractModel* create();
+    DQAbstractModel* create() const;
 
 protected:
     /// Default constructor

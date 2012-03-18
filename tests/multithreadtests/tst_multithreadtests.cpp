@@ -100,7 +100,7 @@ void MultiThreadTests::connectionPerThread()
 
     QVERIFY(thread->count == number);
 
-    number = 20;
+    number = 200;
     /* Verify multiple thread */
     qDebug() << "Test - Multiple thread writing";
     QList<QSqliteSimpleWriteThread*> threads;
