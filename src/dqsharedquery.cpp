@@ -7,7 +7,7 @@
 #include "priv/dqsharedquery_p.h"
 #include "backend/dqsqlstatement.h"
 #include "backend/dqexpression.h"
-#include <backend/dqengine.h>
+#include <backend/dqbackendengine.h>
 
 DQSharedQuery::DQSharedQuery() : data(new DQSharedQueryPriv) {
 //    data->connection = DQConnection::defaultConnection();

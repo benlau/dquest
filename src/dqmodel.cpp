@@ -2,7 +2,7 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <dqmodel.h>
-#include <backend/dqengine.h>
+#include <backend/dqbackendengine.h>
 #include "priv/dqmetainfoquery_p.h"
 #include "dqlist.h"
 

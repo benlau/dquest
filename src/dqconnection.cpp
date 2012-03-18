@@ -25,7 +25,7 @@ class DQConnectionPriv : public QSharedData
         engine = 0;
     }
 
-    DQConnectionPriv(DQEngine *val) {
+    DQConnectionPriv(DQBackendEngine *val) {
         engine = val;
     }
 
@@ -34,7 +34,7 @@ class DQConnectionPriv : public QSharedData
             delete engine;
     }
 
-    void setEngine(DQEngine* val){
+    void setEngine(DQBackendEngine* val){
         mutex.lock();
         if (engine)
             delete engine;
@@ -44,7 +44,7 @@ class DQConnectionPriv : public QSharedData
 
     QMutex mutex;
 
-    DQEngine *engine;
+    DQBackendEngine *engine;
 };
 
 /// Thread specific data
@@ -299,8 +299,8 @@ QSqlQuery DQConnection::lastQuery(){
     return d->engine->lastSqlQuery();
 }
 
-DQEngine* DQConnection::engine() const{
-    DQEngine*res = 0;
+DQBackendEngine* DQConnection::engine() const{
+    DQBackendEngine*res = 0;
 
     d->mutex.lock();
     res = d->engine;

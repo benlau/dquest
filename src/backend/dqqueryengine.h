@@ -14,7 +14,7 @@
 
     User should not use this class directly.
 
-    @see DQEngine
+    @see DQBackendEngine
  */
 class DQQueryEngine
 {

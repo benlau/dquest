@@ -10,7 +10,7 @@
 #include <dqmodelmetainfo.h>
 #include <dqindex.h>
 
-class DQEngine;
+class DQBackendEngine;
 class DQModelMetaInfo;
 class DQSql;
 class DQConnectionPriv;
@@ -214,7 +214,7 @@ public:
     /**
       @threadsafe
      */
-    DQEngine* engine() const;
+    DQBackendEngine* engine() const;
 
 signals:
 

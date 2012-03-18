@@ -6,13 +6,13 @@
 #define DQSQLITEENGINE_H
 
 #include "dqmodelmetainfo.h"
-#include "backend/dqengine.h"
+#include "backend/dqbackendengine.h"
 #include "backend/dqsql.h"
 #include "backend/dqsqlstatement.h"
 
 /// Sqlite database engine
 
-class DQSqliteEngine : public DQEngine
+class DQSqliteEngine : public DQBackendEngine
 {
 public:
     DQSqliteEngine();

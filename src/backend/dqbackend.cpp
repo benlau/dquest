@@ -3,7 +3,7 @@
 
 class DQBackendPrivItem {
 public:
-    DQEngineCreatorFunc func;
+    DQBackendEngineCreatorFunc func;
     QString name;
     QString driver;
 };
@@ -15,7 +15,7 @@ static QMap<QString,QString> driverToName;
 /// If it is set, it will always use this mapping instead of driverToName which is determined by registration order.
 static QMap<QString,QString> defaultDriverToName;
 
-bool DQBackend::registerEngine(DQEngineCreatorFunc func,QString name, QString driver)
+bool DQBackend::registerEngine(DQBackendEngineCreatorFunc func,QString name, QString driver)
 {
     if (nameMap.contains(name))
         return false;
@@ -48,9 +48,9 @@ bool DQBackend::setDefaultEngine(QString name, QString driver)
     return true;
 }
 
-DQEngine* DQBackend::createEngineForDriver(QString driver)
+DQBackendEngine* DQBackend::createEngineForDriver(QString driver)
 {
-    DQEngine* res = 0;
+    DQBackendEngine* res = 0;
     QString name;
 
     if (defaultDriverToName.contains(driver)) {
@@ -62,9 +62,9 @@ DQEngine* DQBackend::createEngineForDriver(QString driver)
     return createEngine(name);
 }
 
-DQEngine* DQBackend::createEngine(QString name)
+DQBackendEngine* DQBackend::createEngine(QString name)
 {
-    DQEngine* res = 0;
+    DQBackendEngine* res = 0;
     if (nameMap.contains(name))
         res = nameMap[name].func();
     return res;

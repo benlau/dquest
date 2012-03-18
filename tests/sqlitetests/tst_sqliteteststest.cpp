@@ -83,7 +83,7 @@ private Q_SLOTS:
     /// test second connection
     void secondConnection();
 
-    /// Verify DQEngine
+    /// Verify DQBackendEngine
     void engine();
 
     /// Test can DQConnection return the correct lastQuery object
@@ -145,7 +145,7 @@ void SqlitetestsTest::initTestCase()
 
     QVERIFY( conn1.dropTables() );
 
-    DQEngine *engine = conn1.engine();
+    DQBackendEngine *engine = conn1.engine();
     QVERIFY(engine->createModel(dqMetaInfo<Model1>()));
     QVERIFY(engine->existsModel(dqMetaInfo<Model1>()));
     QVERIFY(engine->dropModel(dqMetaInfo<Model1>()));
@@ -200,7 +200,7 @@ void SqlitetestsTest::backend(){
 
     QVERIFY(DQBackend::isDriverSupported("QSQLITE"));
 
-    DQEngine *engine;
+    DQBackendEngine *engine;
 
     engine = DQBackend::createEngine("SQLITE");
     QVERIFY(engine);

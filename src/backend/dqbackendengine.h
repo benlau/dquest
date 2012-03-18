@@ -1,5 +1,5 @@
-#ifndef DQEngine_h
-#define DQEngine_h
+#ifndef DQBackendEngine_h
+#define DQBackendEngine_h
 
 #include <QSqlDatabase>
 #include <dqindex.h>
@@ -9,17 +9,17 @@
 #include <backend/dqqueryrules.h>
 
 /// Database backend engine (Abstract class)
-/** DQEngine provides low level database access. It is the backend
+/** DQBackendEngine provides low level database access. It is the backend
   class for DQConnection. Normally user will not use the class directly.
   It is used for custom database backend support only.
 
  */
 
-class DQEngine {
+class DQBackendEngine {
 
  public:
-    DQEngine();
-    virtual ~DQEngine();
+    DQBackendEngine();
+    virtual ~DQBackendEngine();
 
     /// Get the name of the engine
     virtual QString name()  = 0;
@@ -107,11 +107,11 @@ class DQEngine {
 
 };
 
-typedef DQEngine* (*DQEngineCreatorFunc)();
+typedef DQBackendEngine* (*DQBackendEngineCreatorFunc)();
 
 template <typename T>
-DQEngine* dqEngineCreateFunc() {
+DQBackendEngine* dqBackendEngineCreateFunc() {
     return new T();
 }
 
-#endif // DQEngine_h
+#endif // DQBackendEngine_h
