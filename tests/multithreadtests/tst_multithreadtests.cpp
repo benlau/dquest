@@ -87,7 +87,7 @@ void MultiThreadTests::connectionPerThread()
 {
     /* Verify Model4WriteThread */
     qDebug() << "Trying non-main thread single thread write";
-    int number = 20;
+    int number = 5;
     QSqliteSimpleWriteThread *thread = new QSqliteSimpleWriteThread(this);
     thread->setObjectName("single");
     thread->number = number;
@@ -100,19 +100,25 @@ void MultiThreadTests::connectionPerThread()
 
     QVERIFY(thread->count == number);
 
-    number = 200;
+    number = 20;
     /* Verify multiple thread */
     qDebug() << "Test - Multiple thread writing";
-    QList<QThread*> threads;
+    QList<QSqliteSimpleWriteThread*> threads;
+    QList<QThread*> list;
     for (int i = 0 ; i < 10;i++ ) {
         QSqliteSimpleWriteThread *thread = new QSqliteSimpleWriteThread(this);
         thread->setObjectName(QString("%1-%2").arg("multiple").arg(i));
         thread->number = number;
         thread->start();
         threads << thread;
+        list << thread;
     }
-    QVERIFY(waitForThreadFinished(threads));
+    QVERIFY(waitForThreadFinished(list));
 
+    for (int i = 0 ; i < 10;i++) {
+        QVERIFY2(threads[i]->count == number,
+                 QString("Verify thread %1").arg(i).toAscii().constData());
+    }
 
 }
 

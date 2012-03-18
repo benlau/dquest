@@ -100,10 +100,10 @@ public:
     const DQModelMetaInfoField* at(int idx) const;
 
     /// Set value of a field on a model
-    bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
+    bool setValue(DQAbstractModel *model,QString field, const QVariant& val) const;
 
     /// Set the value of a field by index
-    bool setValue(DQAbstractModel *model,int index, const QVariant& val);
+    bool setValue(DQAbstractModel *model,int index, const QVariant& val) const;
 
     /// Get value of a field from a model
     /**

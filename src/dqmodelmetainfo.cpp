@@ -79,7 +79,7 @@ const DQModelMetaInfoField* DQModelMetaInfo::at(int idx) const{
     return &m_fieldList.at(idx);
 }
 
-bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVariant& val){
+bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVariant& val) const{
     if (!m_fields.contains(field))
         return false;
     int offset = m_fields[field].offset;
@@ -89,7 +89,7 @@ bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVari
     return true;
 }
 
-bool DQModelMetaInfo::setValue(DQAbstractModel *model,int index, const QVariant& val){
+bool DQModelMetaInfo::setValue(DQAbstractModel *model,int index, const QVariant& val) const{
     if (index< 0 || index > size() ) {
         return false;
     }
