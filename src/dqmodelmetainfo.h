@@ -186,7 +186,7 @@ DQModelMetaInfo* dqFindMetaInfo(QString name);
 /**
   @remarks User should not use this function for any purpose
  */
-void dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
+bool dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
 
 /// Helper class for DQModelMetaInfo instance generation
 template <typename T>
@@ -248,6 +248,10 @@ inline DQModelMetaInfo* dqMetaInfo() {
         QList<DQModelMetaInfoField> fields = DQModelMetaInfoHelper<T>::fields();
         metaInfo->registerFields(fields);
         dqRegisterMetaInfo(name,metaInfo);
+
+        QCoreApplication* app = QCoreApplication::instance();
+        metaInfo->moveToThread(app->thread());
+        metaInfo->setParent(app); // Then it will be destroyed in program termination. Make valgrind happy.
     }
 
     return metaInfo;

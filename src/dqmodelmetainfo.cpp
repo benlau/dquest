@@ -1,3 +1,4 @@
+#include <QMutex>
 #include <QMap>
 #include <QCoreApplication>
 #include "dqmodelmetainfo.h"
@@ -8,22 +9,33 @@
 #define DQ_MODEL_GET_FIELD(model, offset) \
             ( (DQBaseField*) MEMBER_PTR(model,offset) )
 
+static QMutex mutex;
 static QMap<QString , DQModelMetaInfo* > metaTypeList;
 
 DQModelMetaInfo* dqFindMetaInfo(QString name) {
     DQModelMetaInfo * res = 0;
+    mutex.lock();
     if (metaTypeList.contains(name))
         res = metaTypeList[name];
+    mutex.unlock();
     return res;
 }
 
-void dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType){
-    metaTypeList[name] = metaType;
+bool dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType){
+    bool res = false;
+    mutex.lock();
+    if (!metaTypeList.contains(name)) {
+        metaTypeList[name] = metaType;
+        res = true;
+    } else {
+        qWarning() << QString("%1 : %2 is already registered!")
+                      .arg(__func__).arg(name);
+    }
+    mutex.unlock();
+    return res;
 }
 
 DQModelMetaInfo::DQModelMetaInfo() : QObject() {
-    QCoreApplication *app = QCoreApplication::instance();
-    setParent(app); // Then it will be destroyed in program termination. Make valgrind happy.
 }
 
 void DQModelMetaInfo::registerField(DQModelMetaInfoField field){
