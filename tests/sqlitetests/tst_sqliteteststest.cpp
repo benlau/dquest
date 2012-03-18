@@ -52,7 +52,6 @@ private Q_SLOTS:
 
     /// Insert pre-defined records for each model. They may needed for following tests
     /**
-      @todo Should be part of initTestCase
      */
     void prepareInitRecords();
 

@@ -8,7 +8,7 @@
 #include <backend/dqbackendquery.h>
 #include <backend/dqqueryrules.h>
 
-/// Database engine (Abstract class)
+/// Database backend engine (Abstract class)
 /** DQEngine provides low level database access. It is the backend
   class for DQConnection. Normally user will not use the class directly.
   It is used for custom database backend support only.

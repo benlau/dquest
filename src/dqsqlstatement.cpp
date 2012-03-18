@@ -88,8 +88,6 @@ QString DQSqlStatement::deleteFrom(DQQueryRules rules) {
 
     }
 
-    /// @todo Implemente order by
-
     if (rules.limit() > 0) {
         sql << limitAndOffset(rules.limit());
     }

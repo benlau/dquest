@@ -187,7 +187,6 @@ bool DQConnection::createTables(){
                 break;
             }
 
-            /// @TODO Replace by list.save()
             DQSharedList initialData = info->initialData();
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {
