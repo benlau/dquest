@@ -65,7 +65,6 @@ public:
             QString order;
             order.setNum(i);
             model.help = order;
-            model.setConnection(conn); // @TODO Don't set connection later
             bool res = model.save();
             if (!res) {
                 qDebug() << conn.lastQuery().lastError();
@@ -75,7 +74,6 @@ public:
         }
 
         DQQuery<Model4> query;
-        query.setConnection(conn); // @TODO Don't set connection later
 
         count = query.count();
 

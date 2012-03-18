@@ -4,7 +4,7 @@
 #include <QSqlError>
 #include <QMutex>
 #include <QMap>
-
+#include <QThreadStorage>
 #include "dqmodel.h"
 #include "dqconnection.h"
 #include "priv/dqsqlitestatement.h"
@@ -47,8 +47,22 @@ class DQConnectionPriv : public QSharedData
     DQEngine *engine;
 };
 
+/// Thread specific data
+static QThreadStorage<QMap<DQModelMetaInfo* , DQConnection> * > localData;
+
 /// The mapping of default connection
-static QMap<DQModelMetaInfo* , DQConnection> mapping;
+//static QMap<DQModelMetaInfo* , DQConnection> mapping;
+
+/// Get the mapping object of default connection
+/**
+    @remarks It will also initialize the local data.
+ */
+QMap<DQModelMetaInfo* , DQConnection>* getMapping() {
+    if (!localData.hasLocalData()){
+        localData.setLocalData(new QMap<DQModelMetaInfo* , DQConnection> ());
+    }
+    return localData.localData();
+}
 
 DQConnection::DQConnection()
 {
@@ -122,9 +136,10 @@ void DQConnection::close(){
     d->engine->close();
 
     QList<DQModelMetaInfo*> models = d->engine->modelList();
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
     foreach (DQModelMetaInfo* metaInfo , models) {
-        if (mapping.contains(metaInfo)) {
-            mapping.take(metaInfo);
+        if (mapping->contains(metaInfo)) {
+            mapping->take(metaInfo);
         }
     }
 }
@@ -139,9 +154,11 @@ bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
 
     res = d->engine->addModel(metaInfo);
 
-    if (res && !mapping.contains(metaInfo)) {
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
+
+    if (res && !mapping->contains(metaInfo)) {
         // set the default connection
-        mapping[metaInfo] = *this;
+        (*mapping)[metaInfo] = *this;
     }
 
     return res;
@@ -152,8 +169,10 @@ DQConnection DQConnection::defaultConnection(DQModelMetaInfo* metaInfo){
     if (!metaInfo)
         return ret;
 
-    if (mapping.contains(metaInfo)) {
-        ret = mapping[metaInfo];
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
+
+    if (mapping->contains(metaInfo)) {
+        ret = (*mapping)[metaInfo];
     } else {
         qWarning() << QString("Model %1 is not added to any connection yet").arg(metaInfo->name());
     }
@@ -162,7 +181,9 @@ DQConnection DQConnection::defaultConnection(DQModelMetaInfo* metaInfo){
 }
 
 void DQConnection::setDefaultConnection(DQModelMetaInfo* metaInfo) {
-    mapping[metaInfo] = *this;
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
+
+    (*mapping)[metaInfo] = *this;
 }
 
 bool DQConnection::createTables(){
