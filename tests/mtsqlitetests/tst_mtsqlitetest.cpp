@@ -29,6 +29,8 @@ void MtSqliteTest::initTestCase()
     QStringList backendList = DQBackend::listEngine();
     QCOMPARE(backendList.size() , 2);
     QVERIFY(backendList.contains("MT-SQLITE"));  // multiple thread sql
+
+    QVERIFY(DQBackend::supportedDriver("MT-SQLITE") == "QSQLITE");
 }
 
 void MtSqliteTest::cleanupTestCase()
