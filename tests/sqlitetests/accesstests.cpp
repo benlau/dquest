@@ -13,10 +13,10 @@ AccessTests::AccessTests(QObject *parent) :
 
 void AccessTests::dqModelSave(){
     DQConnection conn = DQConnection::defaultConnection(Model2::staticMetaInfo());
-    QVERIFY(conn == conn1);
+    QVERIFY(conn == conn);
 
     Model1 model1;
-    QVERIFY(model1.connection() == conn1);
+    QVERIFY(model1.connection() == conn);
 
     QVERIFY(model1.id->isNull());
 
@@ -452,7 +452,7 @@ void AccessTests::secondConnection() {
 
     // Test Conn2Model which is added to conn2 only
 
-    QVERIFY(Conn2Model::objects(conn1).remove() == false); // As it is not added to conn1
+    QVERIFY(Conn2Model::objects(conn).remove() == false); // As it is not added to conn1
     QVERIFY(Conn2Model::objects(conn2).remove());
 
     QVERIFY(Conn2Model::objects().remove()); // The default connection for Conn2Model should be conn2. DQQury works.
@@ -502,33 +502,33 @@ void AccessTests::lastQuery(){
 
 void AccessTests::transaction(){
     QString id = "transaction%1";
-    QVERIFY(conn1.transaction());
-    QVERIFY(conn1.commit());
+    QVERIFY(conn.transaction());
+    QVERIFY(conn.commit());
 
-    QVERIFY(conn1.transaction());
+    QVERIFY(conn.transaction());
     User user[3];
 
     for (int i = 0 ; i < 3;i++){
         user[i].userId =QString(id).arg(i);
         user[i].passwd = "901278390";
-        user[i].setConnection(conn1);
+        user[i].setConnection(conn);
     }
 
     for (int i = 0 ; i < 3;i++){
         QVERIFY(user[i].save());
     }
-    QVERIFY(conn1.rollback());
+    QVERIFY(conn.rollback());
 
     for (int i = 0 ; i < 3;i++){
         DQQuery<User> q;
         QVERIFY(q.filter(DQWhere("userId =", QString(id).arg(i))).count() == 0);
     }
 
-    QVERIFY(conn1.transaction());
+    QVERIFY(conn.transaction());
     for (int i = 0 ; i < 3;i++){
         QVERIFY(user[i].save());
     }
-    QVERIFY(conn1.commit());
+    QVERIFY(conn.commit());
 
     for (int i = 0 ; i < 3;i++){
         DQQuery<User> q;
@@ -536,8 +536,8 @@ void AccessTests::transaction(){
         // saved successfully
     }
 
-    QVERIFY(conn1.transaction()); // transaction with error
-    QSqlQuery query = conn1.query();
+    QVERIFY(conn.transaction()); // transaction with error
+    QSqlQuery query = conn.query();
     query.prepare("INSERT INTO User(userId,passwd) values (:userId,:passwd);");
     query.bindValue(":userId","transaction0");
     query.bindValue(":passwd","sdflksjd fl ljd");
@@ -550,7 +550,7 @@ void AccessTests::transaction(){
     tmp.userId = "transaction_tmp";
     tmp.passwd = "12312312";
     QVERIFY(tmp.save()); // this one should work.
-    QVERIFY(conn1.commit());
+    QVERIFY(conn.commit());
 
     tmp = User();
 

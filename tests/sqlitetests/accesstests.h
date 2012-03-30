@@ -28,7 +28,7 @@ signals:
 public slots:
 
 protected:
-    DQConnection conn1,conn2;
+    DQConnection conn,conn2;
     QSqlDatabase db,db2;
 
 private slots:

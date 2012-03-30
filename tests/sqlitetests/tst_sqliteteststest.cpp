@@ -57,13 +57,13 @@ void SqliteTests::initTestCase()
 
     QVERIFY( db.open() );
 
-    QVERIFY (conn1.isNull());
-    QVERIFY (conn1.open(db) );
-    QVERIFY (!conn1.isNull());
+    QVERIFY (conn.isNull());
+    QVERIFY (conn.open(db) );
+    QVERIFY (!conn.isNull());
 
 //    QVERIFY(defaultConnection.isOpen()); // conn1 become default connection
 
-    DQSql sql = ((DQSqliteEngine*) conn1.engine())->sql();
+    DQSql sql = ((DQSqliteEngine*) conn.engine())->sql();
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
 
@@ -75,20 +75,20 @@ void SqliteTests::initTestCase()
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
 
-    QVERIFY ( conn1.addModel<Model1>() );
-    QVERIFY ( conn1.addModel<Model2>() );
-    QVERIFY (!conn1.addModel<Model1>() );
-    QVERIFY (!conn1.addModel<Model3>() );
-    QVERIFY ( conn1.addModel<Model4>() );
-    QVERIFY ( conn1.addModel<User>() );
-    QVERIFY ( conn1.addModel<Config>() );
-    QVERIFY ( conn1.addModel<ExamResult>() );
-    QVERIFY ( conn1.addModel<AllType>() );
-    QVERIFY ( conn1.addModel<HealthCheck>());
+    QVERIFY ( conn.addModel<Model1>() );
+    QVERIFY ( conn.addModel<Model2>() );
+    QVERIFY (!conn.addModel<Model1>() );
+    QVERIFY (!conn.addModel<Model3>() );
+    QVERIFY ( conn.addModel<Model4>() );
+    QVERIFY ( conn.addModel<User>() );
+    QVERIFY ( conn.addModel<Config>() );
+    QVERIFY ( conn.addModel<ExamResult>() );
+    QVERIFY ( conn.addModel<AllType>() );
+    QVERIFY ( conn.addModel<HealthCheck>());
 
-    QVERIFY( conn1.dropTables() );
+    QVERIFY( conn.dropTables() );
 
-    DQBackendEngine *engine = conn1.engine();
+    DQBackendEngine *engine = conn.engine();
     QVERIFY(engine->createModel(dqMetaInfo<Model1>()));
     QVERIFY(engine->existsModel(dqMetaInfo<Model1>()));
     QVERIFY(engine->dropModel(dqMetaInfo<Model1>()));
@@ -96,7 +96,7 @@ void SqliteTests::initTestCase()
 
     QTime time;
     time.start();
-    QVERIFY( conn1.createTables() ); // recreate table
+    QVERIFY( conn.createTables() ); // recreate table
     qDebug() << QString("Create tables taken %1ms").arg(time.elapsed());
 //    QVERIFY( time.elapsed() < 200); // It should take less than 200ms for most of the computer.
 
@@ -105,12 +105,12 @@ void SqliteTests::initTestCase()
     DQIndex<Model1> index1("index1");
     index1 << "key" << "value";
 
-    QVERIFY(conn1.createIndex(index1));
+    QVERIFY(conn.createIndex(index1));
 
     // drop the index
-    QVERIFY(conn1.dropIndex(index1.name()));
+    QVERIFY(conn.dropIndex(index1.name()));
 
-    QVERIFY(conn1.createIndex(index1));
+    QVERIFY(conn.createIndex(index1));
 
     /* Second connection */
 
@@ -129,7 +129,7 @@ void SqliteTests::initTestCase()
 
 void SqliteTests::cleanupTestCase()
 {
-    conn1.close();
+    conn.close();
     db.close();
     conn2.close();
     db2.close();
