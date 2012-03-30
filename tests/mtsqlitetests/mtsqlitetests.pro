@@ -20,7 +20,7 @@ SOURCES += tst_mtsqlitetest.cpp \
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 include(../../src/dquest.pri)
-include(../models/models.pri)
+include(../testlib/testlib.pri)
 
 HEADERS += \
     dqproxybackendengine.h \
