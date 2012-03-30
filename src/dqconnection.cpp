@@ -118,6 +118,26 @@ bool DQConnection::open(QSqlDatabase db){
     return d->engine->open(db);
 }
 
+bool DQConnection::open(QString name,QString backend){
+
+    if (isOpen()) {
+        qDebug() << "DQConnection::open() - Database is already opened";
+        return false;
+    }
+
+    DQBackendEngine *engine = DQBackend::createEngine(backend);
+
+    if (!engine) {
+        qWarning() << QString("%1 backend is not existed");
+        return false;
+    }
+
+    PREPARE_PRIV();
+    d->setEngine(engine);
+
+    return d->engine->open(name);
+}
+
 bool DQConnection::isOpen() const{
     if (!d || !d->engine)
         return false;

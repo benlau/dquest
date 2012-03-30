@@ -6,8 +6,9 @@
 #include <QtTest/QtTest>
 #include <QtCore/QCoreApplication>
 #include <backend/dqbackend.h>
+#include "accesstests.h"
 
-class MtSqliteTest : public QObject
+class MtSqliteTest : public AccessTests
 {
     Q_OBJECT
     
@@ -31,10 +32,13 @@ void MtSqliteTest::initTestCase()
     QVERIFY(backendList.contains("MT-SQLITE"));  // multiple thread sql
 
     QVERIFY(DQBackend::supportedDriver("MT-SQLITE") == "QSQLITE");
+
+    QVERIFY(conn.open("test.db") );
 }
 
 void MtSqliteTest::cleanupTestCase()
 {
+    conn.close();
 }
 
 void MtSqliteTest::basic()
