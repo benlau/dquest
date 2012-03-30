@@ -14,9 +14,9 @@ class DQProxyBackendEngine : public DQBackendEngine
 public:
     explicit DQProxyBackendEngine();
 
-    virtual bool addModel(DQModelMetaInfo* info) = 0;
+    virtual bool addModel(DQModelMetaInfo* info);
 
-    virtual QList<DQModelMetaInfo*> modelList() const = 0;
+    virtual QList<DQModelMetaInfo*> modelList() const;
 
     virtual bool createModel(DQModelMetaInfo* info);
 

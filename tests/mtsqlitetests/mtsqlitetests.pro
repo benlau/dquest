@@ -15,12 +15,14 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 SOURCES += tst_mtsqlitetest.cpp \
-    dqproxybackendengine.cpp
+    dqproxybackendengine.cpp \
+    dqmtsqlitebackendengine.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 include(../../src/dquest.pri)
 include(../models/models.pri)
 
 HEADERS += \
-    dqproxybackendengine.h
+    dqproxybackendengine.h \
+    dqmtsqlitebackendengine.h
 

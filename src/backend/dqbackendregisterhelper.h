@@ -13,6 +13,11 @@
 template <typename T>
 class DQBackendRegisterHelper {
 public:
+    /// Construct a register helper. It will register the backend automatically
+    /**
+      @param name The name of the backend engine
+      @param driver The QSqlDatabase driver that is wrapped by this backend
+     */
     DQBackendRegisterHelper(QString name , QString driver);
 
 private:

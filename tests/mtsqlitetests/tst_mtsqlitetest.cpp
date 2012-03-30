@@ -5,6 +5,7 @@
 #include <QtCore/QString>
 #include <QtTest/QtTest>
 #include <QtCore/QCoreApplication>
+#include <backend/dqbackend.h>
 
 class MtSqliteTest : public QObject
 {
@@ -25,8 +26,9 @@ MtSqliteTest::MtSqliteTest()
 
 void MtSqliteTest::initTestCase()
 {
-
-
+    QStringList backendList = DQBackend::listEngine();
+    QCOMPARE(backendList.size() , 2);
+    QVERIFY(backendList.contains("MT-SQLITE"));  // multiple thread sql
 }
 
 void MtSqliteTest::cleanupTestCase()
