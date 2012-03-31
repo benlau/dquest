@@ -21,7 +21,7 @@ bool DQProxyBackendEngine::addModel(DQModelMetaInfo* info) {
 }
 
 QList<DQModelMetaInfo*> DQProxyBackendEngine::modelList() const {
-
+    return QList<DQModelMetaInfo*>();
 }
 
 bool DQProxyBackendEngine::createModel(DQModelMetaInfo* info){

@@ -100,7 +100,7 @@ public:
       @param name The name of the database. The definition is same as QSqlDatabase::setDatabase()
       @param backend The backend engine chosen to handle the database
      */
-    bool open(QString name,QString backend = QString());
+    bool open(QString name,QString backend);
 
     /// Close the connection to database
     void close();

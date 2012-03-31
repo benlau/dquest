@@ -4,9 +4,11 @@
 
 #include "dqmtsqlitebackendengine.h"
 #include <backend/dqbackendregisterhelper.h>
+#include <QtCore>
 
-static DQBackendRegisterHelper<DQMtSqliteBackendEngine> registerHelper("MT-SQLITE","QSQLITE");
+#define NAME "MT-SQLITE"
 
+static DQBackendRegisterHelper<DQMtSqliteBackendEngine> registerHelper(NAME,"QSQLITE");
 
 DQMtSqliteBackendEngine::DQMtSqliteBackendEngine() :
     DQProxyBackendEngine()
@@ -14,10 +16,11 @@ DQMtSqliteBackendEngine::DQMtSqliteBackendEngine() :
 }
 
 QString DQMtSqliteBackendEngine::name(){
-    return "MT-SQLITE";
+    return NAME;
 }
 
 bool DQMtSqliteBackendEngine::open(QSqlDatabase db){
+    qWarning() << QString("%1 backend do not support DQConnection::open(QSqlDatabase) because QSqlDatabase do not work on multi-threading.").arg(NAME);
     return false;
 }
 

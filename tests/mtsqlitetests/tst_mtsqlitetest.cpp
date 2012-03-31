@@ -33,7 +33,7 @@ void MtSqliteTest::initTestCase()
 
     QVERIFY(DQBackend::supportedDriver("MT-SQLITE") == "QSQLITE");
 
-    QVERIFY(conn.open("test.db") );
+    QVERIFY(conn.open("test.db","MT-SQLITE") );
 }
 
 void MtSqliteTest::cleanupTestCase()

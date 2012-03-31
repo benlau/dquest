@@ -16,7 +16,8 @@ TEMPLATE = app
 
 SOURCES += tst_mtsqlitetest.cpp \
     dqproxybackendengine.cpp \
-    dqmtsqlitebackendengine.cpp
+    dqmtsqlitebackendengine.cpp \
+    dqactorbackendengine.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 include(../../src/dquest.pri)
@@ -24,5 +25,6 @@ include(../testlib/testlib.pri)
 
 HEADERS += \
     dqproxybackendengine.h \
-    dqmtsqlitebackendengine.h
+    dqmtsqlitebackendengine.h \
+    dqactorbackendengine.h
 
