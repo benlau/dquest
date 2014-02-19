@@ -17,18 +17,13 @@ class DQSqlPriv;
 /// A helper class for SQL statement exeuction
 /**
    DQSql provides a set of pre-defined SQL operation over the connected database.
-   It should be a thread safe object (not verified) and support implicitly sharing.
-   Normally, you should get a copy of instance through DQConnection from
-   any thread. You may call it freely and don't need to worry will
-   lastQuery() be overriden in another thread. A deep copy of object
-   will be created when error.
+   It should be a thread safe object (not verified).
 
    User are not supposed to use this class except for error checking. User
    may call lastQuery() to retreive the detailed information of last
    query. It is useful to debug SQL level error.
 
    @remarks The thread safe capability is not verified.
-   @remarks It is implicitly shared classes
  */
 
 class DQSql
@@ -112,10 +107,11 @@ protected:
     void setStatement(DQSqlStatement *statement);
 
 private:
+    void setLastQuery(QSqlQuery query);
 
     bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool with_id,bool replace);
 
-    QSharedDataPointer<DQSqlPriv> d;
+    QExplicitlySharedDataPointer<DQSqlPriv> d;
 
     friend class DQConnection;
     friend class DQConnectionPriv;

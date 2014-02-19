@@ -12,13 +12,22 @@
 class DQConnectionPriv : public QSharedData
 {
   public:
+    DQConnectionPriv() {
+        lastQuery = 0;
+    }
+
+    ~DQConnectionPriv() {
+        if (lastQuery)
+            delete lastQuery;
+    }
+
     DQSql m_sql;
 
     /// Registered modeles
     QList<DQModelMetaInfo*> m_models;
 
     /// The last query being used.
-    QSqlQuery lastQuery;
+    QSqlQuery *lastQuery;
 
     QMutex mutex;
 };
@@ -78,6 +87,10 @@ bool DQConnection::isOpen(){
 }
 
 void DQConnection::close(){
+    if (d->lastQuery) {
+        delete d->lastQuery;
+        d->lastQuery = 0;
+    }
     d->m_sql.setDatabase(QSqlDatabase());
 }
 
@@ -167,7 +180,9 @@ QSqlQuery DQConnection::query(){
 
 void DQConnection::setLastQuery(QSqlQuery query){
     d->mutex.lock();
-    d->lastQuery = query;
+    if (d->lastQuery != 0)
+        delete d->lastQuery;
+    d->lastQuery = new QSqlQuery(query);
     d->mutex.unlock();
 }
 
@@ -180,7 +195,7 @@ QSqlQuery DQConnection::lastQuery(){
      */
     QSqlQuery query;
     d->mutex.lock();
-    query = d->lastQuery;
+    query = *d->lastQuery;
     d->mutex.unlock();
 
     return query;

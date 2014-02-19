@@ -8,7 +8,6 @@
 class DQSqlPriv : public QSharedData {
 public:
     DQSqlPriv()  {
-
     }
 
     ~DQSqlPriv(){
@@ -19,8 +18,9 @@ public:
     QSqlDatabase m_db;
 
     /// The query object used in last operation
-    QSqlQuery m_lastQuery;
+    QSharedPointer<QSqlQuery> m_lastQuery;
 
+    QMutex m_mutex;
 };
 
 /* DQSql */
@@ -65,9 +65,13 @@ QSqlDatabase DQSql::database(){
 bool DQSql::createTableIfNotExists(DQModelMetaInfo* info){
     QString sql = d->m_statement->createTableIfNotExists(info);
 
-    d->m_lastQuery = query();
+    QSqlQuery q = query();
 
-    return d->m_lastQuery.exec(sql);
+//    d->m_lastQuery = new QSqlQuery(query());
+    bool ret = q.exec(sql);
+    setLastQuery(q);
+
+    return ret;
 }
 
 QSqlQuery DQSql::query(){
@@ -75,31 +79,62 @@ QSqlQuery DQSql::query(){
 }
 
 QSqlQuery DQSql::lastQuery(){
-    return d->m_lastQuery;
+    return QSqlQuery(*d->m_lastQuery);
+}
+
+void DQSql::setLastQuery(QSqlQuery value)
+{
+    d->m_mutex.lock();
+    if (d->m_lastQuery == 0) {
+        d->m_lastQuery = QSharedPointer<QSqlQuery>(new QSqlQuery(query()));
+    }
+
+    if (value.isActive())
+        value.finish();
+
+    *d->m_lastQuery = value;
+    d->m_mutex.unlock();
 }
 
 bool DQSql::dropTable(DQModelMetaInfo* info){
     QString sql = d->m_statement->dropTable(info);
+    qDebug() << sql;
 
-    d->m_lastQuery = query();
+    QSqlQuery q = query();
 
-    return d->m_lastQuery.exec(sql);
+    bool res = q.exec(sql);
+    qDebug() << res << q.lastError();
+    setLastQuery(q);
+
+    return res;
+
+//    QString sql = d->m_statement->dropTable(info);
+
+//    d->m_lastQuery = new QSqlQuery(query());
+
+//    return d->m_lastQuery->exec(sql);
 }
 
 bool DQSql::createIndexIfNotExists(const DQBaseIndex &index) {
     QString sql = d->m_statement->createIndexIfNotExists(index);
 
-    d->m_lastQuery = query();
+    QSqlQuery q = query();
+    bool res = q.exec(sql);
 
-    return d->m_lastQuery.exec(sql);
+    setLastQuery(q);
+
+    return res;
 }
 
 bool DQSql::dropIndexIfExists(QString name){
     QString sql = d->m_statement->dropIndexIfExists(name);
 
-    d->m_lastQuery = query();
+    QSqlQuery q = query();
+    bool res = q.exec(sql);
 
-    return d->m_lastQuery.exec(sql);
+    setLastQuery(q);
+
+    return res;
 }
 
 bool DQSql::exists(DQModelMetaInfo* info){
@@ -109,14 +144,16 @@ bool DQSql::exists(DQModelMetaInfo* info){
     }
 
     QString sql = DQSqliteStatement::exists(info);
-
-    d->m_lastQuery = query();
+    qDebug() << sql;
+    QSqlQuery q = query();
 
     bool res = false;
-    if (d->m_lastQuery.exec(sql)) {
-        if (d->m_lastQuery.next())
+    if (q.exec(sql)) {
+        if (q.next())
             res = true;
     }
+
+    setLastQuery(q);
 
     return res;
 }
@@ -131,7 +168,8 @@ bool DQSql::replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,
 
 bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId,bool replace){
     QString sql;
-    d->m_lastQuery = query();
+
+    QSqlQuery q = query();
 
     if (replace){
         sql = d->m_statement->replaceInto(info,fields);
@@ -140,25 +178,27 @@ bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,b
     }
 
 //    qDebug() << sql;
-    d->m_lastQuery.prepare(sql);
+    q.prepare(sql);
 
     foreach (QString field , fields) {
         QVariant value;
         value = info->value(model,field,true);
 //        qDebug() << "bind " << field;
-        d->m_lastQuery.bindValue(":" + field , value);
+        q.bindValue(":" + field , value);
     }
 
     bool res = false;
 
-    if (d->m_lastQuery.exec()) {
+    if (q.exec()) {
         res = true;
         if (updateId) {
-            int id = d->m_lastQuery.lastInsertId().toInt();
+            int id = q.lastInsertId().toInt();
             if (model->id.get().toInt() != id)
                 model->id.set(id);
         }
     }
+
+    setLastQuery(q);
 
     return res;
 }
