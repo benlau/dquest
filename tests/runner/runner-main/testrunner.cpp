@@ -49,7 +49,7 @@ void TestRunner::parse() {
         string = string.trimmed();
         if (string.size() == 0)
             continue;
-        qDebug().nospace() << string.toAscii().constData();
+        qDebug().nospace() << string.toLocal8Bit().constData();
         if (regexp.exactMatch(string)){
             string.replace(regexp,"\\1 \\2 \\3");
             QStringList token = string.split(" ");
@@ -65,7 +65,7 @@ void TestRunner::report() {
    qDebug() << QString("Totals: %1 passed, %2 failed, %3 skipped")
                .arg(m_passed)
                .arg(m_failed)
-               .arg(m_skipped).toAscii().constData();
+               .arg(m_skipped).toLocal8Bit().constData();
 
    qDebug() << "********* Finished testing *********";
 
