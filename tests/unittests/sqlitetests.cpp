@@ -462,7 +462,7 @@ void SqliteTests::datetime() {
     User user2;
     QVERIFY(user2.load(DQWhere("userId=","tester")));
 
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 0, 2))
+#if (QT_VERSION > QT_VERSION_CHECK(5, 0, 2))
     // The timezone checking do not exists in Qt 5.0.2
     QEXPECT_FAIL("","Sqlite driver do not save the time zone of QDateTime type",Continue);
 #endif
