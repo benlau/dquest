@@ -98,12 +98,11 @@ void DQSql::setLastQuery(QSqlQuery value)
 
 bool DQSql::dropTable(DQModelMetaInfo* info){
     QString sql = d->m_statement->dropTable(info);
-    qDebug() << sql;
 
     QSqlQuery q = query();
 
     bool res = q.exec(sql);
-    qDebug() << res << q.lastError();
+
     setLastQuery(q);
 
     return res;
@@ -144,7 +143,7 @@ bool DQSql::exists(DQModelMetaInfo* info){
     }
 
     QString sql = DQSqliteStatement::exists(info);
-    qDebug() << sql;
+//    qDebug() << sql;
     QSqlQuery q = query();
 
     bool res = false;
