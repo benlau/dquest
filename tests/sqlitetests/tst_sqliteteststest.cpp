@@ -540,7 +540,11 @@ void SqlitetestsTest::datetime() {
     User user2;
     QVERIFY(user2.load(DQWhere("userId=","tester")));
 
+    QEXPECT_FAIL("","Sqlite driver do not save the time zone of QDateTime type",Continue);
     QVERIFY(user2.lastLoginTime == datetime);
+
+    QString format("yyyy-MM-ddThh:mm:ss");
+    QVERIFY(user2.lastLoginTime.get().toDateTime().toString(format) == datetime.toString(format));
 
     QVERIFY(!user2.creationTime->isNull());
 }
