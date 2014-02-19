@@ -1,93 +1,18 @@
-#include <QtCore/QString>
-#include <QtTest/QtTest>
-#include <QtCore/QCoreApplication>
-#include <dqwhere.h>
-#include "dqclause.h"
-#include "dqsqlitestatement.h"
-#include "model1.h"
-#include "model2.h"
-#include "model3.h"
-#include "model4.h"
-#include "model5.h"
-#include "dqqueryrules.h"
-#include "dqquery.h"
-#include "dqexpression.h"
-#include "dqlist.h"
-#include "misc.h"
-#include "dqstream.h"
-#include "dqlistwriter.h"
+#include "coretests.h"
 
-/// A set of tests which don't involve database access
-
-class CoretestsTest : public QObject
-{
-    Q_OBJECT
-
-public:
-    CoretestsTest();
-
-private Q_SLOTS:
-    void initTestCase();
-    void cleanupTestCase();
-
-    void metaInfo();
-
-    void sqliteColumnConstraint();
-    void sqlCreateTable();
-
-    /// test DSIndex
-    void index();
-
-    /// Test DQClause
-    void clause();
-
-    void where();
-
-    void expression();
-
-    /// Test Model1 declaration
-    void mode1l();
-
-    void model1_accessFields();
-    void model1_equalTo_model2();
-
-    void model2();
-
-    void model3();
-
-    void model4();
-
-    void model5();
-
-    void queryrules();
-
-    void dqList();
-
-    /// Test DQField<QStringList>
-    void stringlistField();
-    void stringlistField_data();
-
-    /// test DQStream
-    void stream();
-
-    /// Test DQListWriter
-    void listWriter();
-
-};
-
-CoretestsTest::CoretestsTest()
+CoreTests::CoreTests(QObject *parent) : QObject(parent)
 {
 }
 
-void CoretestsTest::initTestCase()
+void CoreTests::initTestCase()
 {
 }
 
-void CoretestsTest::cleanupTestCase()
+void CoreTests::cleanupTestCase()
 {
 }
 
-void CoretestsTest::metaInfo(){
+void CoreTests::metaInfo(){
     // Test create()
     DQModelMetaInfo* metaInfo4 = dqMetaInfo<Model4>();
 
@@ -109,7 +34,7 @@ void CoretestsTest::metaInfo(){
 
 }
 
-void CoretestsTest::sqliteColumnConstraint(){
+void CoreTests::sqliteColumnConstraint(){
     Model1 model;
     DQClause clause = model.id.clause();
     DQSqliteStatement sql;
@@ -132,7 +57,7 @@ void CoretestsTest::sqliteColumnConstraint(){
 
 }
 
-void CoretestsTest::sqlCreateTable()
+void CoreTests::sqlCreateTable()
 {
     DQSqliteStatement sql;
 
@@ -140,7 +65,7 @@ void CoretestsTest::sqlCreateTable()
 
 }
 
-void CoretestsTest::index() {
+void CoreTests::index() {
     DQIndex<Model1> index("index1");
     index << "key";
 
@@ -150,7 +75,7 @@ void CoretestsTest::index() {
     QVERIFY(cmd == "CREATE INDEX IF NOT EXISTS index1 on model1 (key);");
 }
 
-void CoretestsTest::clause()
+void CoreTests::clause()
 {
     DQClause c1;
 
@@ -187,7 +112,7 @@ void CoretestsTest::clause()
 
 }
 
-void CoretestsTest::where(){
+void CoreTests::where(){
 
     QStringList input;
 
@@ -224,7 +149,7 @@ void CoretestsTest::where(){
 
 }
 
-void CoretestsTest::expression(){
+void CoreTests::expression(){
     DQWhere where = DQWhere("key = ","test") && DQWhere("length > ", 5);
     DQExpression expression(where);
 
@@ -234,7 +159,7 @@ void CoretestsTest::expression(){
 }
 
 
-void CoretestsTest::mode1l(){
+void CoreTests::mode1l(){
     Model1 model;
     DQModel *m = new Model1();
     DQModelMetaInfo* info1 = model.metaInfo();
@@ -250,7 +175,7 @@ void CoretestsTest::mode1l(){
 
 }
 
-void CoretestsTest::model1_accessFields(){
+void CoreTests::model1_accessFields(){
 
     DQModelMetaInfo* info = dqMetaInfo<Model1>();
     Model1 *model = new Model1();
@@ -269,7 +194,7 @@ void CoretestsTest::model1_accessFields(){
     delete model;
 }
 
-void CoretestsTest::model1_equalTo_model2(){
+void CoreTests::model1_equalTo_model2(){
     DQModelMetaInfo* info1 = dqMetaInfo<Model1>();
     DQModelMetaInfo* info2 = dqMetaInfo<Model2>();
 
@@ -285,7 +210,7 @@ void CoretestsTest::model1_equalTo_model2(){
 
 }
 
-void CoretestsTest::model2(){
+void CoreTests::model2(){
     DQModelMetaInfo* info1 = dqMetaInfo<Model2>();
     Model2 *model = new Model2();
 
@@ -310,20 +235,20 @@ void CoretestsTest::model2(){
     delete model;
 }
 
-void CoretestsTest::model3(){
+void CoreTests::model3(){
     QVERIFY(dqMetaInfo<Model3>() == 0);
     QVERIFY(DQ_MODEL_NAME(Model3) == "");
     QVERIFY(dqModelTableName<Model3>() == "") ;
 }
 
-void CoretestsTest::model4() {
+void CoreTests::model4() {
     DQModelMetaInfo* info = dqMetaInfo<Model4>();
 
     QVERIFY(info->fieldNameList().size() == 5);
 
 }
 
-void CoretestsTest::model5() {
+void CoreTests::model5() {
     DQSqliteStatement statement;
     QString sql = statement.createTableIfNotExists<Model5>();
 
@@ -336,7 +261,7 @@ void CoretestsTest::model5() {
 
 }
 
-void CoretestsTest::queryrules(){
+void CoreTests::queryrules(){
     DQQuery<Model1> query;
     query = query.filter(DQWhere("key","=","test")).limit(1);
 
@@ -348,7 +273,7 @@ void CoretestsTest::queryrules(){
 
 }
 
-void CoretestsTest::dqList(){
+void CoreTests::dqList(){
     DQList<Model2> list;
     Model2 item1;
     Model2 item2;
@@ -392,7 +317,7 @@ void CoretestsTest::dqList(){
     QVERIFY(list2.size() == 2);
 }
 
-void CoretestsTest::stringlistField(){
+void CoreTests::stringlistField(){
     DQField<QStringList> field;
 
     QVERIFY(field.type() == (QVariant::Type) qMetaTypeId<QStringList>());
@@ -411,7 +336,7 @@ void CoretestsTest::stringlistField(){
     QVERIFY(field.get() == list);
 }
 
-void CoretestsTest::stringlistField_data() {
+void CoreTests::stringlistField_data() {
     QTest::addColumn<QStringList>("list");
     QTest::addColumn<QString>("str");
 
@@ -435,7 +360,7 @@ void CoretestsTest::stringlistField_data() {
 
 }
 
-void CoretestsTest::stream() {
+void CoreTests::stream() {
     HealthCheck record;
     DQStream stream(&record);
 
@@ -465,7 +390,7 @@ void CoretestsTest::stream() {
     QVERIFY(record.recordDate == recordDate);
 }
 
-void CoretestsTest::listWriter() {
+void CoreTests::listWriter() {
     DQList<HealthCheck> list;
     DQListWriter writer(&list);
 
@@ -482,7 +407,3 @@ void CoretestsTest::listWriter() {
     QVERIFY(list.size() == 5);
 
 }
-
-QTEST_MAIN(CoretestsTest);
-
-#include "tst_coreteststest.moc"

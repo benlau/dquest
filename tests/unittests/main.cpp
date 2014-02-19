@@ -1,5 +1,7 @@
 #include <QCoreApplication>
 #include "testobjectrunner.h"
+#include "coretests.h"
+#include "sqlitetests.h"
 
 int main(int argc, char *argv[])
 {
@@ -7,7 +9,8 @@ int main(int argc, char *argv[])
 
     TestObjectRunner runner;
 
-    runner.add<TestObjectRunner>();
+    runner.add<CoreTests>();
+    runner.add<SqliteTests>();
 
     return runner.exec(a.arguments());
 }

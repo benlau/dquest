@@ -1,88 +1,10 @@
-#include <QtCore/QString>
-#include <QtTest/QtTest>
-#include <QtCore/QCoreApplication>
+#include "sqlitetests.h"
 
-#include <QSqlError>
-#include <dqconnection.h>
-#include <dqsqlitestatement.h>
-#include <dqquery.h>
-#include <dqsql.h>
-#include <dqlistwriter.h>
-
-#include "model1.h"
-#include "model2.h"
-#include "model3.h"
-#include "model4.h"
-#include "model5.h"
-#include "config.h"
-#include "misc.h"
-
-class SqlitetestsTest : public QObject
-{
-    Q_OBJECT
-
-public:
-    SqlitetestsTest();
-
-    /// Verify the create table stmt
-    void verifyCreateTable();
-
-    /// Test the basic operation of DQForeignKey
-    void foreignKey();
-
-private Q_SLOTS:
-    void initTestCase();
-    void cleanupTestCase();
-
-    void insertInto();
-
-    /// Test DQModel::save()
-    void dqModelSave();
-
-    /// Test DQQuery::deletFrom without filter
-    /**
-      It will clear all the record made by previous operation.
-     */
-    void deleteAll();
-
-    /// Insert pre-defined records for each model. They may needed for following tests
-    /**
-      @todo Should be part of initTestCase
-     */
-    void prepareInitRecords();
-
-    void select();
-
-    void queryAll();
-    void querySelect();
-
-    /// test different combination of where
-    void querySelectWhere();
-
-    /// Test can it load model through foreign key
-    void foreignKeyLoad();
-
-    /// Test Model4 access
-    void model4();
-
-    /// Test date time access
-    void datetime();
-
-    /// Verify the save and load for specific type
-    void checkTypeSaveAndLoad();
-
-    void queryOrderBy();
-
-private:
-    DQConnection connect;
-    QSqlDatabase db;
-};
-
-SqlitetestsTest::SqlitetestsTest()
+SqliteTests::SqliteTests(QObject* parent) : QObject(parent)
 {
 }
 
-void SqlitetestsTest::initTestCase()
+void SqliteTests::initTestCase()
 {
     verifyCreateTable();
     foreignKey();
@@ -138,12 +60,12 @@ void SqlitetestsTest::initTestCase()
     QVERIFY(connect.dropIndex(index1.name()));
 }
 
-void SqlitetestsTest::cleanupTestCase()
+void SqliteTests::cleanupTestCase()
 {
     connect.close();
 }
 
-void SqlitetestsTest::verifyCreateTable(){
+void SqliteTests::verifyCreateTable(){
     DQSqliteStatement statement;
     QString sql = statement.createTableIfNotExists<Model1>();
 
@@ -168,7 +90,7 @@ void SqlitetestsTest::verifyCreateTable(){
 
 }
 
-void SqlitetestsTest::foreignKey() {
+void SqliteTests::foreignKey() {
     Model2 model;
 
     QVERIFY (model.metaInfo()->foreignKeyNameList().size() == 0 );
@@ -203,7 +125,7 @@ void SqlitetestsTest::foreignKey() {
 }
 
 
-void SqlitetestsTest::insertInto(){
+void SqliteTests::insertInto(){
     DQSqliteStatement statement;
     DQModelMetaInfo *info = dqMetaInfo<Model2>();
     QString sql = statement.insertInto(info,info->fieldNameList());
@@ -219,7 +141,7 @@ void SqlitetestsTest::insertInto(){
 
 }
 
-void SqlitetestsTest::dqModelSave(){
+void SqliteTests::dqModelSave(){
     Model1 model1;
 
     QVERIFY(model1.id->isNull());
@@ -239,7 +161,7 @@ void SqlitetestsTest::dqModelSave(){
     QVERIFY ( model1.id() != id); // ID should be changed.
 }
 
-void SqlitetestsTest::deleteAll() {
+void SqliteTests::deleteAll() {
     DQQuery<Model1> query;
 
     QVERIFY(query.remove());
@@ -291,7 +213,7 @@ void SqlitetestsTest::deleteAll() {
 
 }
 
-void SqlitetestsTest::prepareInitRecords() {
+void SqliteTests::prepareInitRecords() {
     Model1 model1;
     model1.key = "config1";
     model1.value ="value1";
@@ -353,7 +275,7 @@ void SqlitetestsTest::prepareInitRecords() {
 
 }
 
-void SqlitetestsTest::select()
+void SqliteTests::select()
 {
     Model1 model1a,model1b;
 
@@ -383,7 +305,7 @@ void SqlitetestsTest::select()
 
 }
 
-void SqlitetestsTest::queryAll(){
+void SqliteTests::queryAll(){
     DQQuery<Model2> query;
 
     DQList<Model2> record = query.all();
@@ -401,7 +323,7 @@ void SqlitetestsTest::queryAll(){
 
 }
 
-void SqlitetestsTest::querySelect() {
+void SqliteTests::querySelect() {
     DQQuery<Model2> query;
 
     DQList<Model2> record = query.select("key").all();
@@ -419,7 +341,7 @@ void SqlitetestsTest::querySelect() {
 
 }
 
-void SqlitetestsTest::querySelectWhere(){
+void SqliteTests::querySelectWhere(){
     DQQuery<HealthCheck> query;
 
     QVERIFY(query.remove());
@@ -474,7 +396,7 @@ void SqlitetestsTest::querySelectWhere(){
     QVERIFY(query.remove());
 }
 
-void SqlitetestsTest::foreignKeyLoad() {
+void SqliteTests::foreignKeyLoad() {
     User user;
     user.name = "foreignKeyLoad";
     user.userId = "foreignKeyLoad";
@@ -507,7 +429,7 @@ void SqlitetestsTest::foreignKeyLoad() {
     QVERIFY(config2.uid.isLoaded());
 }
 
-void SqlitetestsTest::model4() {
+void SqliteTests::model4() {
     Model4 item1,item2;
 
     item1.key = "test";
@@ -523,7 +445,7 @@ void SqlitetestsTest::model4() {
 
 }
 
-void SqlitetestsTest::datetime() {
+void SqliteTests::datetime() {
     User user1;
 
     user1.userId = "tester";
@@ -549,7 +471,7 @@ void SqlitetestsTest::datetime() {
     QVERIFY(!user2.creationTime->isNull());
 }
 
-void SqlitetestsTest::checkTypeSaveAndLoad(){
+void SqliteTests::checkTypeSaveAndLoad(){
 
     QStringList sl;
     sl << "a" << "b" << "c";
@@ -583,7 +505,7 @@ void SqlitetestsTest::checkTypeSaveAndLoad(){
 
 }
 
-void SqlitetestsTest::queryOrderBy(){
+void SqliteTests::queryOrderBy(){
     DQQuery<HealthCheck> query;
 
     QVERIFY(query.remove());
@@ -623,7 +545,3 @@ void SqlitetestsTest::queryOrderBy(){
 
 }
 
-
-QTEST_MAIN(SqlitetestsTest);
-
-#include "tst_sqliteteststest.moc"
