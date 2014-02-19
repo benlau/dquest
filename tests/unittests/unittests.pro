@@ -16,7 +16,14 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    testobjectrunner.cpp
+    testobjectrunner.cpp \
+    sqlitetests.cpp \
+    coretests.cpp
 
 HEADERS += \
-    testobjectrunner.h
+    testobjectrunner.h \
+    coretests.h \
+    sqlitetests.h
+
+include (../../src/dquest.pri)
+include(../models/models.pri)

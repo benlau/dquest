@@ -3,5 +3,5 @@
 ######################################################################
 
 TEMPLATE = subdirs
-SUBDIRS = coretests sqlitetests
+SUBDIRS = unittests
 

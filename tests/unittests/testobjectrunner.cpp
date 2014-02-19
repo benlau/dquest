@@ -55,7 +55,7 @@ int TestObjectRunner::exec(QStringList args) {
     }
 
     if (!error){
-        qWarning() << "All test cases passed!";
+        qDebug() << "All test cases passed!";
     }
 
     return error;
