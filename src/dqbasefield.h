@@ -1,18 +1,25 @@
 #ifndef DQBASEFIELD_H
 #define DQBASEFIELD_H
 
-#include <QSharedDataPointer>
+#include <QExplicitlySharedDataPointer>
 #include <QVariant>
 #include <dqclause.h>
 
 class DQModel;
 
-/// The base class of DQField
+class DQBaseFieldPriv;
 
+/// The base class of DQField
+/**
+
+  @remarks It is an explicity shared class
+ */
 class DQBaseField
 {
 public:
     DQBaseField();
+    DQBaseField(const DQBaseField &rhs);
+
     ~DQBaseField();
 
     /// Assign value to the field
@@ -33,6 +40,8 @@ public:
     /// Assign the value from a QVariant type source.
     virtual QVariant operator=(const QVariant &val);
 
+    virtual DQBaseField &operator=(const DQBaseField &);
+
     /// Provides access to stored QVariant value
     QVariant* operator->();
 
@@ -46,7 +55,7 @@ public:
     void clear();
 
 private:
-    QVariant m_value;
+    QExplicitlySharedDataPointer<DQBaseFieldPriv> d;
 };
 
 QDebug operator<<(QDebug dbg, const DQBaseField &field);

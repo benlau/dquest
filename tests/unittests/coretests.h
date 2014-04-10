@@ -78,6 +78,8 @@ private Q_SLOTS:
     /// Test DQListWriter
     void listWriter();
 
+    void dqFieldExplicitSharing();
+
 };
 
 

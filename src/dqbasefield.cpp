@@ -3,8 +3,18 @@
 #include <QString>
 #include <QtCore>
 
-DQBaseField::DQBaseField()
+class DQBaseFieldPriv : public QSharedData {
+public:
+    QVariant value;
+};
+
+DQBaseField::DQBaseField() : d(new DQBaseFieldPriv)
 {
+}
+
+DQBaseField::DQBaseField(const DQBaseField &rhs) : d(rhs.d)
+{
+
 }
 
 DQBaseField::~DQBaseField()
@@ -12,13 +22,13 @@ DQBaseField::~DQBaseField()
 }
 
 bool DQBaseField::set(QVariant val){
-    m_value = val;
+    d->value = val;
     return true;
 }
 
 QVariant DQBaseField::get(bool convert) const {
     Q_UNUSED(convert);
-    return m_value;
+    return d->value;
 }
 
 DQClause DQBaseField::clause(){
@@ -26,24 +36,31 @@ DQClause DQBaseField::clause(){
 }
 
 QVariant DQBaseField::operator=(const QVariant &val){
-    m_value = val;
+    d->value = val;
     return val;
 }
 
+DQBaseField &DQBaseField::operator=(const DQBaseField &rhs)
+{
+    if (this != &rhs)
+        d.operator=(rhs.d);
+    return *this;
+}
+
 QVariant* DQBaseField::operator->(){
-    return &m_value;
+    return &d->value;
 }
 
 QVariant DQBaseField::operator() () const {
-    return m_value;
+    return d->value;
 }
 
- DQBaseField::operator QVariant(){
-    return m_value;
+DQBaseField::operator QVariant() {
+    return d->value;
 }
 
  void DQBaseField::clear(){
-    m_value.clear();
+    d->value.clear();
  }
 
  QDebug operator<<(QDebug dbg, const DQBaseField &field){

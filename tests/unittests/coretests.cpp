@@ -407,3 +407,26 @@ void CoreTests::listWriter() {
     QVERIFY(list.size() == 5);
 
 }
+
+void CoreTests::dqFieldExplicitSharing()
+{
+    DQField<int> a , b, c;
+    a = 3;
+    b = a;
+
+    QVERIFY(b == 3);
+    a = 5;
+    QVERIFY( b == 5);
+    b = 7;
+    QVERIFY( a == 7);
+
+    c = 9;
+    b = c;
+    QVERIFY(b == 9);
+    c = 11;
+    QVERIFY(b == 11);
+    QVERIFY(a->toInt() == 7); // 'a' should not be changed
+
+    b = 13;
+    QVERIFY(c == 13);
+}
