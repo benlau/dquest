@@ -21,8 +21,8 @@ public:
     inline DQSharedList initialData() const {
         DQList<Model2> res;
 
-        Model2 item;
         for (int i = 0 ; i < 5;i++) {
+            Model2 item; // DQModel is an explicit sharing class
             item.key = QString("initial%1").arg(i);
             item.value = QString("value%1").arg(i);
             res.append(item);
