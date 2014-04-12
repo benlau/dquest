@@ -117,6 +117,9 @@ public:
      */
     QVariant value(const DQAbstractModel *model,int index ,bool convert = false) const;
 
+    /// Call detach() on specific field
+    void detach(const DQAbstractModel *model,int index);
+
     /// The table name
     QString name() const;
 

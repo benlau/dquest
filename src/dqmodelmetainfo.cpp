@@ -119,6 +119,13 @@ QVariant DQModelMetaInfo::value(const DQAbstractModel *model,int index ,bool con
     return f->get(convert);
 }
 
+void DQModelMetaInfo::detach(const DQAbstractModel *model, int index)
+{
+    int offset = m_fieldList[index].offset;
+    DQBaseField* f = DQ_MODEL_GET_FIELD(model,offset);
+    f->detach();
+}
+
 QString DQModelMetaInfo::name() const{
     return m_name;
 }

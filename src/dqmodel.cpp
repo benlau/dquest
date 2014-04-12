@@ -126,3 +126,13 @@ bool DQModel::clean(){
 DQSharedList DQModel::initialData() const {
     return DQSharedList();
 }
+
+void DQModel::detach()
+{
+    DQModelMetaInfo* info = metaInfo();
+
+    int size = info->size();
+    for (int i = 0 ; i < size; i++) {
+        info->detach(this,i);
+    }
+}

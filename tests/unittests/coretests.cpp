@@ -456,6 +456,11 @@ void CoreTests::dqFieldExplicitSharing()
     i2.value = "value1-modified";
     QVERIFY(i1.value == "value1-modified");
 
+    i1.detach(); // Call detach
 
+    i2.value = "value1-detached";
+    QVERIFY(i1.value == "value1-modified"); // i1 will be unchanged
 
+    i1.key = "key1-detached";
+    QVERIFY(i2.key == "key1-modified");
 }

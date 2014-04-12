@@ -112,6 +112,17 @@ public:
      */
     virtual DQSharedList initialData() const;
 
+    /// Detach from the shared data object
+    /**
+       DQModel behaves like an explicitly shared class. Attributes declared with DQField
+       are shared between multiple DQModel instance.
+
+       If the object's  object's reference count is greater than 1, this function
+       creates a deep copy from the shared data object and unlink the reference.
+       The result will be an independent object.
+     */
+    void detach();
+
     /// Return a query object to retrieve record from this model
     /** The DQ_MODEL macro will add an objects() function for the derived class.
       It will return a DQSharedQuery / DQQuery<T> object instance to query
