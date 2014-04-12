@@ -1,6 +1,7 @@
 #include "dqsharedlist.h"
 #include <QSharedData>
 #include <QList>
+#include <QSharedPointer>
 
 class DQSharedListPriv : public QSharedData {
 public:
@@ -13,14 +14,16 @@ public:
     }
 
     void clear(){
+        /*
         foreach (DQAbstractModel*model, list){
             delete model;
         }
+        */
         list.clear();
-        metaInfo = 0;
+//        metaInfo = 0;
     }
 
-    QList <DQAbstractModel*> list;
+    QList < QSharedPointer<DQAbstractModel> > list;
     DQModelMetaInfo *metaInfo;
 };
 
@@ -42,12 +45,20 @@ DQSharedList::~DQSharedList()
 {
 }
 
+bool DQSharedList::isEmpty(){
+    return data->list.isEmpty();
+}
+
 int DQSharedList::size() const{
     return data->list.size();
 }
 
 DQAbstractModel* DQSharedList::at(int i) const{
-    return data->list.value(i);
+    return data->list.value(i).data();
+}
+
+DQAbstractModel* DQSharedList::last() const{
+    return data->list.last().data();
 }
 
 bool DQSharedList::append(DQAbstractModel* model){
@@ -56,7 +67,18 @@ bool DQSharedList::append(DQAbstractModel* model){
         return false;
     }
 
-    data->list << model;
+    QSharedPointer<DQAbstractModel>  ptr(model);
+    data->list << ptr;
+    return true;
+}
+
+bool DQSharedList::append(DQSharedList& other){
+    if (data->metaInfo &&
+        other.metaInfo() != data->metaInfo){
+        return false;
+    }
+
+    data->list.append(other.data->list);
     return true;
 }
 
@@ -64,10 +86,10 @@ void DQSharedList::clear() {
     data->clear();
 }
 
-void DQSharedList::removeAt(int index){
-    DQAbstractModel *model = data->list.value(index);
+void DQSharedList::removeAt(int index) {
+//    DQAbstractModel *model = data->list.value(index).data();
     data->list.removeAt(index);
-    delete model;
+//    delete model;
 }
 
 bool DQSharedList::save(bool forceInsert,bool forceAllField) {

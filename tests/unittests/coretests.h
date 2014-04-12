@@ -37,6 +37,8 @@ private Q_SLOTS:
 
     void metaInfo();
 
+    void modelCast();
+
     void sqliteColumnConstraint();
     void sqlCreateTable();
 

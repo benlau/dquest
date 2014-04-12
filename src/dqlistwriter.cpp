@@ -11,8 +11,10 @@ DQListWriter::DQListWriter()
 }
 
 DQListWriter::DQListWriter(DQSharedList *list){
-    open(list);
+    m_list = 0;
     m_connection = DQConnection::defaultConnection();
+
+    open(list);
 }
 
 DQListWriter::DQListWriter(DQSharedList *list,DQConnection connection){
@@ -26,6 +28,8 @@ bool DQListWriter::open(DQSharedList *list){
         res = true;
         m_list = list;
         m_stream.close();
+    } else {
+        qWarning() << "DQListWriter::open(list) - You should use DQList instead of DQSharedList";
     }
     return res;
 }

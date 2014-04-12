@@ -76,8 +76,10 @@ private Q_SLOTS:
 
     void queryOrderBy();
 
+    void secondConnection();
+
 private:
-    DQConnection connect;
+    DQConnection conn1,conn2;
     QSqlDatabase db;
 };
 

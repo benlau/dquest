@@ -47,12 +47,21 @@ public:
     /// Default destructor
     virtual ~DQSharedList();
 
+    /// Returns true if the list contains no items; otherwise returns false.
+    /**
+      @see size
+     */
+    bool isEmpty();
+
     /// Get the size of the list
     int size() const;
 
     /// Returns the item at index position i in the list. i must be a valid index position in the list (i.e., 0 <= i < size()).
 
     DQAbstractModel* at(int index) const;
+
+    /// Returns a reference to the last item in the list. The list must not be empty. If the list can be empty, call isEmpty() before calling this function.
+    DQAbstractModel* last() const;
 
     /// Append a model to the list.
     /**
@@ -62,6 +71,14 @@ public:
       @see metaInfo
      */
     bool append(DQAbstractModel* model);
+
+    /// Append another list to the list
+    /**
+      @return TRUE if it is appended successfully. Otherwise it is false
+
+      @see metaInfo
+     */
+    bool append(DQSharedList& other);
 
     /// Removes all items from the list.
     void clear();

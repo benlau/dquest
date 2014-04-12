@@ -22,6 +22,51 @@
    For the complete list of supported operaters, please refer to the document of SQLite
 
    Reference: http://www.sqlite.org/lang_expr.html
+
+   <b>Example Usage:</b>
+
+   Assume you have the following data model:
+\code
+
+/// An example model for people's height and weight data
+class Student : public DQModel {
+    DQ_MODEL
+public:
+
+    DQField<QString> name;
+    DQField<int>     height;
+    DQField<double>  weight;
+};
+
+\endcode
+
+Simple usage:
+
+\code
+
+DQWhere name("name"); // Define a filter to match for the field of "name".
+
+DQWhere filter = (name == "student1"); // Further construct another filter that will match for name equal to "student1"
+
+Student student;
+
+student.load(filter); // Load a recrod where the name is "student1"
+
+\endcode
+
+Complex usage:
+
+\code
+DQWhere height("height"); // Define a filter to match for the field of "height".
+DQWhere weight("height"); // Define a filter to match for the field of "weight".
+
+DQWhere filter = (height > 120 ) && (weight <= 140); // Futher construct another filter that will match "(height > 120) and (height <= 140)
+
+DQList<Student> list = Student::objects().filter(filter).all(); // Find all record that match with the filter
+
+\endcode
+
+
  */
 
 class DQWhere
@@ -110,6 +155,9 @@ public:
     QString op();
 
     /// Convert the expression to string
+    /**
+      @remarks Never pass the result from this function to SQL backend. It can't prevent SQL injection. DQuest use another mechanism to convert DQWhere to sql statement and it will prevent SQL injection
+     */
     QString toString();
 
     /// Form an expression which is the result of doing an operation between "this" and "other"

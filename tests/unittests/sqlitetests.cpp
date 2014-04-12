@@ -1,6 +1,6 @@
 #include "sqlitetests.h"
 
-SqliteTests::SqliteTests(QObject* parent) : QObject(parent)
+SqliteTests::SqliteTests(QObject *parent) : QObject(parent)
 {
 }
 
@@ -12,16 +12,16 @@ void SqliteTests::initTestCase()
     DQConnection defaultConnection = DQConnection::defaultConnection();
 
     db = QSqlDatabase::addDatabase("QSQLITE");
-    db.setDatabaseName( "tests.db" );
+    db.setDatabaseName( "test1.db" );
 
     QVERIFY( db.open() );
 
     QVERIFY( !defaultConnection.isOpen());
-    QVERIFY (connect.open(db) );
+    QVERIFY (conn1.open(db) );
 
-    QVERIFY(defaultConnection.isOpen()); // connect become default connection
+    QVERIFY(defaultConnection.isOpen()); // conn1 become default connection
 
-    DQSql sql = connect.sql();
+    DQSql sql = conn1.sql();
 
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
@@ -34,35 +34,49 @@ void SqliteTests::initTestCase()
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
 
-    QVERIFY ( connect.addModel<Model1>() );
-    QVERIFY ( connect.addModel<Model2>() );
-    QVERIFY (!connect.addModel<Model1>() );
-    QVERIFY (!connect.addModel<Model3>() );
-    QVERIFY ( connect.addModel<Model4>() );
-    QVERIFY ( connect.addModel<User>() );
-    QVERIFY ( connect.addModel<Config>() );
-    QVERIFY ( connect.addModel<ExamResult>() );
-    QVERIFY ( connect.addModel<AllType>() );
-    QVERIFY ( connect.addModel<HealthCheck>());
+    QVERIFY ( conn1.addModel<Model1>() );
+    QVERIFY ( conn1.addModel<Model2>() );
+    QVERIFY (!conn1.addModel<Model1>() );
+    QVERIFY (!conn1.addModel<Model3>() );
+    QVERIFY ( conn1.addModel<Model4>() );
+    QVERIFY ( conn1.addModel<User>() );
+    QVERIFY ( conn1.addModel<Config>() );
+    QVERIFY ( conn1.addModel<ExamResult>() );
+    QVERIFY ( conn1.addModel<AllType>() );
+    QVERIFY ( conn1.addModel<HealthCheck>());
 
-    QVERIFY( connect.dropTables() );
+    QVERIFY( conn1.dropTables() );
 
-    QVERIFY( connect.createTables() ); // recreate table
+    QVERIFY( conn1.createTables() ); // recreate table
 
     /* Create index */
 
     DQIndex<Model1> index1("index1");
     index1 << "key" << "value";
 
-    QVERIFY(connect.createIndex(index1));
+    QVERIFY(conn1.createIndex(index1));
 
     // drop the index
-    QVERIFY(connect.dropIndex(index1.name()));
+    QVERIFY(conn1.dropIndex(index1.name()));
+
+    /* Second connection */
+
+    QSqlDatabase db2 = QSqlDatabase::addDatabase("QSQLITE","second-connection");
+    db2.setDatabaseName( "test2.db" );
+
+    QVERIFY( db2.open() );
+    QVERIFY (conn2.open(db2) );
+    QVERIFY (conn2.addModel<User>() );
+    QVERIFY( conn2.dropTables() );
+
+    QVERIFY( conn2.createTables() ); // recreate table
+
 }
 
 void SqliteTests::cleanupTestCase()
 {
-    connect.close();
+    conn1.close();
+    db.close();
 }
 
 void SqliteTests::verifyCreateTable(){
@@ -546,6 +560,30 @@ void SqliteTests::queryOrderBy(){
     result = query.orderBy("weight asc").all();
     QVERIFY(result.at(0)->name == "tester 3");
     QVERIFY(result.at(2)->name == "tester 2");
+
+}
+
+void SqliteTests::secondConnection() {
+    // Remove all user from conn1
+    QVERIFY( User::objects().remove() );
+    QVERIFY( User::objects(conn2).remove() );
+
+    QVERIFY(User::objects().count() == 0);
+    QVERIFY(User::objects(conn2).count() == 0);
+
+    DQList<User> list;
+    DQListWriter writer(&list,conn2);
+
+    writer << "tester1" << "Tester 1" << "12345678" << writer.next()
+           << "tester2" << "Tester 2" << "12345678" << writer.next()
+           << "tester3" << "Tester 3" << "12345678" << writer.next()
+           << "tester4" << "Tester 4" << "12345678" << writer.next()
+           << "tester5" << "Tester 5" << "12345678" << writer.next();
+
+    list.save(); // should be saved to conn2
+
+    QVERIFY(User::objects().count() == 0);
+    QVERIFY(User::objects(conn2).count() == 5);
 
 }
 

@@ -126,3 +126,7 @@ bool DQModel::clean(){
 DQSharedList DQModel::initialData() const {
     return DQSharedList();
 }
+
+DQModelMetaInfo* DQModel::staticMetaInfo(){
+    return 0;
+}
