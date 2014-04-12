@@ -61,6 +61,11 @@ DQBaseField::operator QVariant() {
 
  void DQBaseField::clear(){
     d->value.clear();
+}
+
+ void DQBaseField::detach()
+ {
+     d.detach();
  }
 
  QDebug operator<<(QDebug dbg, const DQBaseField &field){

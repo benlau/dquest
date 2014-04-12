@@ -410,6 +410,8 @@ void CoreTests::listWriter() {
 
 void CoreTests::dqFieldExplicitSharing()
 {
+    // DQField
+
     DQField<int> a , b, c;
     a = 3;
     b = a;
@@ -429,4 +431,31 @@ void CoreTests::dqFieldExplicitSharing()
 
     b = 13;
     QVERIFY(c == 13);
+
+    b.detach();
+    b = 15;
+    QVERIFY(c == 13);
+    c = 17;
+    QVERIFY(b == 15);
+
+    // DQModel
+
+    Model2 i1,i2;
+
+    i1.key = "key1";
+    i1.value = "value1";
+
+    i2 = i1;
+
+    QVERIFY(i2.key == "key1");
+    QVERIFY(i2.value == "value1");
+
+    i1.key = "key1-modified";
+
+    QVERIFY(i2.key == "key1-modified");
+    i2.value = "value1-modified";
+    QVERIFY(i1.value == "value1-modified");
+
+
+
 }

@@ -54,6 +54,13 @@ public:
     /// Free up any resources used.
     void clear();
 
+    /// Detach from the shared data object
+    /**
+      DQBaseField is an explicitly shared class. It hold a reference to a shared data object. If the object's reference count is greater than 1, this function
+      creates a deep copy from the shared data object and unlink the reference. The result will be an independent object.
+     */
+    void detach();
+
 private:
     QExplicitlySharedDataPointer<DQBaseFieldPriv> d;
 };
