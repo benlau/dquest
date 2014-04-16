@@ -16,9 +16,7 @@ public:
     DQQuery();
 
     /// Construct a DQQuery object and set the database connection
-    DQQuery(DQConnection connection)  : DQSharedQuery(connection) {
-        setMetaInfo(dqMetaInfo<T>());
-    }
+    DQQuery(DQConnection connection);
 
     /// Copy and convert from a DQSharedQuery instance
     DQQuery(const DQSharedQuery &rhs) : DQSharedQuery(rhs) {
@@ -56,6 +54,14 @@ public:
 template <typename T>
 DQQuery<T>::DQQuery() : DQSharedQuery() {
     setMetaInfo(dqMetaInfo<T>());
+    setConnection(DQConnection::defaultConnection(dqMetaInfo<T>()));
 }
+
+template <typename T>
+DQQuery<T>::DQQuery(DQConnection connection)  : DQSharedQuery() {
+    setMetaInfo(dqMetaInfo<T>());
+    setConnection(connection);
+}
+
 
 #endif // DQQUERY_H

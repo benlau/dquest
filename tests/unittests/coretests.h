@@ -8,7 +8,7 @@
 #include <QtCore/QCoreApplication>
 #include "dqwhere.h"
 #include "dqclause.h"
-#include "dqsqlitestatement.h"
+#include "priv/dqsqlitestatement.h"
 #include "model1.h"
 #include "model2.h"
 #include "model3.h"

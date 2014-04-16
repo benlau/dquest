@@ -86,7 +86,19 @@ include ($$DQUEST_PATH/include/dquest.pri)
 
  (DQUEST_PATH is the installed path of DQuest)
 
+Ubuntu/Debian Packaging
+=======================
 
+Build DQuest into a Ubuntu/Debian package has advantage of easy 
+installation and removel. 
+
+Command to build package
+
+$ dpkg-buildpackage  -rfakeroot -us -uc -B
+
+After installed the package , then add the below line to your .pro file:
+
+include (/usr/include/dquest.pri)
  
 More tutorial could be found in our project page:
 http://code.google.com/p/d-quest/

@@ -1,6 +1,6 @@
 #include <QStringList>
 #include <QtCore>
-#include "dqsqlitestatement.h"
+#include "priv/dqsqlitestatement.h"
 #include <QSqlDriver>
 #include <QSqlField>
 

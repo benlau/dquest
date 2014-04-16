@@ -22,8 +22,7 @@ DQ_DECLARE_MODEL(HealthCheck,
                  DQ_FIELD(height),
                  DQ_FIELD(weight),
                  DQ_FIELD(recordDate)
-                 );
-
+                 )
 
 int main(int argc, char *argv[])
 {

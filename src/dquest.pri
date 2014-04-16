@@ -1,17 +1,17 @@
 INCLUDEPATH += $$PWD
-DEPENDPATH += $$PWD
+DEPENDPATH += $$PWD $$PWD/priv
 QT += sql
 
 QMAKE_CXXFLAGS += -Wno-invalid-offsetof
 
 DQUEST_HEADERS += \
+    $$PWD/dqengine.h \
     $$PWD/dqclause.h \
     $$PWD/dqmodelmetainfo.h \
     $$PWD/dqmodel.h \
     $$PWD/dqconnection.h \
     $$PWD/dqbasefield.h \
     $$PWD/dqsqlstatement.h \
-    $$PWD/dqsqlitestatement.h \
     $$PWD/dqwhere.h \
     $$PWD/dqsql.h \
     $$PWD/dqfield.h \
@@ -29,9 +29,10 @@ DQUEST_HEADERS += \
     $$PWD/dquest.h
 
 DQUEST_PRIV_HEADERS = \
-    $$PWD/dqwhere_p.h \
-    $$PWD/dqsharedquery_p.h \
-    $$PWD/dqmetainfoquery_p.h
+    $$PWD/priv/dqsqlitestatement.h \
+    $$PWD/priv/dqwhere_p.h \
+    $$PWD/priv/dqsharedquery_p.h \
+    $$PWD/priv/dqmetainfoquery_p.h
 
 HEADERS += $$DQUEST_HEADERS
 HEADERS += $$DQUEST_PRIV_HEADERS

@@ -3,7 +3,7 @@
 #include <QSharedDataPointer>
 #include "dqmodel.h"
 #include "dqsql.h"
-#include "dqsqlitestatement.h"
+#include "priv/dqsqlitestatement.h"
 
 class DQSqlPriv : public QSharedData {
 public:

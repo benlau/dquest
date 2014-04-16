@@ -7,7 +7,7 @@
 
 #include <QSqlError>
 #include <dqconnection.h>
-#include <dqsqlitestatement.h>
+#include <priv/dqsqlitestatement.h>
 #include <dqquery.h>
 #include <dqsql.h>
 #include <dqlistwriter.h>
@@ -54,6 +54,8 @@ private Q_SLOTS:
      */
     void prepareInitRecords();
 
+    void query();
+
     void select();
 
     void queryAll();
@@ -80,7 +82,7 @@ private Q_SLOTS:
 
 private:
     DQConnection conn1,conn2;
-    QSqlDatabase db;
+    QSqlDatabase db,db2;
 };
 
 #endif // SQLITETESTS_H
