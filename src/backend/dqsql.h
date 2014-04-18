@@ -29,6 +29,12 @@ class DQSqlPriv;
 class DQSql
 {
 public:
+    /**
+      @param statement A instance of DQSqlStatement. The ownership will be taken.
+     */
+
+    explicit DQSql(DQSqlStatement *statement = 0);
+
     /// Copy constructor
     DQSql(const DQSql&);
 
@@ -39,7 +45,7 @@ public:
     DQSqlStatement* statement();
 
     /// The connected database
-    QSqlDatabase database();
+    QSqlDatabase database() const;
 
     /// Run create table of a model
     template <typename T>
@@ -70,7 +76,7 @@ public:
       @param fields A list of fields that should be saved
       @param updateId TRUE if the ID of the model should be updated after operation
      */
-    bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId);
+    bool insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId);
 
     /// Replace the record to the database
     /**
@@ -79,20 +85,13 @@ public:
       @param fields A list of fields that should be saved
       @param updateId TRUE if the ID of the model should be updated after operation
      */
-    bool replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId);
+    bool replaceInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId);
 
     /// Create a query object to the connected database
     QSqlQuery query();
 
     /// The last query object
     QSqlQuery lastQuery();
-
-protected:
-    /**
-      @param statement A instance of DQSqlStatement. The ownership will be taken.
-     */
-
-    explicit DQSql(DQSqlStatement *statement = 0);
 
     /// Assignment operator overloading
     DQSql& operator=(const DQSql &rhs);
@@ -106,10 +105,12 @@ protected:
      */
     void setStatement(DQSqlStatement *statement);
 
-private:
-    void setLastQuery(QSqlQuery query);
+protected:
 
-    bool insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool with_id,bool replace);
+private:
+     void setLastQuery(QSqlQuery query);
+
+     bool insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool with_id,bool replace);
 
     QExplicitlySharedDataPointer<DQSqlPriv> d;
 

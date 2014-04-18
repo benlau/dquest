@@ -87,6 +87,12 @@ public:
     /// List of foreign key
     QList<DQModelMetaInfoField> foreignKeyList();
 
+    /// Get the primary key list
+    /** In this implementation , only the default primary key is supported.
+      Multiple primary key is reserved for furture expension.
+     */
+    QList<DQModelMetaInfoField> primeryKeyList();
+
     /// No. of field
     int size() const;
 
@@ -96,7 +102,7 @@ public:
     /// Set value of a field on a model
     bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
 
-    /// Set the value of a field at index
+    /// Set the value of a field by index
     bool setValue(DQAbstractModel *model,int index, const QVariant& val);
 
     /// Get value of a field from a model
@@ -153,6 +159,8 @@ private:
     QList<DQModelMetaInfoField> m_fieldList;
 
     QList<DQModelMetaInfoField> m_foreignKeyList;
+
+    QList<DQModelMetaInfoField> m_primaryKeyList;
 
     /// The table name
     QString m_name;
@@ -227,7 +235,7 @@ inline DQModelMetaInfo* dqMetaInfo() {
 
     metaInfo = (DQModelMetaInfo*) dqFindMetaInfo(name);
     if (metaInfo) {
-        qWarning() << QString("Table with same name is detected! : %1 ").arg(name);
+        qWarning() << QString("Model with same name is detected! : %1 ").arg(name);
     } else {
         metaInfo = new DQModelMetaInfo();
         metaInfo->setName(name);

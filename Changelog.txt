@@ -1,22 +1,24 @@
 Next release
 ============
- Features
- - Proved multiple database works. And improved the code base for more easy multiple database access
+  Features
+  - Proved multiple database works. And improved the code base for more easy multiple database access
 
- Add dqmodel_cast<T>() function
+  Add dqmodel_cast<T>() function
 
- DQList
- * Bug Fix on clear() function. It should not clear the binded meta info
- * added append(DQList<T>)  , last()
+  DQList
+  * Bug Fix on clear() function. It should not clear the binded meta info
+  * added append(DQList<T>)  , last()
 
- DQConnection
- * Added null state and isNull function
- * Changed the behavior / definition of defaultConnection() function for improve the multiple database access's coding affort.
+  DQConnection
+  * Added null state and isNull function
+  * Changed the behavior / definition of defaultConnection() function for improve the multiple database access's coding affort.
+  * lastQuery() will return all kind of executed query instead of error query only.
+  * Refactored to use DQEngine for backend.
 
- DQModel
- * Do not set default connection in constructor. 
-   When a function require the access of connection , it will check is current connection null , if yes , then it will set it to default connection.
-   It is used to reduce unwanted memory allocation in multiple database code.
+  DQModel
+  * Do not set default connection in constructor. 
+    When a function require the access of connection , it will check is current connection null , if yes , then it will set it to default connection.
+    It is used to reduce unwanted memory allocation in multiple database code.
  
 
    

@@ -9,7 +9,7 @@
 #include <dqconnection.h>
 #include <priv/dqsqlitestatement.h>
 #include <dqquery.h>
-#include <dqsql.h>
+#include <backend/dqsql.h>
 #include <dqlistwriter.h>
 
 #include "model1.h"
@@ -79,6 +79,8 @@ private Q_SLOTS:
     void queryOrderBy();
 
     void secondConnection();
+
+    void engine();
 
 private:
     DQConnection conn1,conn2;

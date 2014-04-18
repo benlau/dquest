@@ -5,7 +5,7 @@
 
 #include <dqmodelmetainfo.h>
 #include <dqsharedquery.h>
-#include <dqqueryrules.h>
+#include <backend/dqqueryrules.h>
 #include <dqindex.h>
 
 class DQSharedQuery;
@@ -61,10 +61,10 @@ public:
     virtual QString replaceInto(DQModelMetaInfo *info,QStringList fields);
 
     /// Select statement
-    virtual QString select(DQSharedQuery query);
+    virtual QString select(DQQueryRules rules);
 
     /// Delete from statement
-    virtual QString deleteFrom(DQSharedQuery query);
+    virtual QString deleteFrom(DQQueryRules rules);
 
     /// Returns a string representation of the QVariant for SQL statement
     virtual QString formatValue(QVariant value,bool trimStrings = false);

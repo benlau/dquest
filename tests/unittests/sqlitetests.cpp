@@ -56,6 +56,8 @@ void SqliteTests::initTestCase()
     // drop the index
     QVERIFY(conn1.dropIndex(index1.name()));
 
+    QVERIFY(conn1.createIndex(index1));
+
     /* Second connection */
 
     db2 = QSqlDatabase::addDatabase("QSQLITE","second-connection");
@@ -315,7 +317,9 @@ void SqliteTests::select()
     DQQuery<Model1> query1 = DQQuery<Model1>().filter(DQWhere("key","=","config1")).limit(1) ;
 
     DQSqliteStatement statement;
-    QString sql = statement.select(query1);
+    DQQueryRules rules;
+    rules = query1;
+    QString sql = statement.select(rules);
 
     qDebug() << sql;
 
@@ -623,5 +627,12 @@ void SqliteTests::secondConnection() {
     model.seq = 4;
     QVERIFY(model.save()); // DQModel.save works
 
+}
+
+void SqliteTests::engine(){
+    User model;
+    DQConnection connection = model.connection();
+
+    QVERIFY(connection.engine()->name() == "SQLITE");
 }
 

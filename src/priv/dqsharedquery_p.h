@@ -6,9 +6,12 @@
 #include "dqmodel.h"
 #include "dqmodelmetainfo.h"
 #include "dqwhere.h"
-#include "dqexpression.h"
+#include "backend/dqexpression.h"
 
 /// DQSharedQuery private data
+/**
+  It is shared between DQSharedQuery and DQQueryRules
+ */
 
 class DQSharedQueryPriv : public QSharedData {
 public:

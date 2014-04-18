@@ -35,6 +35,10 @@ void CoreTests::metaInfo(){
     // Test staticMetaInfo
     QVERIFY(Model2::staticMetaInfo() == dqMetaInfo<Model2>() );
 
+    QList<DQModelMetaInfoField> primaryKeyList = metaInfo4->primeryKeyList();
+
+    QVERIFY(primaryKeyList.size() == 1);
+    QVERIFY(primaryKeyList.at(0).name == "id");
 }
 
 void CoreTests::modelCast() {

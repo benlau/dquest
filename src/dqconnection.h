@@ -9,7 +9,7 @@
 
 #include <dqmodelmetainfo.h>
 #include <dqindex.h>
-#include <dqengine.h>
+#include <backend/dqengine.h>
 
 class DQModelMetaInfo;
 class DQSql;
@@ -99,7 +99,7 @@ public:
     void close();
 
     /// Return TRUE if the connection is opened successfully,otherwise it is false
-    bool isOpen();
+    bool isOpen() const;
 
     /// Return TRUE if the connection is null
     /** A DQConnection is null if open() is never called. Once
@@ -192,7 +192,7 @@ public:
     /// Create a QSqlQuery object to the connected database
     QSqlQuery query();
 
-    /// The last query with error used by DQConnection
+    /// Get the last query
     /**
       @threadsafe
       @remarks It is thread-safe function
@@ -206,6 +206,22 @@ public:
       @remarks It is thread-safe function
      */
     void setLastQuery(QSqlQuery query);
+
+    /// Assign an database engine to the connection
+    /**
+      @param engine The new database engine. The ownership will be taken.
+      @threadsafe
+      @return TRUE if it is successful set,otherwise it is false. (e.g Call this function after opened the database)
+
+      @remarks Don't call this function after opened the database connection
+     */
+    bool setEngine(DQEngine *engine);
+
+    /// Get the database engine currently using
+    /**
+      @threadsafe
+     */
+    DQEngine* engine() const;
 
 signals:
 
