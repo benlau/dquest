@@ -10,6 +10,8 @@
 #include <priv/dqsqlitestatement.h>
 #include <dqquery.h>
 #include <backend/dqsql.h>
+#include <backend/dqbackend.h>
+#include <priv/dqsqliteengine.h>
 #include <dqlistwriter.h>
 
 #include "model1.h"
@@ -26,6 +28,9 @@ class SqliteTests : public QObject
 
 public:
     SqliteTests(QObject* parent = 0);
+
+    /// Test the backend system
+    void backend();
 
     /// Verify the create table stmt
     void verifyCreateTable();
@@ -81,6 +86,10 @@ private Q_SLOTS:
     void secondConnection();
 
     void engine();
+
+    void lastQuery();
+
+    void transaction();
 
 private:
     DQConnection conn1,conn2;

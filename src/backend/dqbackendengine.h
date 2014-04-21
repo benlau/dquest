@@ -1,23 +1,25 @@
-#ifndef DQEngine_h
-#define DQEngine_h
+#ifndef DQBackendEngine_h
+#define DQBackendEngine_h
 
 #include <QSqlDatabase>
 #include <dqindex.h>
-#include "dqmodelmetainfo.h"
-#include "backend/dqsql.h"
+#include <dqmodelmetainfo.h>
+#include <backend/dqsql.h>
+#include <backend/dqbackendquery.h>
+#include <backend/dqqueryrules.h>
 
-/// Database engine (Abstract class)
-/** DQEngine provides low level database access. It is the backend
+/// Database backend engine (Abstract class)
+/** DQBackendEngine provides low level database access. It is the backend
   class for DQConnection. Normally user will not use the class directly.
   It is used for custom database backend support only.
 
  */
 
-class DQEngine {
+class DQBackendEngine {
 
  public:
-    DQEngine();
-    virtual ~DQEngine();
+    DQBackendEngine();
+    virtual ~DQBackendEngine();
 
     /// Get the name of the engine
     virtual QString name()  = 0;
@@ -73,21 +75,43 @@ class DQEngine {
     /// Drop the index
     virtual bool dropIndex(QString name);
 
-    /// Get the assoicated DQSql instance
-    virtual DQSql& sql() = 0;
+    /// Create a DQBackendQuery object to the connected database
+    /**
+      @threadsafe
+     */
+
+    virtual DQBackendQuery query(DQQueryRules rules);
+
+    virtual QSqlQuery sqlQuery();
 
     /// The last query
     /**
       @threadsafe
      */
-    virtual QSqlQuery lastQuery();
+    virtual QSqlQuery lastSqlQuery();
 
-    /// Create a QSqlQuery object to the connected database
+    /// Begins a transaction on the database if the driver supports transactions. Returns true if the operation succeeded. Otherwise it returns false.
+    virtual bool transaction();
+
+    /// Commits a transaction to the database if the driver supports transactions and a transaction() has been started. Returns true if the operation succeeded. Otherwise it returns false.
     /**
-      @threadsafe
+      Note: For some databases, the commit will fail and return false if there is an active query using the database for a SELECT. Make the query inactive before doing the commit.
      */
+    virtual bool commit();
 
-    virtual QSqlQuery query();
+    /// Rolls back a transaction on the database, if the driver supports transactions and a transaction() has been started. Returns true if the operation succeeded. Otherwise it returns false.
+    /**
+      Note: For some databases, the rollback will fail and return false if there is an active query using the database for a SELECT. Make the query inactive before doing the rollback.
+      */
+    virtual bool rollback();
+
 };
 
-#endif // DQEngine_h
+typedef DQBackendEngine* (*DQBackendEngineCreatorFunc)();
+
+template <typename T>
+DQBackendEngine* dqBackendEngineCreateFunc() {
+    return new T();
+}
+
+#endif // DQBackendEngine_h

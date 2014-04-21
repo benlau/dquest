@@ -4,49 +4,67 @@
 #include <QSqlError>
 #include <QMutex>
 #include <QMap>
-
+#include <QThreadStorage>
 #include "dqmodel.h"
 #include "dqconnection.h"
 #include "priv/dqsqlitestatement.h"
 #include "backend/dqsql.h"
 #include "priv/dqsqliteengine.h"
+#include <backend/dqbackend.h>
 
 #define PREPARE_PRIV() {\
     if (!d) \
         d = new DQConnectionPriv(); \
-    if (!d->engine) \
-        setEngine(new DQSqliteEngine()); \
     }
 
 /// The private database structure for DQConnection
 class DQConnectionPriv : public QSharedData
 {
-  public:    
-    DQConnectionPriv(DQEngine *val = 0) {
-        lastQuery = 0;
+public:
+
+   DQConnectionPriv(DQBackendEngine *val = 0) {
         engine = val;
     }
 
     ~DQConnectionPriv() {
         if (engine)
             delete engine;
-
-        if (lastQuery)
-            delete lastQuery;
     }
 
     DQSql m_sql;
+
+    void setEngine(DQBackendEngine* val){
+        mutex.lock();
+        if (engine)
+            delete engine;
+        engine = val;
+        mutex.unlock();
+    }
 
     /// The last query being used.
     QSqlQuery *lastQuery;
 
     QMutex mutex;
 
-    DQEngine *engine;
+    DQBackendEngine *engine;
 };
 
+/// Thread specific data
+static QThreadStorage<QMap<DQModelMetaInfo* , DQConnection> * > localData;
+
 /// The mapping of default connection
-static QMap<DQModelMetaInfo* , DQConnection> mapping;
+//static QMap<DQModelMetaInfo* , DQConnection> mapping;
+
+/// Get the mapping object of default connection
+/**
+    @remarks It will also initialize the local data.
+ */
+QMap<DQModelMetaInfo* , DQConnection>* getMapping() {
+    if (!localData.hasLocalData()){
+        localData.setLocalData(new QMap<DQModelMetaInfo* , DQConnection> ());
+    }
+    return localData.localData();
+}
 
 DQConnection::DQConnection()
 {
@@ -83,7 +101,21 @@ bool DQConnection::operator!=(const DQConnection &rhs) {
 bool DQConnection::open(QSqlDatabase db){
     Q_ASSERT(db.isOpen());
 
+    if (isOpen()) {
+        qDebug() << "DQConnection::open() - Database is already opened";
+        return false;
+    }
+
     PREPARE_PRIV();
+
+    QString driver = db.driverName();
+
+    if (!DQBackend::isDriverSupported(driver)) {
+        qDebug() << QString("%1 is not supported.");
+        return false;
+    }
+
+    d->setEngine(DQBackend::createEngineForDriver(driver));
 
     return d->engine->open(db);
 }
@@ -102,17 +134,16 @@ void DQConnection::close(){
     if (!d)
         return;
 
-    if (d->lastQuery) {
-        delete d->lastQuery;
-        d->lastQuery = 0;
-    }
-    d->m_sql.setDatabase(QSqlDatabase());
+    if (!d->engine)
+        return;
+
     d->engine->close();
 
     QList<DQModelMetaInfo*> models = d->engine->modelList();
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
     foreach (DQModelMetaInfo* metaInfo , models) {
-        if (mapping.contains(metaInfo)) {
-            mapping.take(metaInfo);
+        if (mapping->contains(metaInfo)) {
+            mapping->take(metaInfo);
         }
     }
 }
@@ -127,9 +158,11 @@ bool DQConnection::addModel(DQModelMetaInfo* metaInfo){
 
     res = d->engine->addModel(metaInfo);
 
-    if (res && !mapping.contains(metaInfo)) {
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
+
+    if (res && !mapping->contains(metaInfo)) {
         // set the default connection
-        mapping[metaInfo] = *this;
+        (*mapping)[metaInfo] = *this;
     }
 
     return res;
@@ -140,8 +173,10 @@ DQConnection DQConnection::defaultConnection(DQModelMetaInfo* metaInfo){
     if (!metaInfo)
         return ret;
 
-    if (mapping.contains(metaInfo)) {
-        ret = mapping[metaInfo];
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
+
+    if (mapping->contains(metaInfo)) {
+        ret = (*mapping)[metaInfo];
     } else {
         qWarning() << QString("Model %1 is not added to any connection yet").arg(metaInfo->name());
     }
@@ -150,7 +185,9 @@ DQConnection DQConnection::defaultConnection(DQModelMetaInfo* metaInfo){
 }
 
 void DQConnection::setDefaultConnection(DQModelMetaInfo* metaInfo) {
-    mapping[metaInfo] = *this;
+    QMap<DQModelMetaInfo* , DQConnection> *mapping = getMapping();
+
+    (*mapping)[metaInfo] = *this;
 }
 
 bool DQConnection::createTables(){
@@ -160,6 +197,7 @@ bool DQConnection::createTables(){
     bool res = true;
 
     QList<DQModelMetaInfo*> models = d->engine->modelList();
+    d->engine->transaction();
     foreach (DQModelMetaInfo* info ,models) {
 
         /*
@@ -174,7 +212,6 @@ bool DQConnection::createTables(){
                 break;
             }
 
-            /// @TODO Replace by list.save()
             DQSharedList initialData = info->initialData();
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {
@@ -185,11 +222,12 @@ bool DQConnection::createTables(){
         }
         */
         res = d->engine->createModel(info);
-        setLastQuery(d->engine->lastQuery());
+//        setLastQuery(d->engine->lastSqlQuery());
 
         if (!res)
             break;
     }
+    d->engine->commit();
 
     return res;
 
@@ -205,7 +243,7 @@ bool DQConnection::dropTables() {
 
     foreach (DQModelMetaInfo* info ,models) {
         d->engine->dropModel(info);
-        setLastQuery(d->engine->lastQuery());
+//        setLastQuery(d->engine->lastSqlQuery());
         /*
         if (!d->m_sql.exists(info))
             continue;
@@ -227,7 +265,7 @@ bool DQConnection::createIndex(const DQBaseIndex &index) {
         return false;
 
     bool res = d->engine->createIndex(index);
-    setLastQuery(d->engine->lastQuery());
+//    setLastQuery(d->engine->lastSqlQuery());
     return res;
 }
 
@@ -236,70 +274,48 @@ bool DQConnection::dropIndex(QString name){
         return false;
 
     bool res = d->engine->dropIndex(name);
-    setLastQuery(d->engine->lastQuery());
+//    setLastQuery(d->engine->lastSqlQuery());
     return res;
-}
-
-DQSql& DQConnection::sql(){
-    return d->engine->sql();
 }
 
 QSqlQuery DQConnection::query(){
     if (!isOpen())
         return QSqlQuery();
 
-    return d->engine->query();
-}
-
-void DQConnection::setLastQuery(QSqlQuery query){
-    if (!isOpen())
-        return;
-
-    d->mutex.lock();
-    if (d->lastQuery != 0)
-        delete d->lastQuery;
-    d->lastQuery = new QSqlQuery(query);
-    d->mutex.unlock();
+    return d->engine->sqlQuery();
 }
 
 QSqlQuery DQConnection::lastQuery(){
     if (!isOpen())
         return QSqlQuery();
 
-    /*
-      Although lastQuery() is thread-safe, but as it do not hold the
-      lastQuery per thread. The result become meaningless , as it
-      may override by another thread.
-     @todo Implement last query storage per thread.
-     */
-    QSqlQuery query;
-    d->mutex.lock();
-    query = *d->lastQuery;
-    d->mutex.unlock();
-
-    return query;
+    return d->engine->lastSqlQuery();
 }
 
-bool DQConnection::setEngine(DQEngine *engine){
-    if (!d)
-        d = new DQConnectionPriv();
-
-    d->mutex.lock();
-
-    if (d->engine) {
-        delete d->engine;
-        d->engine = 0;
-    }
-    d->engine = engine;
-    d->mutex.unlock();
-    return true;
-}
-
-DQEngine* DQConnection::engine() const{
-    DQEngine*res = 0;
+DQBackendEngine* DQConnection::engine() const{
+    DQBackendEngine*res = 0;
 
     d->mutex.lock();
     res = d->engine;
     d->mutex.unlock();
     return res;
 }
+
+bool DQConnection::transaction(){
+    if (!d || !d->engine)
+        return false;
+    return d->engine->transaction();
+}
+
+bool DQConnection::commit(){
+    if (!d || !d->engine)
+        return false;
+    return d->engine->commit();
+}
+
+bool DQConnection::rollback(){
+    if (!d || !d->engine)
+        return false;
+    return d->engine->rollback();
+}
+

@@ -7,6 +7,7 @@
 #include "priv/dqsharedquery_p.h"
 #include "backend/dqsqlstatement.h"
 #include "backend/dqexpression.h"
+#include <backend/dqbackendengine.h>
 
 DQSharedQuery::DQSharedQuery() : data(new DQSharedQueryPriv) {
 //    data->connection = DQConnection::defaultConnection();
@@ -80,7 +81,14 @@ DQSharedQuery DQSharedQuery::orderBy(QString term){
 }
 
 bool DQSharedQuery::exec() {
-    data->query = data->connection.query();
+    DQQueryRules rules;
+    rules = *this;
+    data->query = data->connection.engine()->query(rules);
+    bool res = data->query.exec();
+//    data->connection.setLastQuery(data->query.sqlQuery());
+    return res;
+    /*
+    data->query = data->connection.query(
 
     Q_ASSERT(data->connection.isOpen());
 
@@ -109,9 +117,17 @@ bool DQSharedQuery::exec() {
     }
 
     return res;
+    */
 }
 
 bool DQSharedQuery::remove(){
+    DQQueryRules rules;
+    rules = *this;
+    data->query = data->connection.engine()->query(rules);
+    bool res = data->query.remove();
+//    data->connection.setLastQuery(data->query.sqlQuery());
+    return res;
+    /*
     data->query = data->connection.query();
 
     QString sql;
@@ -135,6 +151,7 @@ bool DQSharedQuery::remove(){
     data->connection.setLastQuery(data->query);
 
     return res;
+    */
 }
 
 DQSharedList DQSharedQuery::all(){
@@ -151,7 +168,7 @@ DQSharedList DQSharedQuery::all(){
 }
 
 QSqlQuery DQSharedQuery::lastQuery(){
-    return data->query;
+    return data->query.sqlQuery();
 }
 
 void DQSharedQuery::reset(){
@@ -167,7 +184,7 @@ bool DQSharedQuery::next() {
 }
 
 QVariant DQSharedQuery::value() {
-    QSqlRecord record = data->query.record();
+    QSqlRecord record = data->query.sqlQuery().record();
 
     QVariant res = record.value(0);
 
@@ -211,7 +228,7 @@ bool DQSharedQuery::recordTo(DQAbstractModel *model) {
     Q_ASSERT (data->metaInfo == model->metaInfo() );
     bool res = true;
 
-    QSqlRecord record = data->query.record();
+    QSqlRecord record = data->query.sqlQuery().record();
 
     int count = record.count();
     for (int i = 0 ; i < count;i++){

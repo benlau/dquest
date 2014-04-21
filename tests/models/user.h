@@ -20,6 +20,7 @@ public:
     virtual bool clean() {
         QString pw = passwd->toString();
         if (pw.size() < 8){ // passwd is too short.
+            qDebug() << "Password is too short";
             return false;
         }
         return true;

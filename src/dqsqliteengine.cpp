@@ -6,6 +6,17 @@
 #include "dqmodel.h"
 #include "priv/dqsqlitestatement.h"
 #include "priv/dqsqliteengine.h"
+#include "backend/dqsqlqueryengine.h"
+#include <backend/dqbackendregisterhelper.h>
+
+template <>
+void DQBackendRegisterHelper<DQSqliteEngine>::postProcess(QString name , QString driver) {
+    if (!DQBackend::setDefaultEngine(name,driver)){
+        qDebug() << QString("Failed to set default engine \"%1\" to %2").arg(name).arg(driver);
+    }
+}
+
+static DQBackendRegisterHelper<DQSqliteEngine> registerHelper("SQLITE","QSQLITE");
 
 DQSqliteEngine::DQSqliteEngine() : m_sql(new DQSqliteStatement())
 {
@@ -37,6 +48,7 @@ bool DQSqliteEngine::isOpen() const{
 
 void DQSqliteEngine::close(){
     m_sql.setDatabase(QSqlDatabase());
+    m_lastQuery = DQBackendQuery();
 }
 
 /// Add a model to the engine
@@ -71,7 +83,7 @@ bool DQSqliteEngine::createModel(DQModelMetaInfo* info){
         } else {
 
             DQSharedList initialData = info->initialData();
-            /// TODO: Transaction
+
             int n = initialData.size();
             for (int i = 0 ; i< n;i++) {
                 if (!update(initialData.at(i))){
@@ -129,6 +141,9 @@ bool DQSqliteEngine::update(DQAbstractModel* model, QStringList fields, bool for
     } else {
         res = m_sql.replaceInto(info,model,fields,false);
     }
+
+    setLastQuery(m_sql.lastQuery());
+
     return res;
 }
 
@@ -152,14 +167,43 @@ void DQSqliteEngine::setLastQuery(QSqlQuery query){
         return;
 
     mutex.lock();
-    m_lastQuery = query;
+    m_lastSqlQuery = query;
+    m_lastQuery = DQBackendQuery();
     mutex.unlock();
 }
 
-QSqlQuery DQSqliteEngine::query(){
+DQBackendQuery DQSqliteEngine::query(DQQueryRules rules){
+    DQBackendQuery q(new DQSqlQueryEngine(m_sql,rules));
+    mutex.lock();
+    m_lastQuery = q;
+    mutex.unlock();
+    return q;
+}
+
+QSqlQuery DQSqliteEngine::lastSqlQuery(){
+    QSqlQuery res;
+    mutex.lock();
+    if (m_lastQuery.isNull())
+        res = m_lastSqlQuery;
+    else
+        res = m_lastQuery.sqlQuery();
+    mutex.unlock();
+    return res;
+}
+
+QSqlQuery DQSqliteEngine::sqlQuery(){
     return m_sql.query();
 }
 
-QSqlQuery DQSqliteEngine::lastQuery(){
-    return m_lastQuery;
+bool DQSqliteEngine::transaction(){
+    return m_sql.database().transaction();
 }
+
+bool DQSqliteEngine::commit(){
+    return m_sql.database().commit();
+}
+
+bool DQSqliteEngine::rollback(){
+    return m_sql.database().rollback();
+}
+

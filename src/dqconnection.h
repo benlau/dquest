@@ -9,8 +9,8 @@
 
 #include <dqmodelmetainfo.h>
 #include <dqindex.h>
-#include <backend/dqengine.h>
 
+class DQBackendEngine;
 class DQModelMetaInfo;
 class DQSql;
 class DQConnectionPriv;
@@ -184,10 +184,21 @@ public:
 
     bool dropIndex(QString name);
 
-    /// Get the SQL interface that you may run predefined sql operations on the database
-    /** @remarks The connection must be opened before using this function
+    /// Begins a transaction on the database if the backend supports transactions. Returns true if the operation succeeded. Otherwise it returns false.
+    bool transaction();
+
+    /// Commits a transaction to the database if the driver supports transactions and a transaction() has been started. Returns true if the operation succeeded. Otherwise it returns false.
+    /**
+      Note: For some databases, the commit will fail and return false if there is an active query using the database for a SELECT. Make the query inactive before doing the commit.
      */
-    DQSql& sql();
+    bool commit();
+
+    /// Rolls back a transaction on the database, if the driver supports transactions and a transaction() has been started. Returns true if the operation succeeded. Otherwise it returns false.
+    /**
+      Note: For some databases, the rollback will fail and return false if there is an active query using the database for a SELECT. Make the query inactive before doing the rollback.
+      */
+    bool rollback();
+
 
     /// Create a QSqlQuery object to the connected database
     QSqlQuery query();
@@ -199,29 +210,11 @@ public:
      */
     QSqlQuery lastQuery();
 
-    /// Set the last query
-    /// The last query with error used by DQConnection
-    /**
-      @threadsafe
-      @remarks It is thread-safe function
-     */
-    void setLastQuery(QSqlQuery query);
-
-    /// Assign an database engine to the connection
-    /**
-      @param engine The new database engine. The ownership will be taken.
-      @threadsafe
-      @return TRUE if it is successful set,otherwise it is false. (e.g Call this function after opened the database)
-
-      @remarks Don't call this function after opened the database connection
-     */
-    bool setEngine(DQEngine *engine);
-
     /// Get the database engine currently using
     /**
       @threadsafe
      */
-    DQEngine* engine() const;
+    DQBackendEngine* engine() const;
 
 signals:
 

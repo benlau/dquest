@@ -72,6 +72,8 @@ DQSharedList _dqMetaInfoInitalData() {
 
   When it is created , it will set its parent to QCoreApplication,
   so that it will be destroyed automatically.
+
+  @threadsafe
  */
 
 class DQModelMetaInfo : private QObject {
@@ -79,19 +81,19 @@ class DQModelMetaInfo : private QObject {
 public:
 
     /// Return the list of field name
-    QStringList fieldNameList();
+    QStringList fieldNameList() const;
 
     /// List of foreign key name
-    QStringList foreignKeyNameList();
+    QStringList foreignKeyNameList() const;
 
     /// List of foreign key
-    QList<DQModelMetaInfoField> foreignKeyList();
+    QList<DQModelMetaInfoField> foreignKeyList() const;
 
     /// Get the primary key list
     /** In this implementation , only the default primary key is supported.
       Multiple primary key is reserved for furture expension.
      */
-    QList<DQModelMetaInfoField> primeryKeyList();
+    QList<DQModelMetaInfoField> primeryKeyList() const;
 
     /// No. of field
     int size() const;
@@ -100,10 +102,10 @@ public:
     const DQModelMetaInfoField* at(int idx) const;
 
     /// Set value of a field on a model
-    bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
+    bool setValue(DQAbstractModel *model,QString field, const QVariant& val) const;
 
     /// Set the value of a field by index
-    bool setValue(DQAbstractModel *model,int index, const QVariant& val);
+    bool setValue(DQAbstractModel *model,int index, const QVariant& val) const;
 
     /// Get value of a field from a model
     /**
@@ -130,10 +132,10 @@ public:
     QString className() const;
 
     /// Get the initial data for the model
-    DQSharedList initialData();
+    DQSharedList initialData() const;
 
     /// Create an instance of the associated model type
-    DQAbstractModel* create();
+    DQAbstractModel* create() const;
 
 protected:
     /// Default constructor
@@ -184,7 +186,7 @@ DQModelMetaInfo* dqFindMetaInfo(QString name);
 /**
   @remarks User should not use this function for any purpose
  */
-void dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
+bool dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
 
 /// Helper class for DQModelMetaInfo instance generation
 template <typename T>
@@ -246,6 +248,10 @@ inline DQModelMetaInfo* dqMetaInfo() {
         QList<DQModelMetaInfoField> fields = DQModelMetaInfoHelper<T>::fields();
         metaInfo->registerFields(fields);
         dqRegisterMetaInfo(name,metaInfo);
+
+        QCoreApplication* app = QCoreApplication::instance();
+        metaInfo->moveToThread(app->thread());
+        metaInfo->setParent(app); // Then it will be destroyed in program termination. Make valgrind happy.
     }
 
     return metaInfo;

@@ -83,6 +83,6 @@ bool DQSqlQueryEngine::recordTo(DQAbstractModel * model){
     return res;
 }
 
-QSqlQuery DQSqlQueryEngine::query(){
+QSqlQuery DQSqlQueryEngine::sqlQuery(){
     return m_query;
 }

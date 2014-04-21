@@ -39,6 +39,10 @@ DQBackendQuery::~DQBackendQuery()
 {
 }
 
+bool DQBackendQuery::isNull(){
+    return d->engine == 0;
+}
+
 bool DQBackendQuery::exec(){
     return d->engine->exec();
 }
@@ -53,4 +57,8 @@ bool DQBackendQuery::next(){
 
 bool DQBackendQuery::recordTo(DQAbstractModel * model){
     return d->engine->recordTo(model);
+}
+
+QSqlQuery DQBackendQuery::sqlQuery(){
+    return d->engine->sqlQuery();
 }

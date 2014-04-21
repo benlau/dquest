@@ -26,6 +26,11 @@ public:
     DQBackendQuery &operator=(const DQBackendQuery &);
     ~DQBackendQuery();
 
+    /// Check is it a null query object
+    /** A null query means the database backend is not set.
+     */
+    bool isNull();
+
     /// Execuate the query
     /**
       Returns true if the query executed successfully; otherwise returns false.

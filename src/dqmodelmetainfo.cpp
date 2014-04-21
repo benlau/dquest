@@ -1,3 +1,4 @@
+#include <QMutex>
 #include <QMap>
 #include <QCoreApplication>
 #include "dqmodelmetainfo.h"
@@ -8,22 +9,33 @@
 #define DQ_MODEL_GET_FIELD(model, offset) \
             ( (DQBaseField*) MEMBER_PTR(model,offset) )
 
+static QMutex mutex;
 static QMap<QString , DQModelMetaInfo* > metaTypeList;
 
 DQModelMetaInfo* dqFindMetaInfo(QString name) {
     DQModelMetaInfo * res = 0;
+    mutex.lock();
     if (metaTypeList.contains(name))
         res = metaTypeList[name];
+    mutex.unlock();
     return res;
 }
 
-void dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType){
-    metaTypeList[name] = metaType;
+bool dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType){
+    bool res = false;
+    mutex.lock();
+    if (!metaTypeList.contains(name)) {
+        metaTypeList[name] = metaType;
+        res = true;
+    } else {
+        qWarning() << QString("%1 : %2 is already registered!")
+                      .arg(__func__).arg(name);
+    }
+    mutex.unlock();
+    return res;
 }
 
 DQModelMetaInfo::DQModelMetaInfo() : QObject() {
-    QCoreApplication *app = QCoreApplication::instance();
-    setParent(app); // Then it will be destroyed in program termination. Make valgrind happy.
 }
 
 void DQModelMetaInfo::registerField(DQModelMetaInfoField field){
@@ -47,7 +59,7 @@ void DQModelMetaInfo::registerFields(QList<DQModelMetaInfoField> fields){
     }
 }
 
-QStringList DQModelMetaInfo::fieldNameList(){
+QStringList DQModelMetaInfo::fieldNameList() const {
     QStringList result;
     QMapIterator<QString, DQModelMetaInfoField> iter(m_fields);
     while (iter.hasNext()) {
@@ -57,11 +69,11 @@ QStringList DQModelMetaInfo::fieldNameList(){
     return result;
 }
 
-QList<DQModelMetaInfoField> DQModelMetaInfo::foreignKeyList(){
+QList<DQModelMetaInfoField> DQModelMetaInfo::foreignKeyList() const {
     return m_foreignKeyList;
 }
 
-QStringList DQModelMetaInfo::foreignKeyNameList(){
+QStringList DQModelMetaInfo::foreignKeyNameList() const {
     QStringList result;
     foreach (DQModelMetaInfoField field , m_foreignKeyList){
         result << field.name;
@@ -79,7 +91,7 @@ const DQModelMetaInfoField* DQModelMetaInfo::at(int idx) const{
     return &m_fieldList.at(idx);
 }
 
-bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVariant& val){
+bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVariant& val) const{
     if (!m_fields.contains(field))
         return false;
     int offset = m_fields[field].offset;
@@ -89,7 +101,7 @@ bool DQModelMetaInfo::setValue(DQAbstractModel *model,QString field, const QVari
     return true;
 }
 
-bool DQModelMetaInfo::setValue(DQAbstractModel *model,int index, const QVariant& val){
+bool DQModelMetaInfo::setValue(DQAbstractModel *model,int index, const QVariant& val) const{
     if (index< 0 || index > size() ) {
         return false;
     }
@@ -139,14 +151,14 @@ QString DQModelMetaInfo::className() const {
     return m_className;
 }
 
-DQAbstractModel* DQModelMetaInfo::create(){
+DQAbstractModel* DQModelMetaInfo::create() const{
     return createFunc();
 }
 
-QList<DQModelMetaInfoField> DQModelMetaInfo::primeryKeyList(){
+QList<DQModelMetaInfoField> DQModelMetaInfo::primeryKeyList() const{
     return m_primaryKeyList;
 }
 
-DQSharedList DQModelMetaInfo::initialData(){
+DQSharedList DQModelMetaInfo::initialData() const{
     return initialDataFunc();
 }

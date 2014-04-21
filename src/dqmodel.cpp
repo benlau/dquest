@@ -2,6 +2,7 @@
 #include <QMetaObject>
 #include <QMetaProperty>
 #include <dqmodel.h>
+#include <backend/dqbackendengine.h>
 #include "priv/dqmetainfoquery_p.h"
 #include "dqlist.h"
 
@@ -78,7 +79,7 @@ bool DQModel::save(bool forceInsert,bool forceAllField) {
     }
 
     bool res = m_connection.engine()->update(this,nonNullFields,_forceInsert);
-    m_connection.setLastQuery(m_connection.engine()->lastQuery());
+//    m_connection.setLastQuery(m_connection.engine()->lastSqlQuery());
 
     return res;
 }
@@ -99,7 +100,7 @@ bool DQModel::load(DQWhere where){
     if (!res)
         id->clear();
 
-    m_connection.setLastQuery(query.lastQuery());
+//    m_connection.setLastQuery(query.lastQuery());
 
     return res;
 }
@@ -119,7 +120,7 @@ bool DQModel::remove() {
         id->clear();
     }
 
-    m_connection.setLastQuery( query.lastQuery());
+//    m_connection.setLastQuery( query.lastQuery());
 
     return res;
 }

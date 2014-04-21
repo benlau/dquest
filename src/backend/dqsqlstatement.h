@@ -4,7 +4,6 @@
 #include <QString>
 
 #include <dqmodelmetainfo.h>
-#include <dqsharedquery.h>
 #include <backend/dqqueryrules.h>
 #include <dqindex.h>
 

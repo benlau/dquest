@@ -6,13 +6,13 @@
 #define DQSQLITEENGINE_H
 
 #include "dqmodelmetainfo.h"
-#include "backend/dqengine.h"
+#include "backend/dqbackendengine.h"
 #include "backend/dqsql.h"
 #include "backend/dqsqlstatement.h"
 
 /// Sqlite database engine
 
-class DQSqliteEngine : public DQEngine
+class DQSqliteEngine : public DQBackendEngine
 {
 public:
     DQSqliteEngine();
@@ -52,12 +52,21 @@ public:
     /// Drop the index
     virtual bool dropIndex(QString name);
 
+    virtual DQBackendQuery query(DQQueryRules rules);
+
+    virtual QSqlQuery lastSqlQuery();
+
+    virtual QSqlQuery sqlQuery();
+
+    virtual bool transaction();
+
+    virtual bool commit();
+
+    virtual bool rollback();
+
+
     /// Get the assoicated DQSql instance
-    virtual DQSql& sql();
-
-    virtual QSqlQuery query();
-
-    virtual QSqlQuery lastQuery();
+    DQSql& sql();
 
 private:
     void setLastQuery(QSqlQuery query);
@@ -67,7 +76,8 @@ private:
 
     QList<DQModelMetaInfo*> m_models;
 
-    QSqlQuery m_lastQuery;
+    QSqlQuery m_lastSqlQuery;
+    DQBackendQuery m_lastQuery;
 
 };
 

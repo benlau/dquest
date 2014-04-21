@@ -2,6 +2,7 @@
 
 void SqliteTests::initTestCase()
 {
+    backend();
     verifyCreateTable();
     foreignKey();
 
@@ -18,8 +19,7 @@ void SqliteTests::initTestCase()
 
 //    QVERIFY(defaultConnection.isOpen()); // conn1 become default connection
 
-    DQSql sql = conn1.sql();
-
+    DQSql sql = ((DQSqliteEngine*) conn1.engine())->sql();
 
     QVERIFY( sql.createTableIfNotExists<Model1>() );
 
@@ -44,7 +44,17 @@ void SqliteTests::initTestCase()
 
     QVERIFY( conn1.dropTables() );
 
+    DQBackendEngine *engine = conn1.engine();
+    QVERIFY(engine->createModel(dqMetaInfo<Model1>()));
+    QVERIFY(engine->existsModel(dqMetaInfo<Model1>()));
+    QVERIFY(engine->dropModel(dqMetaInfo<Model1>()));
+    QVERIFY(!engine->existsModel(dqMetaInfo<Model1>()));
+
+    QTime time;
+    time.start();
     QVERIFY( conn1.createTables() ); // recreate table
+    qDebug() << QString("Create tables taken %1ms").arg(time.elapsed());
+//    QVERIFY( time.elapsed() < 200); // It should take less than 200ms for most of the computer.
 
     /* Create index */
 
@@ -83,6 +93,27 @@ void SqliteTests::cleanupTestCase()
 
 SqliteTests::SqliteTests(QObject *parent) : QObject(parent)
 {
+}
+
+void SqliteTests::backend(){
+
+    QStringList backendList = DQBackend::listEngine();
+    QVERIFY(backendList.size() == 1);
+    QVERIFY(backendList.at(0) == "SQLITE");
+
+    QVERIFY(DQBackend::isDriverSupported("QSQLITE"));
+
+    DQBackendEngine *engine;
+
+    engine = DQBackend::createEngine("SQLITE");
+    QVERIFY(engine);
+    QVERIFY(engine->name() == "SQLITE");
+    delete engine;
+
+    engine = DQBackend::createEngineForDriver("QSQLITE");
+    QVERIFY(engine);
+    QVERIFY(engine->name() == "SQLITE");
+    delete engine;
 }
 
 void SqliteTests::verifyCreateTable(){
@@ -220,8 +251,8 @@ void SqliteTests::deleteAll() {
     QVERIFY(model1.id == model1b.id );
 
     query = DQQuery<Model1>().filter(DQWhere("key = " ,"temp")).limit(1);
-    QEXPECT_FAIL("","Normally sqlite do not support limit in delete from , unless it is build with special flag",Continue);
-    QVERIFY(query.remove());
+    //QEXPECT_FAIL("","Normally sqlite do not support limit in delete from , unless it is build with special flag",Continue);
+    QVERIFY(!query.remove());
 
     qDebug() << "Failed sql : " << query.lastQuery().lastQuery();
 
@@ -636,3 +667,89 @@ void SqliteTests::engine(){
     QVERIFY(connection.engine()->name() == "SQLITE");
 }
 
+void SqliteTests::lastQuery(){
+    User user; // test for save
+    user.userId = "lastQuery";
+    user.name = "test";
+    user.passwd = "1902371290783";
+    QVERIFY(user.save());
+
+    QSqlQuery query = user.connection().lastQuery();
+
+    QString sql = query.executedQuery();
+
+    QRegExp pattern;
+    pattern.setPattern("^REPLACE INTO user.*");
+
+    QVERIFY(pattern.exactMatch(sql));
+
+    DQQuery<User> q;
+
+    DQList<User> list = q.filter(DQWhere("userId=","lastQuery")).all();
+    QVERIFY(list.size() == 1);
+
+    query = user.connection().lastQuery();
+    sql = query.executedQuery();
+//    qDebug() << sql;
+    pattern.setPattern("^SELECT ALL.*");
+    QVERIFY(pattern.exactMatch(sql));
+}
+
+void SqliteTests::transaction(){
+    QString id = "transaction%1";
+    QVERIFY(conn1.transaction());
+    QVERIFY(conn1.commit());
+
+    QVERIFY(conn1.transaction());
+    User user[3];
+
+    for (int i = 0 ; i < 3;i++){
+        user[i].userId =QString(id).arg(i);
+        user[i].passwd = "901278390";
+        user[i].setConnection(conn1);
+    }
+
+    for (int i = 0 ; i < 3;i++){
+        QVERIFY(user[i].save());
+    }
+    QVERIFY(conn1.rollback());
+
+    for (int i = 0 ; i < 3;i++){
+        DQQuery<User> q;
+        QVERIFY(q.filter(DQWhere("userId =", QString(id).arg(i))).count() == 0);
+    }
+
+    QVERIFY(conn1.transaction());
+    for (int i = 0 ; i < 3;i++){
+        QVERIFY(user[i].save());
+    }
+    QVERIFY(conn1.commit());
+
+    for (int i = 0 ; i < 3;i++){
+        DQQuery<User> q;
+        QVERIFY(q.filter(DQWhere("userId =", QString(id).arg(i))).count() == 1);
+        // saved successfully
+    }
+
+    QVERIFY(conn1.transaction()); // transaction with error
+    QSqlQuery query = conn1.query();
+    query.prepare("INSERT INTO User(userId,passwd) values (:userId,:passwd);");
+    query.bindValue(":userId","transaction0");
+    query.bindValue(":passwd","sdflksjd fl ljd");
+
+    QVERIFY(!query.exec()); // it should be fail , becoz the userId is duplicated.
+
+//    qDebug() << query.lastError().text();
+
+    User tmp;
+    tmp.userId = "transaction_tmp";
+    tmp.passwd = "12312312";
+    QVERIFY(tmp.save()); // this one should work.
+    QVERIFY(conn1.commit());
+
+    tmp = User();
+
+    QVERIFY(tmp.load(DQWhere("userId = ", "transaction_tmp") ));
+
+
+}

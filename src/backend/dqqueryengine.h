@@ -14,7 +14,7 @@
 
     User should not use this class directly.
 
-    @see DQEngine
+    @see DQBackendEngine
  */
 class DQQueryEngine
 {
@@ -49,6 +49,7 @@ public:
      */
     virtual bool recordTo(DQAbstractModel * model) = 0;
 
+    virtual QSqlQuery sqlQuery() = 0;
 protected:
     DQQueryEngine();
 
