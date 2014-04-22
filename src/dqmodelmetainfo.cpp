@@ -162,3 +162,8 @@ QList<DQModelMetaInfoField> DQModelMetaInfo::primeryKeyList() const{
 DQSharedList DQModelMetaInfo::initialData() const{
     return initialDataFunc();
 }
+
+void DQModelMetaInfo::setParantToApp(){
+    QCoreApplication* app = QCoreApplication::instance();
+    setParent(app); // Then it will be destroyed in program termination. Make valgrind happy.
+}

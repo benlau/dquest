@@ -77,7 +77,7 @@ DQSharedList _dqMetaInfoInitalData() {
  */
 
 class DQModelMetaInfo : private QObject {
-
+    Q_OBJECT
 public:
 
     /// Return the list of field name
@@ -152,6 +152,9 @@ protected:
 
     /// Register a list of fields
     void registerFields(QList<DQModelMetaInfoField> fields);
+
+private slots:
+    void setParantToApp();
 
 private:
     /// Field data
@@ -251,7 +254,10 @@ inline DQModelMetaInfo* dqMetaInfo() {
 
         QCoreApplication* app = QCoreApplication::instance();
         metaInfo->moveToThread(app->thread());
-        metaInfo->setParent(app); // Then it will be destroyed in program termination. Make valgrind happy.
+        QMetaObject::invokeMethod(metaInfo,
+                                 "setParantToApp",
+                                 Qt::QueuedConnection);
+        // You can't setParent if the thread is different on Windows.
     }
 
     return metaInfo;
