@@ -16,7 +16,7 @@ Next release
   * Added null state and isNull function
   * Changed the behavior / definition of defaultConnection() function for improve the multiple database access's coding affort.
   * lastQuery() will return all kind of executed query instead of error query only.
-  * Refactored to use DQEngine for backend.
+  * Refactored to use DQBackendEngine for backend.
   * Deprecated sql() and setLastQuery() function. A better backend system is implemented , no need to export the those interface to public any more
   * Added transaction() , rollback() , commit() for database transaction handling.
   * DQConnection::createTables() - It use transaction() for database access. It will be much faster.

@@ -27,6 +27,15 @@ class DQBackendEngine {
     /// Open a database connection
     virtual bool open(QSqlDatabase  db) = 0;
 
+    /// Open a database connection by a given database name
+    /**
+      @param name The name of the database. The definition is same as QSqlDatabase::setDatabaseName()
+
+      The default implementation of the function will create a QSqlDatabase
+      by the given name and call open(QSqlDatabase) to handle it
+     */
+    virtual bool open(QString name);
+
     /// Is it opened connection to database?
     virtual bool isOpen() const = 0;
 

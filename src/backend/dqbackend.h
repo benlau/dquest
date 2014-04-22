@@ -36,7 +36,6 @@ public:
     /// Get the list of registered database engine
     static QStringList listEngine();
 
-
     /// Set the named database backend engine be the default engine for driver
     static bool setDefaultEngine(QString name, QString driver);
 
@@ -48,6 +47,10 @@ public:
 
     /// Return TRUE if the driver is supported
     static bool isDriverSupported(QString driver);
+
+    /// Given the name of a backend engine. Return the driver supported
+    static QString supportedDriver(QString name);
+
 };
 
 

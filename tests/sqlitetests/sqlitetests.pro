@@ -11,13 +11,10 @@ CONFIG   -= app_bundle
 TEMPLATE = app
 
 
-SOURCES += tst_sqliteteststest.cpp \
-    accesstests.cpp
+SOURCES += tst_sqliteteststest.cpp
 DEFINES += SRCDIR=\\\"$$PWD/\\\"
 
 include(../../src/dquest.pri)
-include(../models/models.pri)
+include(../testlib/testlib.pri)
 
-HEADERS += \
-    accesstests.h
 

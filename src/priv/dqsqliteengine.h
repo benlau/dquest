@@ -69,7 +69,7 @@ public:
     DQSql& sql();
 
 private:
-    void setLastQuery(QSqlQuery query);
+    void setLastSqlQuery(QSqlQuery query);
 
     QMutex mutex;
     DQSql m_sql;

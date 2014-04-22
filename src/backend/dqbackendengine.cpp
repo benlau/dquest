@@ -3,11 +3,24 @@
  */
 
 #include "backend/dqbackendengine.h"
+#include "backend/dqbackend.h"
 
 DQBackendEngine::DQBackendEngine(){
 }
 
 DQBackendEngine::~DQBackendEngine(){
+}
+
+bool DQBackendEngine::open(QString source){
+    QString driver = DQBackend::supportedDriver(name());
+
+    QSqlDatabase db = QSqlDatabase::addDatabase(driver);
+    db.setDatabaseName(source);
+
+    if (!db.open())
+        return false;
+
+    return open(db);
 }
 
 bool DQBackendEngine::createModel(DQModelMetaInfo* info){

@@ -92,8 +92,15 @@ public:
      */
     bool operator!=(const DQConnection &rhs);
 
-    /// Open the connection to database
+    /// Open database connection
     bool open(QSqlDatabase db);
+
+    /// Open a database connection by a given database name
+    /**
+      @param name The name of the database. The definition is same as QSqlDatabase::setDatabase()
+      @param backend The backend engine chosen to handle the database
+     */
+    bool open(QString name,QString backend);
 
     /// Close the connection to database
     void close();

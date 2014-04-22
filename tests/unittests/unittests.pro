@@ -16,7 +16,6 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    accesstests.cpp \
     testobjectrunner.cpp \
     sqlitetests.cpp \
     coretests.cpp
@@ -24,8 +23,7 @@ SOURCES += main.cpp \
 HEADERS += \
     testobjectrunner.h \
     coretests.h \
-    accesstests.h \
     sqlitetests.h
 
 include (../../src/dquest.pri)
-include(../models/models.pri)
+include(../testlib/testlib.pri)

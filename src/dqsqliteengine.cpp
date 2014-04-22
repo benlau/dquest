@@ -12,6 +12,7 @@
 template <>
 void DQBackendRegisterHelper<DQSqliteEngine>::postProcess(QString name , QString driver) {
     if (!DQBackend::setDefaultEngine(name,driver)){
+        // DQSqliteEngine is the default engine for QSQLITE
         qDebug() << QString("Failed to set default engine \"%1\" to %2").arg(name).arg(driver);
     }
 }
@@ -91,7 +92,7 @@ bool DQSqliteEngine::createModel(DQModelMetaInfo* info){
                 }
             }
         }
-        setLastQuery( m_sql.lastQuery() );
+        setLastSqlQuery( m_sql.lastQuery() );
     }
 
 
@@ -107,7 +108,7 @@ bool DQSqliteEngine::dropModel(DQModelMetaInfo* info){
         res = false;
     }
 
-    setLastQuery(m_sql.lastQuery());
+    setLastSqlQuery(m_sql.lastQuery());
 
     return res;
 }
@@ -142,7 +143,7 @@ bool DQSqliteEngine::update(DQAbstractModel* model, QStringList fields, bool for
         res = m_sql.replaceInto(info,model,fields,false);
     }
 
-    setLastQuery(m_sql.lastQuery());
+    setLastSqlQuery(m_sql.lastQuery());
 
     return res;
 }
@@ -162,7 +163,7 @@ DQSql& DQSqliteEngine::sql(){
     return m_sql;
 }
 
-void DQSqliteEngine::setLastQuery(QSqlQuery query){
+void DQSqliteEngine::setLastSqlQuery(QSqlQuery query){
     if (!isOpen())
         return;
 

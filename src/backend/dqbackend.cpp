@@ -104,3 +104,7 @@ bool DQBackend::isDriverSupported(QString driver)
 {
     return driverToName->contains(driver);
 }
+
+QString DQBackend::supportedDriver(QString name){
+    return (*nameMap)[name].driver;
+}
