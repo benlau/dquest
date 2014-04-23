@@ -1,7 +1,7 @@
 #include <QtCore>
 #include <QSharedData>
-#include "dqexpression.h"
-#include "dqwhere_p.h"
+#include "backend/dqexpression.h"
+#include "priv/dqwhere_p.h"
 
 class DQExpressionPriv : public QSharedData {
 public:

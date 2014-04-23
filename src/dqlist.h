@@ -25,10 +25,12 @@ public:
 
     /// Construct a DQList which is the reference to other DQList instance
     DQList(const DQList &rhs) : DQSharedList(rhs) {
+        setMetaInfo(dqMetaInfo<T>());
     }
 
     /// Construct a DQList which is a refernece to a DQSharedList
     DQList(const DQSharedList& rhs ) : DQSharedList(rhs) {
+        setMetaInfo(dqMetaInfo<T>());
     }
 
     /// Make a reference to other DQList
@@ -49,6 +51,8 @@ public:
         }
         return (T*) m;
     }
+
+    T* last() const;
 
     /// Append a model to the list
     /**
@@ -84,6 +88,8 @@ public:
         return DQSharedList::append(model);
     }
 
+    bool append(DQList<T> &other);
+
     /// Cast it to DQSharedList
     operator DQSharedList() {
         DQSharedList res (*this);
@@ -91,6 +97,22 @@ public:
     }
 
 };
+
+template <class T>
+inline QDebug operator<< (QDebug d, const DQList<T>& rhs );
+
+/* Templete implementation */
+
+template <class T>
+bool DQList<T>::append(DQList<T> &other){
+    return DQSharedList::append(other);
+}
+
+template <class T>
+T* DQList<T>::last() const{
+    DQAbstractModel* m = DQSharedList::last();
+    return dqmodel_cast<T*>(m);
+}
 
 template <class T>
 inline QDebug operator<< (QDebug d, const DQList<T>& rhs ){

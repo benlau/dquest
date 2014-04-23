@@ -8,15 +8,15 @@
 #include <QtCore/QCoreApplication>
 #include "dqwhere.h"
 #include "dqclause.h"
-#include "dqsqlitestatement.h"
+#include "priv/dqsqlitestatement.h"
 #include "model1.h"
 #include "model2.h"
 #include "model3.h"
 #include "model4.h"
 #include "model5.h"
-#include "dqqueryrules.h"
+#include "backend/dqqueryrules.h"
 #include "dqquery.h"
-#include "dqexpression.h"
+#include "backend/dqexpression.h"
 #include "dqlist.h"
 #include "misc.h"
 #include "dqstream.h"
@@ -36,6 +36,8 @@ private Q_SLOTS:
     void cleanupTestCase();
 
     void metaInfo();
+
+    void modelCast();
 
     void sqliteColumnConstraint();
     void sqlCreateTable();

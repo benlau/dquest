@@ -1,3 +1,34 @@
+Next release
+============
+
+  Features
+  - Proved multiple database works. And improved the code base for more easy multiple database access
+  - Database transaction handling interface is supported
+  - A backend layer has been added for user to implement custom database backend. Some API related to backend are deprecated , as it is not longer needed to export.
+
+  Add dqmodel_cast<T>() function
+
+  DQList
+  * Bug Fix on clear() function. It should not clear the binded meta info
+  * added append(DQList<T>)  , last()
+
+  DQConnection
+  * Added null state and isNull function
+  * Changed the behavior / definition of defaultConnection() function for improve the multiple database access's coding affort.
+  * lastQuery() will return all kind of executed query instead of error query only.
+  * Refactored to use DQBackendEngine for backend.
+  * Deprecated sql() and setLastQuery() function. A better backend system is implemented , no need to export the those interface to public any more
+  * Added transaction() , rollback() , commit() for database transaction handling.
+  * DQConnection::createTables() - It use transaction() for database access. It will be much faster.
+
+  DQModel
+  * Do not set default connection in constructor. 
+    When a function require the access of connection , it will check is current connection null , if yes , then it will set it to default connection.
+    It is used to reduce unwanted memory allocation in multiple database code.
+ 
+
+   
+
 Release 0.2
 ===========
 

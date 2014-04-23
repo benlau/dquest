@@ -1,6 +1,6 @@
-#include "dqqueryrules.h"
+#include "backend/dqqueryrules.h"
 #include <QSharedData>
-#include "dqsharedquery_p.h"
+#include "priv/dqsharedquery_p.h"
 
 DQQueryRules::DQQueryRules() : data(new DQSharedQueryPriv)
 {

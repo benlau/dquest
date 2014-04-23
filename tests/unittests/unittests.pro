@@ -26,4 +26,4 @@ HEADERS += \
     sqlitetests.h
 
 include (../../src/dquest.pri)
-include(../models/models.pri)
+include(../testlib/testlib.pri)

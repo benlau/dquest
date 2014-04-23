@@ -6,9 +6,13 @@
 #include "dqmodel.h"
 #include "dqmodelmetainfo.h"
 #include "dqwhere.h"
-#include "dqexpression.h"
+#include "backend/dqexpression.h"
+#include <backend/dqbackendquery.h>
 
 /// DQSharedQuery private data
+/**
+  It is shared between DQSharedQuery and DQQueryRules
+ */
 
 class DQSharedQueryPriv : public QSharedData {
 public:
@@ -25,7 +29,7 @@ public:
     DQModelMetaInfo *metaInfo;
     int limit;
 
-    QSqlQuery query;
+    DQBackendQuery query;
 
     DQExpression expression;
 

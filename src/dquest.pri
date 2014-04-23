@@ -1,5 +1,5 @@
 INCLUDEPATH += $$PWD
-DEPENDPATH += $$PWD
+DEPENDPATH += $$PWD $$PWD/priv $$PWD/backend
 QT += sql
 
 QMAKE_CXXFLAGS += -Wno-invalid-offsetof
@@ -10,16 +10,11 @@ DQUEST_HEADERS += \
     $$PWD/dqmodel.h \
     $$PWD/dqconnection.h \
     $$PWD/dqbasefield.h \
-    $$PWD/dqsqlstatement.h \
-    $$PWD/dqsqlitestatement.h \
     $$PWD/dqwhere.h \
-    $$PWD/dqsql.h \
     $$PWD/dqfield.h \
     $$PWD/dqforeignkey.h \
     $$PWD/dqsharedquery.h \
     $$PWD/dqquery.h \
-    $$PWD/dqqueryrules.h \
-    $$PWD/dqexpression.h \
     $$PWD/dqlist.h \
     $$PWD/dqabstractmodel.h \
     $$PWD/dqsharedlist.h \
@@ -29,12 +24,30 @@ DQUEST_HEADERS += \
     $$PWD/dquest.h
 
 DQUEST_PRIV_HEADERS = \
-    $$PWD/dqwhere_p.h \
-    $$PWD/dqsharedquery_p.h \
-    $$PWD/dqmetainfoquery_p.h
+    $$PWD/priv/dqsqliteengine.h \
+    $$PWD/priv/dqsqlitestatement.h \
+    $$PWD/priv/dqwhere_p.h \
+    $$PWD/priv/dqsharedquery_p.h \
+    $$PWD/priv/dqmetainfoquery_p.h
+
+DQUEST_BACKEND_HEADERS = \
+    $$PWD/backend/dqsql.h \
+    $$PWD/backend/dqqueryrules.h \
+    $$PWD/backend/dqexpression.h \
+    $$PWD/backend/dqqueryengine.h \
+    $$PWD/backend/dqbackendengine.h \
+    $$PWD/backend/dqbackendquery.h \
+    $$PWD/backend/dqsqlqueryengine.h \
+    $$PWD/backend/dqbackend.h \
+    $$PWD/backend/dqbackendregisterhelper.h \
+    $$PWD/backend/dqsqlstatement.h
 
 HEADERS += $$DQUEST_HEADERS
+
+HEADERS += $$DQUEST_BACKEND_HEADERS
+
 HEADERS += $$DQUEST_PRIV_HEADERS
+
 
 SOURCES += \
     $$PWD/dqclause.cpp \
@@ -54,4 +67,10 @@ SOURCES += \
     $$PWD/dqsharedlist.cpp \
     $$PWD/dqindex.cpp \
     $$PWD/dqstream.cpp \
-    $$PWD/dqlistwriter.cpp
+    $$PWD/dqlistwriter.cpp \
+    $$PWD/dqsqliteengine.cpp \
+    $$PWD/dqqueryengine.cpp \
+    $$PWD/backend/dqbackendengine.cpp \
+    $$PWD/backend/dqsqlqueryengine.cpp \
+    $$PWD/backend/dqbackendquery.cpp \
+    $$PWD/backend/dqbackend.cpp

@@ -1,7 +1,7 @@
 #include <QStringList>
 
-#include "dqsqlstatement.h"
-#include "dqexpression.h"
+#include "backend/dqsqlstatement.h"
+#include "backend/dqexpression.h"
 
 DQSqlStatement::DQSqlStatement()
 {
@@ -58,9 +58,7 @@ QString DQSqlStatement::_insertInto(DQModelMetaInfo *info ,QString type, QString
 }
 
 
-QString DQSqlStatement::select(DQSharedQuery query) {
-    DQQueryRules rules;
-    rules =  query;
+QString DQSqlStatement::select(DQQueryRules rules) {
     QStringList sql;
 
     sql << selectCore(rules);
@@ -77,9 +75,7 @@ QString DQSqlStatement::select(DQSharedQuery query) {
     return sql.join(" ");
 }
 
-QString DQSqlStatement::deleteFrom(DQSharedQuery query) {
-    DQQueryRules rules;
-    rules =  query;
+QString DQSqlStatement::deleteFrom(DQQueryRules rules) {
     QStringList sql;
 
     sql << QString("DELETE FROM %1").arg(rules.metaInfo()->name());
@@ -91,8 +87,6 @@ QString DQSqlStatement::deleteFrom(DQSharedQuery query) {
         sql << QString("WHERE %1").arg(expression.string());
 
     }
-
-    /// @todo Implemente order by
 
     if (rules.limit() > 0) {
         sql << limitAndOffset(rules.limit());

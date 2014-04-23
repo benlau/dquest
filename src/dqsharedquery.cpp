@@ -1,20 +1,16 @@
 #include <QSharedData>
 #include <QSqlRecord>
 
-#include "dqsql.h"
+#include "backend/dqsql.h"
 #include "dqconnection.h"
 #include "dqsharedquery.h"
-#include "dqsharedquery_p.h"
-#include "dqsqlstatement.h"
-#include "dqexpression.h"
+#include "priv/dqsharedquery_p.h"
+#include "backend/dqsqlstatement.h"
+#include "backend/dqexpression.h"
+#include <backend/dqbackendengine.h>
 
 DQSharedQuery::DQSharedQuery() : data(new DQSharedQueryPriv) {
-    data->connection = DQConnection::defaultConnection();
-}
-
-DQSharedQuery::DQSharedQuery(DQConnection connection) : data(new DQSharedQueryPriv)
-{
-    data->connection = connection;
+//    data->connection = DQConnection::defaultConnection();
 }
 
 DQSharedQuery::DQSharedQuery(const DQSharedQuery &rhs) : data(rhs.data)
@@ -30,6 +26,10 @@ DQSharedQuery &DQSharedQuery::operator=(const DQSharedQuery &rhs)
 
 DQSharedQuery::~DQSharedQuery()
 {
+}
+
+bool DQSharedQuery::isNull() {
+    return data->metaInfo == 0;
 }
 
 void DQSharedQuery::setConnection(DQConnection connection) {
@@ -81,12 +81,21 @@ DQSharedQuery DQSharedQuery::orderBy(QString term){
 }
 
 bool DQSharedQuery::exec() {
-    data->query = data->connection.query();
+    DQQueryRules rules;
+    rules = *this;
+    data->query = data->connection.engine()->query(rules);
+    bool res = data->query.exec();
+//    data->connection.setLastQuery(data->query.sqlQuery());
+    return res;
+    /*
+    data->query = data->connection.query(
 
     Q_ASSERT(data->connection.isOpen());
 
     QString sql;
-    sql = data->connection.sql().statement()->select(*this);
+    DQQueryRules rules;
+    rules = *this;
+    sql = data->connection.sql().statement()->select(rules);
 
     data->query.prepare(sql);
 
@@ -108,13 +117,23 @@ bool DQSharedQuery::exec() {
     }
 
     return res;
+    */
 }
 
 bool DQSharedQuery::remove(){
+    DQQueryRules rules;
+    rules = *this;
+    data->query = data->connection.engine()->query(rules);
+    bool res = data->query.remove();
+//    data->connection.setLastQuery(data->query.sqlQuery());
+    return res;
+    /*
     data->query = data->connection.query();
 
     QString sql;
-    sql = data->connection.sql().statement()->deleteFrom(*this);
+    DQQueryRules rules;
+    rules = *this;
+    sql = data->connection.sql().statement()->deleteFrom(rules);
 
     data->query.prepare(sql);
 
@@ -132,6 +151,7 @@ bool DQSharedQuery::remove(){
     data->connection.setLastQuery(data->query);
 
     return res;
+    */
 }
 
 DQSharedList DQSharedQuery::all(){
@@ -148,7 +168,7 @@ DQSharedList DQSharedQuery::all(){
 }
 
 QSqlQuery DQSharedQuery::lastQuery(){
-    return data->query;
+    return data->query.sqlQuery();
 }
 
 void DQSharedQuery::reset(){
@@ -164,7 +184,7 @@ bool DQSharedQuery::next() {
 }
 
 QVariant DQSharedQuery::value() {
-    QSqlRecord record = data->query.record();
+    QSqlRecord record = data->query.sqlQuery().record();
 
     QVariant res = record.value(0);
 
@@ -208,7 +228,7 @@ bool DQSharedQuery::recordTo(DQAbstractModel *model) {
     Q_ASSERT (data->metaInfo == model->metaInfo() );
     bool res = true;
 
-    QSqlRecord record = data->query.record();
+    QSqlRecord record = data->query.sqlQuery().record();
 
     int count = record.count();
     for (int i = 0 ; i < count;i++){

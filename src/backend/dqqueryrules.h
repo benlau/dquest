@@ -3,7 +3,7 @@
 
 #include <QSharedDataPointer>
 #include <dqsharedquery.h>
-#include <dqexpression.h>
+#include <backend/dqexpression.h>
 
 /// DQQueryRules represent the rules/clauses set for DQSharedQuery.
 

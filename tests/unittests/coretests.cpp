@@ -32,6 +32,25 @@ void CoreTests::metaInfo(){
     QVERIFY(initialData.at(0)->key == "initial0");
     QVERIFY(initialData.at(4)->key == "initial4");
 
+    // Test staticMetaInfo
+    QVERIFY(Model2::staticMetaInfo() == dqMetaInfo<Model2>() );
+
+    QList<DQModelMetaInfoField> primaryKeyList = metaInfo4->primeryKeyList();
+
+    QVERIFY(primaryKeyList.size() == 1);
+    QVERIFY(primaryKeyList.at(0).name == "id");
+}
+
+void CoreTests::modelCast() {
+    DQAbstractModel *am = dqMetaInfo<Model2>()->create();
+
+    Model1 *m1 = dqmodel_cast<Model1*>(am);
+    QVERIFY(!m1);
+
+    Model2 *m2 = dqmodel_cast<Model2*>(am);
+    QVERIFY(m2);
+
+    delete am;
 }
 
 void CoreTests::sqliteColumnConstraint(){
@@ -315,6 +334,34 @@ void CoreTests::dqList(){
 
     list2 = list3;
     QVERIFY(list2.size() == 2);
+
+    // Test append list
+    list.clear();
+    list2 = DQList<Model2>(); // refer to other
+    QVERIFY(list.size() == 0);
+    QVERIFY(list2.size() == 0);
+
+    DQListWriter writer(&list);
+    writer << "test1" << "value1"
+           << "test2" << "value2"
+           << "test3" << "value3";
+    writer.close();
+    QVERIFY(list.size() == 3);
+
+    writer.open(&list2);
+    writer << "test4" << "value4"
+           << "test5" << "value5";
+    QCOMPARE(list2.size() ,2);
+
+    list.append(list2);
+    QCOMPARE(list.size(), 5);
+
+    QVERIFY(list.last()->key == "test5");
+    QVERIFY(list2.last()->key == "test5");
+
+    list.last()->key = "other5";
+
+    QVERIFY(list2.last()->key == "other5"); // prove that they are point to same item
 }
 
 void CoreTests::stringlistField(){

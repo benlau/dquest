@@ -1,18 +1,20 @@
 #include <QtCore>
 #include <QMetaObject>
 #include <QMetaProperty>
-#include "dqmodel.h"
-#include "dqmetainfoquery_p.h"
+#include <dqmodel.h>
+#include <backend/dqbackendengine.h>
+#include "priv/dqmetainfoquery_p.h"
 #include "dqlist.h"
 
-#include "dqsql.h"
+#include <backend/dqsql.h>
 
 //#define TABLE_NAME "Model without DQ_MODEL"
 #define TABLE_NAME ""
 
+/// Prepare the connection , if it is null , use default connection
+#define PREPARE_CONN() {if (m_connection.isNull()) m_connection = DQConnection::defaultConnection(metaInfo()); }
 
-DQModel::DQModel() : m_connection ( DQConnection::defaultConnection()){
-
+DQModel::DQModel() {
 }
 
 DQModel::DQModel(DQConnection connection) : m_connection(connection)
@@ -35,10 +37,13 @@ void DQModel::setConnection(DQConnection connection){
 }
 
 DQConnection DQModel::connection(){
+    PREPARE_CONN();
     return m_connection;
 }
 
 bool DQModel::save(bool forceInsert,bool forceAllField) {
+    PREPARE_CONN();
+
     if (!clean() ) {
         return false;
     }
@@ -66,22 +71,21 @@ bool DQModel::save(bool forceInsert,bool forceAllField) {
 
     }
 
-    bool res ;
-
-    DQSql sql = m_connection.sql();
-
+    bool _forceInsert;
     if (forceInsert || id->isNull() ) {
-        res = sql.replaceInto(info,this,nonNullFields,true);
+        _forceInsert = true;
     } else {
-        res = sql.replaceInto(info,this,nonNullFields,false);
+        _forceInsert = false;
     }
 
-    m_connection.setLastQuery(sql.lastQuery());
+    bool res = m_connection.engine()->update(this,nonNullFields,_forceInsert);
+//    m_connection.setLastQuery(m_connection.engine()->lastSqlQuery());
 
     return res;
 }
 
 bool DQModel::load(DQWhere where){
+    PREPARE_CONN();
     bool res = false;
 
     _DQMetaInfoQuery query( metaInfo() ,  m_connection);
@@ -96,12 +100,14 @@ bool DQModel::load(DQWhere where){
     if (!res)
         id->clear();
 
-    m_connection.setLastQuery(query.lastQuery());
+//    m_connection.setLastQuery(query.lastQuery());
 
     return res;
 }
 
 bool DQModel::remove() {
+    PREPARE_CONN();
+
     if (id->isNull())
         return false;
 
@@ -114,7 +120,7 @@ bool DQModel::remove() {
         id->clear();
     }
 
-    m_connection.setLastQuery( query.lastQuery());
+//    m_connection.setLastQuery( query.lastQuery());
 
     return res;
 }
@@ -135,4 +141,8 @@ void DQModel::detach()
     for (int i = 0 ; i < size; i++) {
         info->detach(this,i);
     }
+}
+
+DQModelMetaInfo* DQModel::staticMetaInfo(){
+    return 0;
 }

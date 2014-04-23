@@ -1,6 +1,6 @@
 #include <QtCore>
 #include "dqwhere.h"
-#include "dqwhere_p.h"
+#include "priv/dqwhere_p.h"
 
 /* Test cases:
 

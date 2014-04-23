@@ -28,12 +28,26 @@ class DQWhere;
 class DQSharedQuery
 {
 public:
+    /// Construct a null DQSharedQuery object
+    /** The DQShardQuery object constructed in this way is null.
+      It is not binded to any DQModel derived class. Therefore
+      it can not be used for data query. You should declare another
+      DQQuery<T> instance for data query.
 
-    /// Construct a DQSharedQuery object and use the default database connection
+      However, DQQuery can convert to DQSharedQuery. You may declare
+      a DQSharedQuery to hold another DQQuery object.
+
+      Example:
+
+\code
+    DQSharedQuery sharedQuery; // It is a null object
+    DQQuery<Model> query;
+
+    sharedQuery = query;  // Now the sharedQuery will become a non-null object and it could query "Model"
+\endcode
+
+     */
     DQSharedQuery();
-
-    /// Construct a DQSharedQuery object and set the database connection
-    DQSharedQuery(DQConnection connection);
 
     /// Copy constructor
     DQSharedQuery(const DQSharedQuery &);
@@ -42,7 +56,12 @@ public:
     DQSharedQuery &operator=(const DQSharedQuery &);
 
     /// Default destructor
-    ~DQSharedQuery();
+    virtual ~DQSharedQuery();
+
+    /// Return TRUE if it is a null query object
+    /** A null object is not able to perform query.
+     */
+    bool isNull();
 
     /// Set the connection
     void setConnection(DQConnection connection);
@@ -138,7 +157,11 @@ public:
     /// Returns the QSqlQuery object being used
     QSqlQuery lastQuery();
 
-    /// Reset the query to initial status , but keep the connection and associated object unchanged.
+    /// Reset the query to initial status , but keep the connection and associated data model unchanged.
+    /** This function will clear the filter rules , clause and the result retrieved. Only
+      the connection and associated data model are unchanged. After called this function , you may
+      make another query using the same object.
+     */
     void reset();
 
 protected:

@@ -11,4 +11,8 @@ HEADERS += \
     $$PWD/config.h \
     $$PWD/user.h \
     $$PWD/model5.h \
-    $$PWD/misc.h
+    $$PWD/misc.h \
+    $$PWD/accesstests.h
+
+SOURCES += \
+    $$PWD/accesstests.cpp

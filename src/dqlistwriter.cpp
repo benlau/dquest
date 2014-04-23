@@ -7,12 +7,13 @@
 DQListWriter::DQListWriter()
 {
     m_list = 0;
-    m_connection = DQConnection::defaultConnection();
+//    m_connection = DQConnection::defaultConnection();
 }
 
 DQListWriter::DQListWriter(DQSharedList *list){
+    m_list = 0;
+//    m_connection = DQConnection::defaultConnection(list->metaInfo());
     open(list);
-    m_connection = DQConnection::defaultConnection();
 }
 
 DQListWriter::DQListWriter(DQSharedList *list,DQConnection connection){
@@ -25,7 +26,10 @@ bool DQListWriter::open(DQSharedList *list){
     if (list->metaInfo()) {
         res = true;
         m_list = list;
+        m_connection = DQConnection::defaultConnection(list->metaInfo());
         m_stream.close();
+    } else {
+        qWarning() << "DQListWriter::open(list) - You should use DQList instead of DQSharedList";
     }
     return res;
 }

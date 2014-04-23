@@ -66,7 +66,7 @@ DQ_DECLARE_MODEL(AllType,
                  DQ_FIELD(data),
                  DQ_FIELD(b),
                  DQ_FIELD(sl)
-                 );
+                 )
 
 
 /// A database model with private field
@@ -81,6 +81,17 @@ DQ_DECLARE_MODEL(PrivateFieldModel,
                  "privatefieldmodel",
                  DQ_FIELD(field1)
 
-                 );
+                 )
+
+/// A data model exists in second connection only. For verify the second channel connection
+class Conn2Model : public DQModel {
+    DQ_MODEL
+public:
+    DQField<int> seq;
+};
+
+DQ_DECLARE_MODEL(Conn2Model,
+                 "conn2model",
+                 DQ_FIELD(seq))
 
 #endif // MISC_H

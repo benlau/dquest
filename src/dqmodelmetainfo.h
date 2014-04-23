@@ -72,20 +72,28 @@ DQSharedList _dqMetaInfoInitalData() {
 
   When it is created , it will set its parent to QCoreApplication,
   so that it will be destroyed automatically.
+
+  @threadsafe
  */
 
 class DQModelMetaInfo : private QObject {
-
+    Q_OBJECT
 public:
 
     /// Return the list of field name
-    QStringList fieldNameList();
+    QStringList fieldNameList() const;
 
     /// List of foreign key name
-    QStringList foreignKeyNameList();
+    QStringList foreignKeyNameList() const;
 
     /// List of foreign key
-    QList<DQModelMetaInfoField> foreignKeyList();
+    QList<DQModelMetaInfoField> foreignKeyList() const;
+
+    /// Get the primary key list
+    /** In this implementation , only the default primary key is supported.
+      Multiple primary key is reserved for furture expension.
+     */
+    QList<DQModelMetaInfoField> primeryKeyList() const;
 
     /// No. of field
     int size() const;
@@ -94,10 +102,10 @@ public:
     const DQModelMetaInfoField* at(int idx) const;
 
     /// Set value of a field on a model
-    bool setValue(DQAbstractModel *model,QString field, const QVariant& val);
+    bool setValue(DQAbstractModel *model,QString field, const QVariant& val) const;
 
-    /// Set the value of a field at index
-    bool setValue(DQAbstractModel *model,int index, const QVariant& val);
+    /// Set the value of a field by index
+    bool setValue(DQAbstractModel *model,int index, const QVariant& val) const;
 
     /// Get value of a field from a model
     /**
@@ -127,10 +135,10 @@ public:
     QString className() const;
 
     /// Get the initial data for the model
-    DQSharedList initialData();
+    DQSharedList initialData() const;
 
     /// Create an instance of the associated model type
-    DQAbstractModel* create();
+    DQAbstractModel* create() const;
 
 protected:
     /// Default constructor
@@ -148,6 +156,9 @@ protected:
     /// Register a list of fields
     void registerFields(QList<DQModelMetaInfoField> fields);
 
+private slots:
+    void setParantToApp();
+
 private:
     /// Field data
     QMap<QString, DQModelMetaInfoField> m_fields;
@@ -156,6 +167,8 @@ private:
     QList<DQModelMetaInfoField> m_fieldList;
 
     QList<DQModelMetaInfoField> m_foreignKeyList;
+
+    QList<DQModelMetaInfoField> m_primaryKeyList;
 
     /// The table name
     QString m_name;
@@ -179,7 +192,7 @@ DQModelMetaInfo* dqFindMetaInfo(QString name);
 /**
   @remarks User should not use this function for any purpose
  */
-void dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
+bool dqRegisterMetaInfo(QString name, DQModelMetaInfo *metaType);
 
 /// Helper class for DQModelMetaInfo instance generation
 template <typename T>
@@ -230,7 +243,7 @@ inline DQModelMetaInfo* dqMetaInfo() {
 
     metaInfo = (DQModelMetaInfo*) dqFindMetaInfo(name);
     if (metaInfo) {
-        qWarning() << QString("Table with same name is detected! : %1 ").arg(name);
+        qWarning() << QString("Model with same name is detected! : %1 ").arg(name);
     } else {
         metaInfo = new DQModelMetaInfo();
         metaInfo->setName(name);
@@ -241,6 +254,13 @@ inline DQModelMetaInfo* dqMetaInfo() {
         QList<DQModelMetaInfoField> fields = DQModelMetaInfoHelper<T>::fields();
         metaInfo->registerFields(fields);
         dqRegisterMetaInfo(name,metaInfo);
+
+        QCoreApplication* app = QCoreApplication::instance();
+        metaInfo->moveToThread(app->thread());
+        QMetaObject::invokeMethod(metaInfo,
+                                 "setParantToApp",
+                                 Qt::QueuedConnection);
+        // You can't setParent if the thread is different on Windows.
     }
 
     return metaInfo;
@@ -264,5 +284,19 @@ inline QString _dqModelTableName(QString model){
 }
 
 #define DQ_MODEL_NAME(X) _dqModelTableName<X>(#X)
+
+/// Returns the given abstract model cast to type T if the model is of type T; otherwise returns 0. If model is 0 then it will also return 0.
+/**
+  The class T must inherit (directly or indirectly) DQModel and be declared with the DQ_MODEL macro.
+ */
+template <typename T>
+inline T dqmodel_cast(DQAbstractModel* model) {
+    T res = 0;
+    if (model->metaInfo() == reinterpret_cast<T>(0)->staticMetaInfo()) {
+        res = static_cast<T>(model);
+    }
+
+    return res;
+}
 
 #endif // DQMODELMETATYPE_H

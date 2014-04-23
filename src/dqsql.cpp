@@ -2,8 +2,8 @@
 #include <QSqlError>
 #include <QSharedDataPointer>
 #include "dqmodel.h"
-#include "dqsql.h"
-#include "dqsqlitestatement.h"
+#include "backend/dqsql.h"
+#include "priv/dqsqlitestatement.h"
 
 class DQSqlPriv : public QSharedData {
 public:
@@ -58,7 +58,7 @@ void DQSql::setDatabase(QSqlDatabase db){
     d->m_db = db;
 }
 
-QSqlDatabase DQSql::database(){
+QSqlDatabase DQSql::database() const{
     return d->m_db;
 }
 
@@ -157,15 +157,15 @@ bool DQSql::exists(DQModelMetaInfo* info){
     return res;
 }
 
-bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId) {
+bool DQSql::insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId) {
     return insertInto(info,model,fields,updateId,false);
 }
 
-bool DQSql::replaceInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId){
+bool DQSql::replaceInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId){
     return insertInto(info,model,fields,updateId,true);
 }
 
-bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,bool updateId,bool replace){
+bool DQSql::insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId,bool replace){
     QString sql;
 
     QSqlQuery q = query();
@@ -192,8 +192,10 @@ bool DQSql::insertInto(DQModelMetaInfo* info,DQModel *model,QStringList fields,b
         res = true;
         if (updateId) {
             int id = q.lastInsertId().toInt();
-            if (model->id.get().toInt() != id)
-                model->id.set(id);
+
+            if (info->value(model,"id").toInt() != id){
+                info->setValue(model,"id",id);
+            }
         }
     }
 
