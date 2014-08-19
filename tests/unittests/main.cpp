@@ -2,6 +2,7 @@
 #include "testobjectrunner.h"
 #include "coretests.h"
 #include "sqlitetests.h"
+#include "multithreadtests.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,6 +12,7 @@ int main(int argc, char *argv[])
 
     runner.add<CoreTests>();
     runner.add<SqliteTests>();
+    runner.add<MultiThreadTests>();
 
     return runner.exec(a.arguments());
 }

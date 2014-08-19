@@ -21,6 +21,7 @@ DQUEST_HEADERS += \
     $$PWD/dqindex.h \
     $$PWD/dqstream.h \
     $$PWD/dqlistwriter.h \
+    $$PWD/dqthread.h \
     $$PWD/dquest.h
 
 DQUEST_PRIV_HEADERS = \
@@ -73,4 +74,5 @@ SOURCES += \
     $$PWD/backend/dqbackendengine.cpp \
     $$PWD/backend/dqsqlqueryengine.cpp \
     $$PWD/backend/dqbackendquery.cpp \
-    $$PWD/backend/dqbackend.cpp
+    $$PWD/backend/dqbackend.cpp \
+    $$PWD/dqthread.cpp
