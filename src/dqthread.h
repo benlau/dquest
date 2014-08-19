@@ -19,23 +19,25 @@ public:
 
     void run(QRunnable* runnable);
 
-    /// Request to stop to accept runnable task to the thread.
-    /** The thread will continue execution until the current
-     * task is finished. Then it will be terminated.
-     */
-    void stop();
-
 protected:
     virtual void run();
 
 private:
     void setProcessing(bool processing);
 
+    // Post a request to execute runnable.
+    void post();
+
+    // The tick function to execute the runnable
+    Q_INVOKABLE void tick();
+
     bool m_processing;
 
     QMutex mutex;
     QQueue<QRunnable*> queue;
-    bool requestExit;
+
+    // Signal proxy
+    QObject* proxy;
 };
 
 #endif // DQTHREAD_H

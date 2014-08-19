@@ -1,17 +1,16 @@
 #include <QtCore>
 #include "dqthread.h"
+#include "priv/dqthread_p.h"
 
 DQThread::DQThread(QObject *parent) :
     QThread(parent)
 {
     m_processing = false;
-    requestExit = false;
+    proxy = 0;
 }
 
 DQThread::~DQThread()
 {
-    stop();
-    wait();
 }
 
 bool DQThread::processing() const
@@ -24,6 +23,37 @@ void DQThread::setProcessing(bool processing)
     m_processing = processing;
 }
 
+void DQThread::post()
+{
+    if (!proxy)
+        return;
+    QMetaObject::invokeMethod(proxy,"proxy",Qt::QueuedConnection);
+}
+
+void DQThread::tick()
+{
+    QRunnable* task = 0;
+    mutex.lock();
+
+    if (queue.size() > 0) {
+        task = queue.dequeue();
+    } else {
+        m_processing = false;
+    }
+    mutex.unlock();
+
+    if (task) {
+        task->run();
+        if (task->autoDelete())
+            delete task;
+    }
+
+    mutex.lock();
+    if (queue.size() == 0)
+        m_processing = false;
+    mutex.unlock();
+}
+
 void DQThread::run(QRunnable *runnable)
 {
     mutex.lock();
@@ -32,41 +62,28 @@ void DQThread::run(QRunnable *runnable)
 
     if (!isRunning()) {
         start();
-    } else { // It is running
-        exit(0); // Exit the event queue if it is idle
+    } else {
+        post();
     }
-    mutex.unlock();
-}
-
-void DQThread::stop()
-{
-    mutex.lock();
-    requestExit = true;
-    exit(0);
     mutex.unlock();
 }
 
 void DQThread::run()
 {
-    while (!requestExit) {
-        QRunnable* task = 0;
-        mutex.lock();
+    proxy  = new DQThreadPrivProxy();
 
-        if (queue.size() > 0) {
-            task = queue.dequeue();
-            m_processing = true;
-        } else {
-            m_processing = false;
-        }
-        mutex.unlock();
+    connect(proxy,SIGNAL(proxy()),
+            this,SLOT(tick()),
+            Qt::DirectConnection); // Then tick() function will be executed within the created thread
 
-        if (task) {
-            task->run();
-            if (task->autoDelete())
-                delete task;
-        } else {
-            exec();
-        }
-    }
+    mutex.lock();
+    for (int i = 0 ; i < queue.size();i++)
+        post();
+    mutex.unlock();
+
+    exec();
+
+    delete proxy;
+    proxy = 0;
 }
 

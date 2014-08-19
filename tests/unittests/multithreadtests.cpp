@@ -27,8 +27,11 @@ void MultiThreadTests::dqThread()
 {
     class Step1 : public QRunnable {
     public:
+        QThread* dbThread;
         void run() {
+            qDebug() << "Step 1";
             QVERIFY(QCoreApplication::instance()->thread() != QThread::currentThread());
+            QVERIFY(QThread::currentThread() == dbThread);
 
             QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE");
             db.setDatabaseName( "dqThread.db" );
@@ -47,6 +50,7 @@ void MultiThreadTests::dqThread()
     class Step2 : public QRunnable {
     public:
         void run() {
+            qDebug() << "Step 2";
             QVERIFY(QCoreApplication::instance()->thread() != QThread::currentThread());
             Model1 model;
             QVERIFY(!model.load(DQWhere("key = ","config1")));
@@ -59,7 +63,7 @@ void MultiThreadTests::dqThread()
     class Step3 : public QRunnable {
     public:
         void run() {
-            qDebug() << "step 3";
+            qDebug() << "Step 3";
             QVERIFY(QCoreApplication::instance()->thread() != QThread::currentThread());
             Model1 model;
             QVERIFY(model.load(DQWhere("key = ","config1")));
@@ -70,10 +74,13 @@ void MultiThreadTests::dqThread()
         }
     };
 
+    QVERIFY(QCoreApplication::instance()->thread() == QThread::currentThread());
+
+    DQThread thread;
 
     Step1 *step1 = new Step1();
     step1->setAutoDelete(true);
-    DQThread thread;
+    step1->dbThread = &thread;
 
     QVERIFY(!thread.processing());
     thread.run(step1);
@@ -97,4 +104,6 @@ void MultiThreadTests::dqThread()
     while (thread.processing()) {
         wait(100);
     }
+    thread.exit();
+    thread.wait();
 }

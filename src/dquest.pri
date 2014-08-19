@@ -29,7 +29,8 @@ DQUEST_PRIV_HEADERS = \
     $$PWD/priv/dqsqlitestatement.h \
     $$PWD/priv/dqwhere_p.h \
     $$PWD/priv/dqsharedquery_p.h \
-    $$PWD/priv/dqmetainfoquery_p.h
+    $$PWD/priv/dqmetainfoquery_p.h \
+    $$PWD/priv/dqthread_p.h
 
 DQUEST_BACKEND_HEADERS = \
     $$PWD/backend/dqsql.h \
