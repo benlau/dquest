@@ -25,9 +25,11 @@ void DQThread::setProcessing(bool processing)
 
 void DQThread::post()
 {
+    mutex.lock();
     if (!proxy)
         return;
     QMetaObject::invokeMethod(proxy,"proxy",Qt::QueuedConnection);
+    mutex.unlock();
 }
 
 void DQThread::tick()
@@ -59,31 +61,34 @@ void DQThread::run(QRunnable *runnable)
     mutex.lock();
     queue.enqueue(runnable);
     m_processing = true;
+    mutex.unlock();
 
     if (!isRunning()) {
         start();
     } else {
         post();
     }
-    mutex.unlock();
 }
 
 void DQThread::run()
 {
+    mutex.lock();
     proxy  = new DQThreadPrivProxy();
 
     connect(proxy,SIGNAL(proxy()),
             this,SLOT(tick()),
             Qt::DirectConnection); // Then tick() function will be executed within the created thread
-
-    mutex.lock();
-    for (int i = 0 ; i < queue.size();i++)
-        post();
+    int size = queue.size();
     mutex.unlock();
+
+    for (int i = 0 ; i < size;i++)
+        post();
 
     exec();
 
+    mutex.lock();
     delete proxy;
     proxy = 0;
+    mutex.unlock();
 }
 
