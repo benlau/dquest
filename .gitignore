@@ -1,4 +1,5 @@
 *-build-*
 docs
-*.user.*
+*.user*
 debian/*
+build-*
