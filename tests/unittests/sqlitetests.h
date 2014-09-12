@@ -46,8 +46,12 @@ private Q_SLOTS:
 
     void insertInto();
 
+    /// Describe a table
+    void describe();
+
     /// Verify DQBackendEngine
     void engine();
+
 };
 
 #endif // SQLITETESTS_H

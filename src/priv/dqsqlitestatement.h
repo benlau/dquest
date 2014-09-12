@@ -23,6 +23,8 @@ public:
     /// Check is a table exist
     static QString exists(DQModelMetaInfo *info);
 
+    static QString describe(DQModelMetaInfo *info);
+
 protected:
 
     virtual QString _createTableIfNotExists(DQModelMetaInfo *info);

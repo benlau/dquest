@@ -1,3 +1,4 @@
+#include <QSqlRecord>
 #include "sqlitetests.h"
 
 void SqliteTests::initTestCase()
@@ -191,6 +192,31 @@ void SqliteTests::insertInto(){
     DQConnection connection = DQConnection::defaultConnection();
     QVERIFY (connection.isOpen() );
     */
+}
+
+void SqliteTests::describe()
+{
+    DQSqliteStatement statement;
+    QString sql = statement.describe(dqMetaInfo<User>());
+
+    qDebug() << sql;
+
+    DQConnection conn = DQConnection::defaultConnection(dqMetaInfo<User>());
+    QVariantMap table;
+    QSqlQuery query = conn.query();
+
+    query.prepare(sql);
+    QVERIFY(query.exec());
+    QVERIFY(query.next());
+    QSqlRecord record = query.record();
+    for (int i = 0 ; i < record.count();i++) {
+        QString key = record.fieldName(i);
+        table[key] = record.value(i);
+    }
+
+    qDebug() << table;
+    qDebug() << table["sql"];
+    QVERIFY(table.size() == 5);
 }
 
 void SqliteTests::engine(){

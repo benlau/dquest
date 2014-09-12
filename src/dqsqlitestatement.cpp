@@ -123,3 +123,10 @@ QString DQSqliteStatement::driverName(){
 QString DQSqliteStatement::exists(DQModelMetaInfo *info) {
     return QString("SELECT name FROM sqlite_master WHERE type='table' and name ='%1'").arg(info->name());
 }
+
+QString DQSqliteStatement::describe(DQModelMetaInfo *info)
+{
+    QString statement = "SELECT * FROM sqlite_master WHERE type='table' and name ='%1'";
+
+    return statement.arg(info->name());
+}
