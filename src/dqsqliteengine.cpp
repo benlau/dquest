@@ -117,6 +117,11 @@ bool DQSqliteEngine::existsModel(DQModelMetaInfo* info){
     return m_sql.exists(info);
 }
 
+QVariantMap DQSqliteEngine::describeModel(DQModelMetaInfo* info)
+{
+    return m_sql.describe(info);
+}
+
 /// Update the database with record.
 /**
  *  @param fields The changed fields. If it is omitted, it will assume all the field should be updated.
@@ -207,4 +212,5 @@ bool DQSqliteEngine::commit(){
 bool DQSqliteEngine::rollback(){
     return m_sql.database().rollback();
 }
+
 

@@ -126,7 +126,7 @@ QString DQSqliteStatement::exists(DQModelMetaInfo *info) {
 
 QString DQSqliteStatement::describe(DQModelMetaInfo *info)
 {
-    QString statement = "SELECT * FROM sqlite_master WHERE type='table' and name ='%1'";
+    QString statement = "SELECT sql FROM sqlite_master WHERE type='table' and name ='%1'";
 
     return statement.arg(info->name());
 }

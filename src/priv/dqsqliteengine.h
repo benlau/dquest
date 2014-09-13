@@ -44,6 +44,9 @@ public:
     /// RETURN TRUE if the model is existed in the database.
     virtual bool existsModel(DQModelMetaInfo* info);
 
+    /// Provide information of the columns of a model in the database
+    virtual QVariantMap describeModel(DQModelMetaInfo* info);
+
     virtual bool update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false);
 
     /// Create index
@@ -63,7 +66,6 @@ public:
     virtual bool commit();
 
     virtual bool rollback();
-
 
     /// Get the assoicated DQSql instance
     DQSql& sql();

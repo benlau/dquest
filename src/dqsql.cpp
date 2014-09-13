@@ -1,6 +1,7 @@
 #include <QtCore>
 #include <QSqlError>
 #include <QSharedDataPointer>
+#include <QSqlRecord>
 #include "dqmodel.h"
 #include "backend/dqsql.h"
 #include "priv/dqsqlitestatement.h"
@@ -138,7 +139,7 @@ bool DQSql::dropIndexIfExists(QString name){
 
 bool DQSql::exists(DQModelMetaInfo* info){
     if (d->m_db.driverName() != "QSQLITE") {
-        qWarning() << "Only QSQLITE dirver is supported.";
+        qWarning() << "Only QSQLITE driver is supported.";
         return false;
     }
 
@@ -155,6 +156,59 @@ bool DQSql::exists(DQModelMetaInfo* info){
     setLastQuery(q);
 
     return res;
+}
+
+QVariantMap DQSql::describe(DQModelMetaInfo *info)
+{
+    if (d->m_db.driverName() != "QSQLITE") {
+        qWarning() << "Only QSQLITE driver is supported.";
+        return QVariantMap();
+    }
+
+    QString sql = DQSqliteStatement::describe(info);
+    QSqlQuery q = query();
+
+    if (!q.exec(sql))
+        return QVariantMap();
+    if (!q.next())
+        return QVariantMap();
+
+    QSqlRecord record = q.record();
+    if (record.count() == 0)
+        return QVariantMap();
+
+    QString schema = record.value(0).toString();
+    QVariantMap columns;
+
+    QRegExp rx("CREATE TABLE ([a-zA-Z0-9]+).*\\((.*)\\)");
+
+    rx.indexIn(schema);
+    QStringList token = rx.capturedTexts();
+
+    if (token.size() != 3) {
+        qWarning() << "Failed to parse schema: " << schema;
+        return QVariantMap();
+    }
+
+    QStringList fields = token.at(2).split(",");
+
+    for (int i = 0 ; i < fields.size();i++) {
+        QString field = fields.at(i).simplified();
+        if (field.indexOf("FOREIGN KEY") == 0) // by pass foreign key
+            continue;
+
+        QRegExp rx2("([a-zA-Z0-9]+) (.*)");
+        rx2.indexIn(field);
+        token = rx2.capturedTexts();
+        if (token.size() != 3) {
+            qWarning() << "Failed to parse column:" << fields.at(i);
+            continue;
+        }
+
+        columns[token.at(1)] = token.at(2);
+    }
+
+    return columns;
 }
 
 bool DQSql::insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId) {

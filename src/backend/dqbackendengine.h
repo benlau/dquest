@@ -67,6 +67,9 @@ class DQBackendEngine {
     /// RETURN TRUE if the model is existed in the database.
     virtual bool existsModel(DQModelMetaInfo* info);
 
+    /// Provide information of the columns of a model in the database
+    virtual QVariantMap describeModel(DQModelMetaInfo* info);
+
     /// Update the database with record.
     /** 
      *  @param fields The changed fields. If it is omitted, it will assume all the field should be updated.

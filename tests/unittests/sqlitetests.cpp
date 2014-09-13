@@ -199,24 +199,30 @@ void SqliteTests::describe()
     DQSqliteStatement statement;
     QString sql = statement.describe(dqMetaInfo<User>());
 
-    qDebug() << sql;
+    QVERIFY(sql == "SELECT sql FROM sqlite_master WHERE type='table' and name ='user'");
+//    qDebug() << sql;
 
     DQConnection conn = DQConnection::defaultConnection(dqMetaInfo<User>());
-    QVariantMap table;
     QSqlQuery query = conn.query();
 
     query.prepare(sql);
     QVERIFY(query.exec());
     QVERIFY(query.next());
     QSqlRecord record = query.record();
-    for (int i = 0 ; i < record.count();i++) {
-        QString key = record.fieldName(i);
-        table[key] = record.value(i);
-    }
+    QVERIFY(record.count() == 1);
+    QString schema = record.value(0).toString();
+    Q_UNUSED(schema);
 
-    qDebug() << table;
-    qDebug() << table["sql"];
-    QVERIFY(table.size() == 5);
+    DQBackendEngine *engine = conn1.engine();
+
+    QVariantMap userSchema = engine->describeModel(dqMetaInfo<User>());
+
+    QVERIFY(userSchema.size() == 6);
+    QVERIFY(userSchema.contains("id"));
+    QVariantMap configSchema = engine->describeModel(dqMetaInfo<Config>());
+    QVERIFY(configSchema.size() == 4);
+
+
 }
 
 void SqliteTests::engine(){

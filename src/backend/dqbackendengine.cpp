@@ -38,6 +38,12 @@ bool DQBackendEngine::existsModel(DQModelMetaInfo* info){
     return false;
 }
 
+QVariantMap DQBackendEngine::describeModel(DQModelMetaInfo* info)
+{
+    Q_UNUSED(info);
+    return QVariantMap();
+}
+
 bool DQBackendEngine::update(DQAbstractModel* model, QStringList fields, bool forceInsert) {
     Q_UNUSED(model);
     Q_UNUSED(fields);

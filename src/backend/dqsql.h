@@ -69,6 +69,8 @@ public:
     /// Is the model exists on database?
     bool exists(DQModelMetaInfo* info);
 
+    QVariantMap describe(DQModelMetaInfo* info);
+
     /// Insert the reocrd to the database.
     /**
       @param info The meta information of writing model
