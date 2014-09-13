@@ -44,6 +44,12 @@ QVariantMap DQBackendEngine::describeModel(DQModelMetaInfo* info)
     return QVariantMap();
 }
 
+bool DQBackendEngine::alterModel(DQModelMetaInfo *info)
+{
+    Q_UNUSED(info);
+    return false;
+}
+
 bool DQBackendEngine::update(DQAbstractModel* model, QStringList fields, bool forceInsert) {
     Q_UNUSED(model);
     Q_UNUSED(fields);

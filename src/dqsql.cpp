@@ -211,6 +211,20 @@ QVariantMap DQSql::describe(DQModelMetaInfo *info)
     return columns;
 }
 
+bool DQSql::alterTable(DQModelMetaInfo *info, QString field)
+{
+    if (d->m_db.driverName() != "QSQLITE") {
+        qWarning() << "Only QSQLITE driver is supported.";
+        return false;
+    }
+
+    QString sql = d->m_statement->alterTable(info,field);
+    QSqlQuery q = query();
+
+    q.prepare(sql);
+    return q.exec();
+}
+
 bool DQSql::insertInto(DQModelMetaInfo* info,DQAbstractModel *model,QStringList fields,bool updateId) {
     return insertInto(info,model,fields,updateId,false);
 }

@@ -253,6 +253,23 @@ bool DQConnection::createTables(){
 
 }
 
+bool DQConnection::alterTables()
+{
+    if (!isOpen())
+        return false;
+
+    bool res = true;
+
+    QList<DQModelMetaInfo*> models = d->engine->modelList();
+
+    foreach (DQModelMetaInfo* info ,models) {
+        if (!d->engine->alterModel(info))
+            res = false;
+    }
+
+    return res;
+}
+
 bool DQConnection::dropTables() {
     if (!isOpen())
         return false;

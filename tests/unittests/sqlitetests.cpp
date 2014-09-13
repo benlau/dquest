@@ -230,8 +230,45 @@ void SqliteTests::alterTable()
     DQSqliteStatement statement;
     // SQL Statement of alter table.
     QString sql = statement.alterTable(dqMetaInfo<User>(),"creationTime");
-
     QVERIFY(sql.simplified() == "ALTER TABLE user ADD creationTime DATETIME DEFAULT CURRENT_TIMESTAMP");
+
+    DQModelMetaInfo* user = dqMetaInfo<User>();
+
+    DQConnection conn = DQConnection::defaultConnection(dqMetaInfo<User>());
+//    conn.dropTables();
+    DQBackendEngine* engine = conn.engine();
+
+    QVariantMap origSchema = engine->describeModel(dqMetaInfo<User>());
+    QVERIFY(origSchema.size() == 6);
+
+    engine->dropModel(dqMetaInfo<User>());
+    QVERIFY(!engine->existsModel(dqMetaInfo<User>()));
+
+    // Create a new user table without 'name' field
+    QSqlQuery query = conn.query();
+
+    sql = QString("CREATE TABLE user  (\n") +
+           "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "userId TEXT NOT NULL UNIQUE," +
+            "passwd TEXT NOT NULL," +
+            "creationTime DATETIME DEFAULT CURRENT_TIMESTAMP ," +
+            "lastLoginTime DATETIME" +
+          ");";
+
+    query.prepare(sql);
+    QVERIFY(query.exec());
+
+    QVERIFY(engine->existsModel(dqMetaInfo<User>()));
+
+    QVariantMap userSchema = engine->describeModel(dqMetaInfo<User>());
+    QVERIFY(userSchema.size() == 5);
+    QVERIFY(!userSchema.contains("name"));
+
+    QVERIFY(conn.alterTables());
+
+    userSchema = engine->describeModel(dqMetaInfo<User>());
+    QVERIFY(userSchema.size() == 6);
+    QVERIFY(userSchema.contains("name"));
 }
 
 void SqliteTests::engine(){

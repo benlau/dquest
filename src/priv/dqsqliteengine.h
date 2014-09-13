@@ -47,6 +47,9 @@ public:
     /// Provide information of the columns of a model in the database
     virtual QVariantMap describeModel(DQModelMetaInfo* info);
 
+    /// Compare the current database schema and run `alter table` if there has field not present in the database
+    virtual bool alterModel(DQModelMetaInfo* info);
+
     virtual bool update(DQAbstractModel* model, QStringList fields = QStringList(), bool forceInsert = false);
 
     /// Create index

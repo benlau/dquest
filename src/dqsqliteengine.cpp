@@ -122,6 +122,22 @@ QVariantMap DQSqliteEngine::describeModel(DQModelMetaInfo* info)
     return m_sql.describe(info);
 }
 
+bool DQSqliteEngine::alterModel(DQModelMetaInfo *info)
+{
+    QVariantMap schema = describeModel(info);
+    bool res = true;
+    for (int i = 0 ; i < info->size(); i++) {
+        const DQModelMetaInfoField *f = info->at(i);
+        if (!schema.contains(f->name)){
+            qDebug() << QString("Add column %1 to %2").arg(f->name).arg(info->name());
+            if (!m_sql.alterTable(info,f->name)) {
+                res = false;
+            }
+        }
+    }
+    return res;
+}
+
 /// Update the database with record.
 /**
  *  @param fields The changed fields. If it is omitted, it will assume all the field should be updated.

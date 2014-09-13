@@ -71,6 +71,8 @@ public:
 
     QVariantMap describe(DQModelMetaInfo* info);
 
+    bool alterTable(DQModelMetaInfo* info,QString field);
+
     /// Insert the reocrd to the database.
     /**
       @param info The meta information of writing model

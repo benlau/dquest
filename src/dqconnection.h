@@ -183,6 +183,16 @@ public:
      */
     bool createTables();
 
+    /// Compare the current database schema and run `alter table` if there has field not present in the database
+    /**
+     * @brief alterTables
+     * @return TRUE if the operation is successful, that include the cast that nothing has changed.
+     *
+     * @remarks DQuest will only perform `add column` operation. It won't do rename or drop column.
+     */
+
+    bool alterTables();
+
     /// Drop all the tables
     bool dropTables();
 

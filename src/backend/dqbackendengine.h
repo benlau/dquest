@@ -70,6 +70,9 @@ class DQBackendEngine {
     /// Provide information of the columns of a model in the database
     virtual QVariantMap describeModel(DQModelMetaInfo* info);
 
+    /// Compare the current database schema and run `alter table` if there has field not present in the database
+    virtual bool alterModel(DQModelMetaInfo* info);
+
     /// Update the database with record.
     /** 
      *  @param fields The changed fields. If it is omitted, it will assume all the field should be updated.
