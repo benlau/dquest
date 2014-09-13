@@ -168,14 +168,23 @@ QVariantMap DQSql::describe(DQModelMetaInfo *info)
     QString sql = DQSqliteStatement::describe(info);
     QSqlQuery q = query();
 
-    if (!q.exec(sql))
+    if (!q.exec(sql)) {
+        setLastQuery(q);
         return QVariantMap();
-    if (!q.next())
+    }
+
+    if (!q.next()) {
+        setLastQuery(q);
         return QVariantMap();
+    }
 
     QSqlRecord record = q.record();
-    if (record.count() == 0)
+    if (record.count() == 0) {
+        setLastQuery(q);
         return QVariantMap();
+    }
+
+    setLastQuery(q);
 
     QString schema = record.value(0).toString();
     QVariantMap columns;

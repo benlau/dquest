@@ -548,7 +548,7 @@ void AccessTests::transaction(){
     query.bindValue(":passwd","sdflksjd fl ljd");
 
     QVERIFY(!query.exec()); // it should be fail , becoz the userId is duplicated.
-
+    query.finish();
 //    qDebug() << query.lastError().text();
 
     User tmp;
@@ -560,6 +560,5 @@ void AccessTests::transaction(){
     tmp = User();
 
     QVERIFY(tmp.load(DQWhere("userId = ", "transaction_tmp") ));
-
 
 }

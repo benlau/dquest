@@ -213,6 +213,8 @@ void SqliteTests::describe()
     QString schema = record.value(0).toString();
     Q_UNUSED(schema);
 
+    query.finish();
+
     DQBackendEngine *engine = conn1.engine();
 
     QVariantMap userSchema = engine->describeModel(dqMetaInfo<User>());

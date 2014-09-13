@@ -179,6 +179,11 @@ void DQSharedQuery::reset(){
     data->metaInfo = metaInfo;
 }
 
+void DQSharedQuery::finish()
+{
+    data->query.finish();
+}
+
 bool DQSharedQuery::next() {
     return data->query.next();
 }

@@ -100,6 +100,8 @@ bool DQModel::load(DQWhere where){
     if (!res)
         id->clear();
 
+    query.finish();
+
 //    m_connection.setLastQuery(query.lastQuery());
 
     return res;
@@ -119,6 +121,7 @@ bool DQModel::remove() {
     if (res){
         id->clear();
     }
+    query.finish();
 
 //    m_connection.setLastQuery( query.lastQuery());
 

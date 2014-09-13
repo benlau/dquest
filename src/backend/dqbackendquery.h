@@ -57,6 +57,9 @@ public:
      */
     bool recordTo(DQAbstractModel * model);
 
+    /// Instruct the database driver that no more data will be fetched from this query until it is re-executed. There is normally no need to call this function, but it may be helpful in order to free resources such as locks or cursors if you intend to re-use the query at a later time.
+    void finish();
+
     /// Get the sql query object used by this function
     QSqlQuery sqlQuery();
 
