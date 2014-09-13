@@ -49,6 +49,9 @@ private Q_SLOTS:
     /// Describe a table
     void describe();
 
+    /// Run 'alter table'
+    void alterTable();
+
     /// Verify DQBackendEngine
     void engine();
 

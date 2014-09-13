@@ -120,6 +120,32 @@ QString DQSqliteStatement::driverName(){
     return "SQLITE";
 }
 
+QString DQSqliteStatement::alterTable(DQModelMetaInfo *info, QString field)
+{
+    QString statement = QString("ALTER TABLE %1 %2");
+
+    const DQModelMetaInfoField* infoField = 0;
+    for (int i = 0 ; i < info->size() ; i++) {
+        const DQModelMetaInfoField *f = info->at(i);
+        if (f->name == field) {
+            infoField = f;
+            break;
+        }
+    }
+
+    if (!infoField) {
+        qWarning() << "The column is not existed: " << field;
+        return statement;
+    }
+
+    QString columnDef = QString("ADD %1 %2 %3")
+                        .arg(infoField->name)
+                        .arg(columnTypeName(infoField->type))
+                        .arg(columnConstraint(infoField->clause) );
+
+    return statement.arg(info->name()).arg(columnDef);
+}
+
 QString DQSqliteStatement::exists(DQModelMetaInfo *info) {
     return QString("SELECT name FROM sqlite_master WHERE type='table' and name ='%1'").arg(info->name());
 }

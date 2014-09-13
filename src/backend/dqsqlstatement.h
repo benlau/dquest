@@ -47,6 +47,18 @@ public:
     /// Drop the index
     virtual QString dropIndexIfExists(QString name);
 
+    /// Alter Table. Only ADD column is supported
+    /**
+     * @brief alterTable
+     * @param info The DQModelMetaInfo instance of the database model
+     * @param field The field name to be added.
+     * @return
+     *
+     * Since not every SQL implement support to add multiple column,
+     * therefore , the API has restricted to add a single column only.
+     */
+    virtual QString alterTable(DQModelMetaInfo *info,QString field) = 0;
+
     /// Insert into statement
     /**
       @param with_id TRUE if the "id" field should be included.

@@ -225,6 +225,15 @@ void SqliteTests::describe()
 
 }
 
+void SqliteTests::alterTable()
+{
+    DQSqliteStatement statement;
+    // SQL Statement of alter table.
+    QString sql = statement.alterTable(dqMetaInfo<User>(),"creationTime");
+
+    QVERIFY(sql.simplified() == "ALTER TABLE user ADD creationTime DATETIME DEFAULT CURRENT_TIMESTAMP");
+}
+
 void SqliteTests::engine(){
     User model;
     DQConnection connection = model.connection();

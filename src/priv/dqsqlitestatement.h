@@ -19,6 +19,8 @@ public:
     QString columnConstraint(DQClause clause);
 
     virtual QString driverName();
+    virtual QString alterTable(DQModelMetaInfo *info,QString field);
+
 
     /// Check is a table exist
     static QString exists(DQModelMetaInfo *info);
