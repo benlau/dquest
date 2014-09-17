@@ -25,11 +25,10 @@ void DQThread::setProcessing(bool processing)
 
 void DQThread::post()
 {
-    mutex.lock();
+    QMutexLocker locker(&mutex);
     if (!proxy)
         return;
     QMetaObject::invokeMethod(proxy,"proxy",Qt::QueuedConnection);
-    mutex.unlock();
 }
 
 void DQThread::tick()
