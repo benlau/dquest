@@ -77,4 +77,6 @@ Limitations
 Licensing
 ---------
 
-DQuest source code is licensed under BSD license. You may use it for open source and closed source application , you just need to obey the requirement of BSD (e.g distribute the license agreement). Moreover, if you can inform us that your application is using DQuest. It can encourage developer to further develop the software.
+DQuest ( "DQuest is not Dragon Quest" || "DQuest is Database Quest" || "Database Quest")
+
+The source code is licensed under BSD license. You may use it for open source and closed source application , you just need to obey the requirement of BSD (e.g distribute the license agreement). Moreover, if you can inform us that your application is using DQuest. It can encourage developer to further develop the software.
